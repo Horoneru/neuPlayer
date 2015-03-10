@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Settings</class>
+ <widget class="QDialog" name="Settings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>431</width>
+    <height>336</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>neu Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="tabPosition">
+      <enum>QTabWidget::North</enum>
+     </property>
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="elideMode">
+      <enum>Qt::ElideLeft</enum>
+     </property>
+     <property name="usesScrollButtons">
+      <bool>false</bool>
+     </property>
+     <property name="documentMode">
+      <bool>false</bool>
+     </property>
+     <property name="movable">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Paramètres Généraux</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>381</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Fonctions supplémentaires</string>
+       </property>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>95</y>
+          <width>341</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Activer le chargement de la bibilothèque au démarrage</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="a_libraryAtStartupActivate">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>100</y>
+          <width>13</width>
+          <height>13</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="a_staticLibraryActivate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>120</y>
+          <width>13</width>
+          <height>13</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>49</x>
+          <y>115</y>
+          <width>321</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Ce mode est plus léger car il ne fait que charger les données musicales. En revanche, lors d'une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist</string>
+        </property>
+        <property name="text">
+         <string>Créer une base de donnée statique (léger)</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="a_refreshWhenNeededActivate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>140</y>
+          <width>13</width>
+          <height>13</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>49</x>
+          <y>135</y>
+          <width>321</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu dans le dossier où réside les données musicales, mais il permet d'être tenu au courant lorsque le dossier a été modifié, pour rafraîchir les médias présents</string>
+        </property>
+        <property name="text">
+         <string>Créer une base de données dynamique (Recommandé)</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="a_changeDbpush">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Changer base</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Votre base actuelle est : </string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="a_pathView">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>60</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_13">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>155</y>
+          <width>321</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>Sauvegarder la musique en lecture avant de fermer</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="a_saveIndexActivate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>160</y>
+          <width>13</width>
+          <height>13</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Activer le Tag Viewer</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="a_refreshNeededpush">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>30</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Actualiser base</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="a_playlistAtStartupCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>201</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Lancer la playlist au démarrage</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="a_confirm">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>260</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="a_close">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>260</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Fermer</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Apparence</string>
+      </attribute>
+      <widget class="QLabel" name="a_layoutView">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>25</y>
+         <width>191</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="a_confirm_2">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>260</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="a_close_2">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>260</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Fermer</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>381</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="title">
+        <string>Skin</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <widget class="QLabel" name="a_SkinDescription">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>151</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Description Skin</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="a_skinPick">
+        <property name="geometry">
+         <rect>
+          <x>8</x>
+          <y>30</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Clean Fusion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Holo Fusion</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="a_skinImage">
+        <property name="geometry">
+         <rect>
+          <x>165</x>
+          <y>19</y>
+          <width>201</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Image preview</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>381</width>
+         <height>151</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="title">
+        <string>Image de fond</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <widget class="QLabel" name="a_skinImage_2">
+        <property name="geometry">
+         <rect>
+          <x>165</x>
+          <y>19</y>
+          <width>201</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Image preview</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="a_changeBackgroundPush">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>131</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Changer l'image</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="a_reloadDefaultSkinPush">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>131</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Rétablir défaut</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>361</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Veuillez séléctionner une image de 400 x 50 px pour un bon rendu</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="a_opacityLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Opacité : </string>
+        </property>
+       </widget>
+       <widget class="QSlider" name="a_opacitySlide">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>90</y>
+          <width>160</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>15</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="a_valueSlide">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>90</y>
+          <width>46</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>100%</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>À propos</string>
+      </attribute>
+      <widget class="QLabel" name="label_3">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>95</x>
+         <y>18</y>
+         <width>50</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="assets.qrc">:/Ressources/neuPlayer.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>145</x>
+         <y>28</y>
+         <width>141</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Sony Sketch EF</family>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>neuPlayer</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>70</y>
+         <width>371</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Lecteur multimédia portable créé avec l'envie de délivrer un lecteur
+petit mais puissant sans consommer énormément de ressources.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>140</y>
+         <width>371</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Créé avec Qt 5.3.2.
+Licensié sous GNU GPL V3
+Copyright Horoneru 2015
+build 100315</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_11">
+       <property name="geometry">
+        <rect>
+         <x>355</x>
+         <y>0</y>
+         <width>51</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#346b9e;&quot;&gt;V 1.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="TEMP">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>20</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Working dir</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="assets.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>a_close_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>374</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
