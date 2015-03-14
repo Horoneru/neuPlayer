@@ -1,6 +1,13 @@
 # neuPlayer
 - <i>This software is available in French and english. It'll automatically adjust for you when executing it </i>
 
+##Downloads
+
+A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 140315)
+
+There will be more links available for other OS when I'll be reaching a version which seems stable enough and meeting certain criterias I fixed.
+
+
 ##Presentation 
 
 ![Screenshot] (http://puu.sh/guRg6/04a820b7ef.jpg)
@@ -37,11 +44,7 @@ Its main goals are :
  - <b>Skinning ! </b>
  
  And more coming soon...
- 
-##Downloads
 
-A pre-compiled binary for windows is available [here](http://goo.gl/QiW88m) (build 140315)
-There will be more links available for other OS when I'll be reaching a version which seems stable enough and meeting certain criterias I fixed.
 
 ## How to compile
 
