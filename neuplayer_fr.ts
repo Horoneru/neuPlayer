@@ -177,125 +177,125 @@ pas de transparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="132"/>
+        <location filename="player.cpp" line="131"/>
         <source>Ouvrir des fichiers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="134"/>
+        <location filename="player.cpp" line="133"/>
         <source>Ouvrir la liste de lecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="136"/>
+        <location filename="player.cpp" line="135"/>
         <source>Toujours visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="139"/>
+        <location filename="player.cpp" line="138"/>
         <source>Paramètres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="158"/>
+        <location filename="player.cpp" line="157"/>
         <source>Vitesse de lecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="144"/>
+        <location filename="player.cpp" line="143"/>
         <source>Voir les tags</source>
         <oldsource>Éditez les tags</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="317"/>
+        <location filename="player.cpp" line="316"/>
         <source>Des changements ont été detectés dans votre base depuis la dernière mise à jour de celle-ci.
 Voulez-vous l&apos;actualiser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="342"/>
-        <location filename="player.cpp" line="377"/>
+        <location filename="player.cpp" line="341"/>
+        <location filename="player.cpp" line="376"/>
         <source>Le fichier de playlist n&apos;a pas pu être ouvert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="500"/>
+        <location filename="player.cpp" line="497"/>
         <source>erreur : Unresolved Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="517"/>
+        <location filename="player.cpp" line="514"/>
         <source>erreur : Network error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="811"/>
+        <location filename="player.cpp" line="813"/>
         <source>Stoppé</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="342"/>
-        <location filename="player.cpp" line="377"/>
-        <location filename="player.cpp" line="520"/>
+        <location filename="player.cpp" line="341"/>
+        <location filename="player.cpp" line="376"/>
+        <location filename="player.cpp" line="517"/>
         <source>Erreur ! </source>
         <oldsource>(Erreur ! </oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="142"/>
+        <location filename="player.cpp" line="141"/>
         <source>Mélanger la playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="348"/>
+        <location filename="player.cpp" line="347"/>
         <source>Mise à jour librairie...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="356"/>
+        <location filename="player.cpp" line="355"/>
         <source>Aucun média trouvé</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="511"/>
+        <location filename="player.cpp" line="508"/>
         <source>erreur : Format non supporté</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="520"/>
+        <location filename="player.cpp" line="517"/>
         <source>Vous n&apos;avez pas les droits pour accéder à ce fichier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="523"/>
+        <location filename="player.cpp" line="520"/>
         <source>Erreur Critique !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="523"/>
+        <location filename="player.cpp" line="520"/>
         <source>Le service du player est indisponible. Impossible de lire le fichier !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="584"/>
-        <location filename="player.cpp" line="588"/>
+        <location filename="player.cpp" line="581"/>
+        <location filename="player.cpp" line="585"/>
         <source>Sélectionnez des médias à lire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="584"/>
-        <location filename="player.cpp" line="588"/>
+        <location filename="player.cpp" line="581"/>
+        <location filename="player.cpp" line="585"/>
         <source>Flux audios (*.mp3 *.mp4 *.m4a *.wav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="628"/>
+        <location filename="player.cpp" line="627"/>
         <source>Artiste Inconnu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="632"/>
+        <location filename="player.cpp" line="631"/>
         <source>Album Inconnu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -498,11 +498,11 @@ Voulez-vous l&apos;actualiser ?</source>
         <source>Créé avec Qt 5.3.2.
 Licensié sous GNU GPL V3
 Copyright Horoneru 2015
-build 100315</source>
+build 140315</source>
         <oldsource>Créé avec Qt 5.3.2.
 Licensié sous GNU GPL V3
 Copyright Horoneru 2015
-build 080315</oldsource>
+build 100315</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

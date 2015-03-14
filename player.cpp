@@ -6,18 +6,18 @@ Player::Player(QWidget *parent) :
     ui(new Ui::Player)
 {
     /*!
-                                            2015 Horoneru                                   1.1 stable 100315 active
+                                            2015 Horoneru                                   1.1 stable 140315 active
       TODO
       à faire : (/ ordre d'importance)
-      - add to fav au niveau playlist
+      > add to fav au niveau playlist (coming soon)
       > UPDATE TRANSLATIONS
-      - ajouter un "recent bg" à la séléction d'une custom image
+      - ajouter un "recent bg" à la séléction d'une custom image (coming along soon too ! )
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
       - Re-design et occuper l'espace alloué par le borderless -> S'occuper des boutons
       - (long-terme) s'occuper de quelques extras win-specific... (peu d'interêt, à voir)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.1 stable 100315");
+    QApplication::setApplicationVersion("1.1 stable 140315");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -47,7 +47,6 @@ Player::Player(QWidget *parent) :
 
     ui->a_pausebtn->setVisible(false);
 
-    a_currentTrackTime = 0;
     a_secondesPasse = 0;
 
     setPlaybackRate();
@@ -431,7 +430,6 @@ void Player::pauseMedia()
 void Player::forwardMedia()
 {
     a_lastIndex = a_mediaPlaylist.currentIndex();
-    a_currentTrackTime = 0;
     a_mediaPlaylist.next();
     if(a_mediaPlaylist.currentMedia().isNull())
     {
@@ -466,7 +464,6 @@ void Player::forwardAnim()
 void Player::previousMedia()
 {
     a_lastIndex = a_mediaPlaylist.currentIndex();
-    a_currentTrackTime = 0;
     a_mediaPlaylist.previous();
     if(a_mediaPlaylist.currentMedia().isNull())
     {
@@ -614,7 +611,9 @@ void Player::openMedia()
 
 void Player::setMeta()
 {
-    a_secondesPasse = 0; //New track, we start at 0 secs !
+    //New track, we start at 0 secs !
+    a_secondesPasse = 0; //For infos
+    a_currentTrackTime = 0, a_currentTrackMinutes = 0; //For progress display
     // On check pour savoir si les metas sont nulles ou avec une chaine vide pour avoir une donnée correcte à afficher
     if(!neu->metaData("Title").isNull() && !neu->metaData("Title").operator ==(""))
         a_titre = neu->metaData("Title").toString();
@@ -745,11 +744,12 @@ void Player::update_info()
 {
     //update à chaque seconde
     a_secondesPasse++;
-    //Permet de gérer les informations à afficher en fonction du temps
-    //Fades each time
 
-    //The cases are named after the item which is displayed BEFORE going to the specific case
-    //It might seems unclear at first but I believe it's better this way
+    /*Permet de gérer les informations à afficher en fonction du temps
+     * Fades each time
+     * The cases are named after the item which is displayed BEFORE going to the specific case
+     * It might seems unclear at first but I believe it's better this way
+    */
 
     //Switches over to normal if's because switch case can't evaluate non-constant expression
     if(a_secondesPasse == a_titleCase)
@@ -768,8 +768,7 @@ void Player::update_info()
         updateLabel(a_titre);
         fadeInLabel();
     }
-    a_currentTrackTime++;
-    a_currentTrackMinutes = 0;
+
     if(a_currentTrackTime == 60)
     {
         a_currentTrackTime = 0;
@@ -780,6 +779,9 @@ void Player::update_info()
         else
             ui->a_currenttime->setText(QString::number(a_currentTrackMinutes) + ":" + QString::number(a_currentTrackTime));
     }
+
+    if(a_isPlaying) //The update_info is now called even when paused so it's a guard
+        a_currentTrackTime++;
 }
     /*///////SliderBar Section///////*/
 void Player::UpdateProgress(qint64 pos)
