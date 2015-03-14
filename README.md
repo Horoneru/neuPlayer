@@ -16,7 +16,7 @@ There will be more links available for other OS when I'll be reaching a version 
 neuPlayer is a project I started as a challenge to further enhance my skills in C++ and Qt.
 It is a fully portable lightweight music player (it runs on a USB drive smoothly !) which can be used as a quick replacement to players like Windows Media Player, iTunes or VLC.
 
-It's entirely build with the Qt classes, so it doesn't support codecs on its own; It's limited to codecs that you have installed already, but there's a plan to bring FLAC support alongside the player package.
+It's entirely built with the Qt classes, so it doesn't support codecs on its own; It's limited to codecs that you have installed already, but there's a plan to bring FLAC support alongside the player package.
 Its main goals are : 
 
   - <b>Speed</b>
