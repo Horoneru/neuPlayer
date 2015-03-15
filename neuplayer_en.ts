@@ -403,17 +403,30 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation>Enable loading library at startup</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="108"/>
+        <location filename="settings.ui" line="105"/>
+        <source>Ce mode est plus léger car il ne fait que charger les données musicales.
+En revanche, lors d&apos;une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist</source>
+        <translation>This mode is more lightweight because it only loads music datas.\nThe counterpart is that you won&apos;t be notified if a change occur in your folder and your playlist will be outdated.</translation>
+    </message>
+    <message>
+        <location filename="settings.ui" line="109"/>
         <source>Créer une base de donnée statique (léger)</source>
         <translation>Create a static database (lightweight)</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="140"/>
+        <location filename="settings.ui" line="138"/>
+        <source>Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu
+dans le dossier où réside les données musicales, mais il permet d&apos;être tenu au courant lorsque le dossier a été modifié,
+pour rafraîchir les médias présents</source>
+        <translation>This mode is slower because it needs to check whether there was a change in the directory where your music is.\nBut it enables you to to know when a change occur, and refresh the medias.</translation>
+    </message>
+    <message>
+        <location filename="settings.ui" line="143"/>
         <source>Créer une base de données dynamique (Recommandé)</source>
         <translation>Create a dynamic database (Recommended)</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="214"/>
+        <location filename="settings.ui" line="217"/>
         <source>Activer le Tag Viewer</source>
         <translation>Enable the Tag Viewer</translation>
     </message>
@@ -422,99 +435,99 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="vanished">Add the Tag Viewer onto the player&apos;s menu</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="153"/>
+        <location filename="settings.ui" line="156"/>
         <source>Changer base</source>
         <translation>Change base directory</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="166"/>
+        <location filename="settings.ui" line="169"/>
         <source>Votre base actuelle est : </source>
         <translation>Your current base is : </translation>
     </message>
     <message>
-        <location filename="settings.ui" line="198"/>
+        <location filename="settings.ui" line="201"/>
         <source>Sauvegarder la musique en lecture avant de fermer</source>
         <translation>Save the current music before closing</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="227"/>
+        <location filename="settings.ui" line="230"/>
         <source>Actualiser base</source>
         <translation>Refresh base</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="240"/>
+        <location filename="settings.ui" line="243"/>
         <source>Lancer la playlist au démarrage</source>
         <translation>Load the playlist at startup</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="254"/>
-        <location filename="settings.ui" line="298"/>
+        <location filename="settings.ui" line="257"/>
+        <location filename="settings.ui" line="301"/>
         <source>OK</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="267"/>
-        <location filename="settings.ui" line="311"/>
+        <location filename="settings.ui" line="270"/>
+        <location filename="settings.ui" line="314"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="273"/>
+        <location filename="settings.ui" line="276"/>
         <source>Apparence</source>
         <translation>Skin</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="330"/>
+        <location filename="settings.ui" line="333"/>
         <source>Skin</source>
         <translation>Skin</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="348"/>
+        <location filename="settings.ui" line="351"/>
         <source>Description Skin</source>
         <translation>Skin description</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="367"/>
+        <location filename="settings.ui" line="370"/>
         <source>Holo Fusion</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="404"/>
+        <location filename="settings.ui" line="407"/>
         <source>Image de fond</source>
         <translation>Background</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="438"/>
+        <location filename="settings.ui" line="441"/>
         <source>Changer l&apos;image</source>
         <translation>Change background</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="451"/>
+        <location filename="settings.ui" line="454"/>
         <source>Rétablir défaut</source>
         <translation>Restore default</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="464"/>
+        <location filename="settings.ui" line="467"/>
         <source>Veuillez séléctionner une image de 400 x 50 px pour un bon rendu</source>
         <translation>Please select a picture of 400 x 50 px for better display</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="477"/>
+        <location filename="settings.ui" line="480"/>
         <source>Opacité : </source>
         <translation>Opacity : </translation>
     </message>
     <message>
-        <location filename="settings.ui" line="512"/>
+        <location filename="settings.ui" line="515"/>
         <source>100%</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="519"/>
+        <location filename="settings.ui" line="522"/>
         <source>À propos</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="613"/>
+        <location filename="settings.ui" line="616"/>
         <source>Créé avec Qt 5.3.2.
 Licensié sous GNU GPL V3
 Copyright Horoneru 2015
@@ -523,30 +536,30 @@ build 140315</source>
 Licensié sous GNU GPL V3
 Copyright Horoneru 2015
 build 100315</oldsource>
-        <translation type="unfinished">Created with Qt 5.3.2
+        <translation>Created with Qt 5.3.2
 Licensed on GNU GPL V3
 Copyright Horoneru 2015
-build 100315</translation>
+build 140315</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="632"/>
+        <location filename="settings.ui" line="635"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#346b9e;&quot;&gt;V 1.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#346b9e;&quot;&gt;V 1.1 dev&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="648"/>
+        <location filename="settings.ui" line="651"/>
         <source>Working dir</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="362"/>
+        <location filename="settings.ui" line="365"/>
         <source>Clean Fusion</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="381"/>
-        <location filename="settings.ui" line="422"/>
+        <location filename="settings.ui" line="384"/>
+        <location filename="settings.ui" line="425"/>
         <source>Image preview</source>
         <translation></translation>
     </message>
@@ -559,12 +572,12 @@ build 100315</translation>
         <translation type="vanished">About</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="568"/>
+        <location filename="settings.ui" line="571"/>
         <source>neuPlayer</source>
         <translation>neuPlayer</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="590"/>
+        <location filename="settings.ui" line="593"/>
         <source>Lecteur multimédia portable créé avec l&apos;envie de délivrer un lecteur
 petit mais puissant sans consommer énormément de ressources.</source>
         <oldsource>Lecteur multimédia portabe créé avec l&apos;envie de délivrer un lecteur
@@ -591,13 +604,11 @@ build 220215</translation>
         <translation>Mode information</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="137"/>
         <location filename="settings.cpp" line="125"/>
         <source>Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu dans le dossier où réside les données musicales, mais il permet d&apos;être tenu au courant lorsque le dossier a été modifié, pour rafraîchir les médias présents</source>
         <translation>This mode is slower because it needs to check whether there was a change in the directory where your music is. But it enables you to to know when a change occur, and refresh the medias</translation>
     </message>
     <message>
-        <location filename="settings.ui" line="105"/>
         <location filename="settings.cpp" line="140"/>
         <source>Ce mode est plus léger car il ne fait que charger les données musicales. En revanche, lors d&apos;une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist</source>
         <translation>This mode is more lightweight because it only loads music datas. The counterpart is that you won&apos;t be notified if a change occur in your folder and your playlist will be outdated</translation>
