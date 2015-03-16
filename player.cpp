@@ -42,6 +42,9 @@ Player::Player(QWidget *parent) :
     //Bool to indicate to the playlist if the player is playing
     a_isPlaying = false;
 
+    if(a_settings->value("playlistAtStartup").toBool() == true)
+        a_hasToStartupPlaylist = true; //Will trigger the playlist startup
+
     //Bool to recover progress when needed
     a_recoveredProgress = true;
 
@@ -68,10 +71,6 @@ Player::Player(QWidget *parent) :
     }
     else
         a_mediaPlaylist.setPlaybackMode(QMediaPlaylist::Sequential);
-
-    if(a_settings->value("playlistAtStartup").toBool() == true)
-        a_hasToStartupPlaylist = true; //Will trigger the playlist startup
-
 
     setOpacity();
 }
@@ -237,6 +236,8 @@ void Player::setupPlugins()
             {
                 updateLibrary();
                 fileHandler.open(QFile::ReadWrite); //Create it and I'm done
+                if(a_hasToSavePlaylistLater)
+                    close(); //Will be restarted either way. This helps to not show the player if the playlist at startup is checked at setup.
             }
             else
                 checkForNewMedias();
