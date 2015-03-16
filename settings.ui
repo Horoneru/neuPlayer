@@ -63,7 +63,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Activer le chargement de la bibilothèque au démarrage</string>
+         <string>Activer le chargement de la bibilothèque au démarrage du player</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="a_libraryAtStartupActivate">
@@ -140,7 +140,7 @@ dans le dossier où réside les données musicales, mais il permet d'être tenu 
 pour rafraîchir les médias présents</string>
         </property>
         <property name="text">
-         <string>Créer une base de données dynamique (Recommandé)</string>
+         <string>Créer une base de donnée dynamique (Recommandé)</string>
         </property>
        </widget>
        <widget class="QPushButton" name="a_changeDbpush">
@@ -235,12 +235,12 @@ pour rafraîchir les médias présents</string>
          <rect>
           <x>10</x>
           <y>190</y>
-          <width>201</width>
+          <width>321</width>
           <height>17</height>
          </rect>
         </property>
         <property name="text">
-         <string>Lancer la playlist au démarrage</string>
+         <string>Lancer la playlist au démarrage du player</string>
         </property>
        </widget>
       </widget>
@@ -614,7 +614,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
        </property>
        <property name="text">
         <string>Créé avec Qt 5.3.2.
-Licensié sous GNU GPL V3
+Licencié sous GNU GPL V3
 Copyright Horoneru 2015
 build 140315</string>
        </property>
