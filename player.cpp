@@ -6,7 +6,7 @@ Player::Player(QWidget *parent) :
     ui(new Ui::Player)
 {
     /*!
-                                            2015 Horoneru                                   1.1 stable 140315 active
+                                            2015 Horoneru                                   1.1 stable 160315 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (coming soon)
@@ -17,7 +17,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (peu d'interêt, à voir)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.1 stable 140315");
+    QApplication::setApplicationVersion("1.1 stable 160315");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
