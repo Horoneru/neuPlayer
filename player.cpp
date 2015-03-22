@@ -1049,7 +1049,6 @@ void Player::dragEnterEvent(QDragEnterEvent *event)
 void Player::dropEvent(QDropEvent *event)
 {
     a_mediaPlaylist.clear();
-    pauseMedia();
     ui->a_label->setText("Loading...");
     this->setCursor(Qt::BusyCursor);
     unsigned int const numberUrls = event->mimeData()->urls().size();
@@ -1158,21 +1157,18 @@ void Player::addToQueue(int index, int currentlyPlaying)
 //Called when setting a folder from playlist
 void Player::setPlaylistOfThePlayer(QList<QUrl> &medias)
 {
-    neu->stop();
+    a_mediaPlaylist.setCurrentIndex(0);
     a_mediaPlaylist.clear();
     unsigned int const mediaNumber = medias.size();
     for(unsigned int i (0); i < mediaNumber; i++ )
     {
         a_mediaPlaylist.addMedia(medias.at(i));
     }
-    if(!a_mediaPlaylist.isEmpty())
-    {
-        neu->setPlaylist(&a_mediaPlaylist);
         if(a_isPlaylistOpen)
             playlist->updateList(&a_mediaPlaylist);
         if(a_hasToSavePlaylistLater != true)
             a_hasToSavePlaylistLater = true;
-    }
+        playMedia();
 }
 
 //Destructor

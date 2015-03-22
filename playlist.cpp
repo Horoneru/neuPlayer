@@ -190,9 +190,13 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title)
 
 void Playlist::setFolder()
 {
+    //This helps to not crash
     if(a_currentIndex != 0)
-        a_player->setIndexOfThePlayer(0, false);
-    ui->a_playlistWidget->setCurrentRow(0);
+    {
+        a_player->pauseMedia();
+        ui->a_playlistWidget->setCurrentRow(0);
+    }
+
     QString selectDir;
     // On sélectionne le répertoire à partir duquel on va rechercher les fichiers que le player peut lire
     if(!a_isReload)
@@ -221,11 +225,8 @@ void Playlist::setFolder()
         {
             urlList.append(QUrl::fromLocalFile(dirIterator.next().toUtf8()));
         }
-        if(!urlList.empty())
-        {
+        if(!urlList.empty()) //Don't set anything if there wasn't any content
             a_player->setPlaylistOfThePlayer(urlList);
-            a_player->playMedia();
-        }
      }
 
 }
