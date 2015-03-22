@@ -6,7 +6,7 @@ Player::Player(QWidget *parent) :
     ui(new Ui::Player)
 {
     /*!
-                                            2015 Horoneru                                   1.1 stable 160315 active
+                                            2015 Horoneru                                   1.1 stable 220315 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (coming soon)
@@ -17,7 +17,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (peu d'interêt, à voir)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.1 stable 160315");
+    QApplication::setApplicationVersion("1.1 stable 220315");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -49,8 +49,6 @@ Player::Player(QWidget *parent) :
     a_recoveredProgress = true;
 
     ui->a_pausebtn->setVisible(false);
-
-    a_secondesPasse = 0;
 
     setPlaybackRate();
 
@@ -618,11 +616,9 @@ void Player::setMeta()
     // On check pour savoir si les metas sont nulles ou avec une chaine vide pour avoir une donnée correcte à afficher
     if(!neu->metaData("Title").isNull() && !neu->metaData("Title").operator ==(""))
         a_titre = neu->metaData("Title").toString();
-    else if(neu->metaData("Title").isNull())
+    else
         a_titre = neu->currentMedia().canonicalUrl().fileName();
-    if(a_titre.isEmpty())
-        a_titre = neu->currentMedia().canonicalUrl().fileName();
-    if(!neu->metaData("ContributingArtist").isNull() && !neu->metaData("ContributingTitle").operator ==(""))
+    if(!neu->metaData("ContributingArtist").isNull() && !neu->metaData("ContributingArtist").operator ==(""))
         a_artiste = neu->metaData("ContributingArtist").toString();
     else
         a_artiste = tr("Artiste Inconnu");
@@ -706,7 +702,7 @@ void Player::updateFadeinSpeed()
 {
     /*                                      How it works
      * A case is the number of seconds an info type will be displayed till we switch over to the next info
-     * As they're dependent to the previous one, we always add the seconds of the case before
+     * As they're dependent from the previous one, we always add the seconds of the case before
      * ex : if each info is less/equal to 15 chars, it'll be case 3,6,9 so that it switches each 3 seconds
      * */
     if(a_titre.size() <= 17) //17 so it won't go to the else and generate 3 when the default would be 4 (it's an int, it floors)
@@ -1063,10 +1059,8 @@ void Player::dropEvent(QDropEvent *event)
         //Permet de toujours rendre l'application plus ou moins utilisable
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
-    neu->setPlaylist(&a_mediaPlaylist);
     if(a_isPlaylistOpen)
         playlist->updateList(&a_mediaPlaylist);
-
     playMedia();
     this->setCursor(Qt::ArrowCursor);
 }
