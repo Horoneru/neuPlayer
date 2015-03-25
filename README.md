@@ -52,5 +52,9 @@ If you want to compile neuPlayer manually you just need [Qt](https://www.qt.io/)
 
 To compile it, run `qmake` and `make`.
  
+## License
+**This software is licensed under GNU GPL version 3.**
+You can find the full text of the license [here](LICENSE).
+ 
   
 
