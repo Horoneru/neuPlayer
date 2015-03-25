@@ -6,7 +6,7 @@ Player::Player(QWidget *parent) :
     ui(new Ui::Player)
 {
     /*!
-                                            2015 Horoneru                                   1.1 stable 220315 active
+                                            2015 Horoneru                                   1.1 stable 250315 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (coming soon)
@@ -17,7 +17,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (peu d'interêt, à voir)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.1 stable 220315");
+    QApplication::setApplicationVersion("1.1");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -27,7 +27,7 @@ Player::Player(QWidget *parent) :
     // Bool to control playlist state
     a_isPlaylistOpen = false;
 
-    //Bool to detect a delete
+    //Bool to detect a delete. Used to manage a possible problem after a delete
     a_deleteTriggered = false;
 
     //Bool to do initial shuffle when selecting random play and forwarding
@@ -248,6 +248,7 @@ void Player::setupPlugins()
     }
     QFile fileHandler(".configdone");
     fileHandler.open(QFile::ReadWrite); //Create it and I'm done
+    fileHandler.close();
 }
 
 void Player::setOpacity(qreal opacityFromSettings)
@@ -331,10 +332,11 @@ void Player::updateLibrary()
     listFilter << "*.mp3";
     listFilter << "*.mp4";
     listFilter << "*.m4a";
-    QDirIterator dirIterator(a_settings->value("mediapath", "").toString(), listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator(a_settings->value("mediapath").toString(), listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
     QFile fileHandler("neuLibrary.m3u8");
     if(fileHandler.exists())
         fileHandler.remove();
+
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QMessageBox::critical(this, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
@@ -347,11 +349,13 @@ void Player::updateLibrary()
     while(dirIterator.hasNext())
     {
         out << dirIterator.next().prepend("file:///").append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
-        a_mediaPlaylist.addMedia(QUrl(dirIterator.filePath())); //load only the neccesary
+        a_mediaPlaylist.addMedia(QUrl(dirIterator.filePath().prepend("file:///").toUtf8())); //load only the neccesary
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
     if(a_mediaPlaylist.isEmpty())
         ui->a_label->setText(tr("Aucun média trouvé"));
+    else
+        neu->setPlaylist(&a_mediaPlaylist);
     fileHandler.close();
 }
 
@@ -1122,8 +1126,6 @@ void Player::setIndexOfThePlayer(int index, bool play)
         playMedia();
         forwardAnim(); //For lack of a better animation, this one suits most cases
     }
-    else
-        pauseMedia();
 }
 
 //Called when dealing with a drag & drop
@@ -1155,19 +1157,21 @@ void Player::addToQueue(int index, int currentlyPlaying)
 }
 
 //Called when setting a folder from playlist
-void Player::setPlaylistOfThePlayer(QList<QUrl> &medias)
+void Player::setPlaylistOfThePlayer(QList<QUrl> &medias, bool play)
 {
-    a_mediaPlaylist.setCurrentIndex(0);
     a_mediaPlaylist.clear();
     unsigned int const mediaNumber = medias.size();
     for(unsigned int i (0); i < mediaNumber; i++ )
     {
         a_mediaPlaylist.addMedia(medias.at(i));
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
-        if(a_isPlaylistOpen)
-            playlist->updateList(&a_mediaPlaylist);
-        if(a_hasToSavePlaylistLater != true)
-            a_hasToSavePlaylistLater = true;
+    neu->setPlaylist(&a_mediaPlaylist); //Re-set to update...
+    if(a_isPlaylistOpen)
+        playlist->updateList(&a_mediaPlaylist);
+    if(a_hasToSavePlaylistLater != true)
+        a_hasToSavePlaylistLater = true;
+    if(play)
         playMedia();
 }
 

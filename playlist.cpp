@@ -31,7 +31,7 @@ Playlist::Playlist(QMediaPlaylist *liste, int index, Player *player, QPixmap *co
 
     updateList(liste);
 
-    if(index != -1) //If it's okay
+    if(!liste->isEmpty()) //If it's okay
     {
         ui->a_playlistWidget->scrollToItem(ui->a_playlistWidget->item(index));
         setCurrentItem(index, cover, title);
@@ -138,6 +138,7 @@ void Playlist::updateList(QMediaPlaylist *listeFichiers)
         ui->a_playlistWidget->item(i)->setData(Qt::ToolTipRole, filepath);
         ui->a_playlistWidget->item(i)->setData(Qt::WhatsThisRole, i);
     }
+
 }
 
 void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne)
@@ -190,24 +191,23 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title)
 
 void Playlist::setFolder()
 {
-    //This helps to not crash
-    if(a_currentIndex != 0)
-    {
-        a_player->pauseMedia();
-        ui->a_playlistWidget->setCurrentRow(0);
-    }
-
     QString selectDir;
     // On sélectionne le répertoire à partir duquel on va rechercher les fichiers que le player peut lire
     if(!a_isReload)
     {
         selectDir = (QFileDialog::getExistingDirectory (this,tr("Ouvrir un répertoire"), "", QFileDialog::DontResolveSymlinks));
     }
+
     else if(!a_settings->value("mediapath").toString().isEmpty())
         selectDir =  a_settings->value("mediapath", "").toString();
-    setToPaused(0); //Because the player won't do it because of its signal...
+
     if(!selectDir.isEmpty())
     {
+        if(a_currentIndex != 0) //Helps not to crash. Each index is reset to 0 so there isn't any out of bound.
+        {
+            a_player->setIndexOfThePlayer(0, false);
+            ui->a_playlistWidget->setCurrentRow(0);
+        }
         // On remplit une QStringList avec chacun des filtres
         QStringList listFilter;
         listFilter << "*.wav";
@@ -224,9 +224,10 @@ void Playlist::setFolder()
         while(dirIterator.hasNext())
         {
             urlList.append(QUrl::fromLocalFile(dirIterator.next().toUtf8()));
+            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
         if(!urlList.empty()) //Don't set anything if there wasn't any content
-            a_player->setPlaylistOfThePlayer(urlList);
+            a_player->setPlaylistOfThePlayer(urlList, true);
      }
 
 }

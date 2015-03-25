@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     settings.cpp \
     tagviewer.cpp \
     initialconfig.cpp \
-    scrollinginfolabel.cpp
+    scrollinginfolabel.cpp \
+    theme.cpp
 
 HEADERS  += player.h \
     playlist.h \
     settings.h \
     tagviewer.h \
     initialconfig.h \
-    scrollinginfolabel.h
+    scrollinginfolabel.h \
+    theme.h
 
 FORMS    += player.ui \
     playlist.ui \

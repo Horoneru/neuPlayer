@@ -145,7 +145,7 @@ public:
         return a_isLoopPlaylistMode;
     }
 
-    void setPlaylistOfThePlayer(QList <QUrl> &medias);
+    void setPlaylistOfThePlayer(QList <QUrl> &medias, bool play = false);
     ~Player();
 
 private:
