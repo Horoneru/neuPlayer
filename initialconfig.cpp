@@ -285,6 +285,8 @@ void InitialConfig::finalPage()
 void InitialConfig::finishWizard()
 {
     a_page = 10;
+    if(a_settings->value("playlistAtStartup").toBool() == true)
+        neuPlayer = new Player();
     neuPlayer->show();
     neuPlayer->setIndexOfThePlayer(0, false);
     close(); //Will call closeEvent

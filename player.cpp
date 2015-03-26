@@ -6,7 +6,7 @@ Player::Player(QWidget *parent) :
     ui(new Ui::Player)
 {
     /*!
-                                            2015 Horoneru                                   1.1 stable 250315 active
+                                            2015 Horoneru                                   1.1.5 stable 260315 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (coming soon)
@@ -17,7 +17,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (peu d'interêt, à voir)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.1");
+    QApplication::setApplicationVersion("1.1.5");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -42,9 +42,6 @@ Player::Player(QWidget *parent) :
     //Bool to indicate to the playlist if the player is playing
     a_isPlaying = false;
 
-    if(a_settings->value("playlistAtStartup").toBool() == true)
-        a_hasToStartupPlaylist = true; //Will trigger the playlist startup
-
     //Bool to recover progress when needed
     a_recoveredProgress = true;
 
@@ -61,6 +58,9 @@ Player::Player(QWidget *parent) :
     ui->a_volumeslider->setValue(a_settings->value("volume", 50).toInt());
 
     a_alwaysOnTopHandler->setChecked(a_settings->value("visibilite", false).toBool());
+
+    if(a_settings->value("playlistAtStartup").toBool() == true)
+        a_hasToStartupPlaylist = true; //Will trigger the playlist startup
 
     if(a_isRandomMode)
     {
@@ -233,9 +233,8 @@ void Player::setupPlugins()
             if(!fileHandler.exists())
             {
                 updateLibrary();
-                fileHandler.open(QFile::ReadWrite); //Create it and I'm done
-                if(a_hasToSavePlaylistLater)
-                    close(); //Will be restarted either way. This helps to not show the player if the playlist at startup is checked at setup.
+                if(a_settings->value("playlistAtStartup", false).toBool() == true)
+                    deleteLater();
             }
             else
                 checkForNewMedias();
@@ -403,6 +402,10 @@ void Player::setupNewLibrary()
 
 void Player::playMedia()
 {
+    /* Those silly disconnect-reconnect are made so the openMedia(); method isn't called multiple times.
+     * For whatever reasons if I don't do it, it will be called about 2 to 4 times ! */
+
+    disconnect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     if ((neu->media().isNull()))
     {
         openMedia();
@@ -410,13 +413,14 @@ void Player::playMedia()
     else //On peut play quelque chose
     {
         neu->play();
-        disconnect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
         ui->a_playbtn->setVisible(false);
         ui->a_pausebtn->setVisible(true);
         connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
         if(a_isPlaylistOpen)
             playlist->setToPlaying(a_mediaPlaylist.currentIndex());
+        return; //We don't want to go to that last line
     }
+    connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
 }
 
 void Player::pauseMedia()
@@ -579,14 +583,7 @@ void Player::showMenu()
 
 void Player::openMedia()
 {
-    if(!a_musicUserPath.isEmpty())
-    {
-        a_files = QFileDialog::getOpenFileUrls(this, tr("Sélectionnez des médias à lire"), a_musicUserPath, tr("Flux audios (*.mp3 *.mp4 *.m4a *.wav)"));
-    }
-    else
-    {
-        a_files = QFileDialog::getOpenFileUrls(this, tr("Sélectionnez des médias à lire"), (QStandardPaths::locate(QStandardPaths::MusicLocation, QString(), QStandardPaths::LocateDirectory)) , tr("Flux audios (*.mp3 *.mp4 *.m4a *.wav)"));
-    }
+    a_files = QFileDialog::getOpenFileUrls(this, tr("Sélectionnez des médias à lire"), (QStandardPaths::locate(QStandardPaths::MusicLocation, QString(), QStandardPaths::LocateDirectory)) , tr("Flux audios (*.mp3 *.mp4 *.m4a *.wav)"));
     if(a_files.isEmpty()) //It was a mistake I guess, so don't do anything
         return;
     //Clear before processing
@@ -1004,7 +1001,7 @@ void Player::showPlaylist()
     if(!a_isPlaylistOpen)
     {
         a_isPlaylistOpen = true;
-        if(a_mediaPlaylist.mediaCount()!= 0 )
+        if(a_mediaPlaylist.mediaCount()!= 0)
             playlist = new Playlist(&a_mediaPlaylist, a_mediaPlaylist.currentIndex(), this, &a_coverArt, a_titre, a_isPlaying, this);
         else if(ui->a_label->text() != "Stoppé" || ui->a_label->text() == "Stopped")
             playlist = new Playlist(&a_mediaPlaylist, -1, this, &a_coverArt, a_titre, a_isPlaying, this);
