@@ -19,7 +19,10 @@ SOURCES += main.cpp\
     tagviewer.cpp \
     initialconfig.cpp \
     scrollinginfolabel.cpp \
-    theme.cpp
+    neuplaylist.cpp \
+    skin.cpp \
+    fadeoutwindow.cpp \
+    fadeanimmanager.cpp
 
 HEADERS  += player.h \
     playlist.h \
@@ -27,7 +30,10 @@ HEADERS  += player.h \
     tagviewer.h \
     initialconfig.h \
     scrollinginfolabel.h \
-    theme.h
+    neuplaylist.h \
+    skin.h \
+    fadeoutwindow.h \
+    fadeanimmanager.h
 
 FORMS    += player.ui \
     playlist.ui \

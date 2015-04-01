@@ -1,11 +1,11 @@
 #include "player.h"
+#include "skin.h"
 #include "initialconfig.h"
 #include <QApplication>
 #include <QStyleFactory>
 #include <QTranslator>
 #include <QLocale>
 #include <QLibraryInfo>
-#include <QTimer>
 #include <QFile>
 #include <QSettings>
 
@@ -26,32 +26,14 @@ int main(int argc, char *argv[])
 
     if(a_settings.value("skin", 1).toInt() == 1)
     {
-        QPalette darkPalette;
-        darkPalette.setColor(QPalette::Window, QColor(45,45,45));
-        darkPalette.setColor(QPalette::WindowText, Qt::white);
-        darkPalette.setColor(QPalette::Base, QColor(30,30,30));
-        darkPalette.setColor(QPalette::AlternateBase, QColor(45,45,45));
-        darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
-        darkPalette.setColor(QPalette::ToolTipText, Qt::white);
-        darkPalette.setColor(QPalette::Button, QColor(45,45,45));
-        darkPalette.setColor(QPalette::ButtonText, Qt::white);
-        darkPalette.setColor(QPalette::BrightText, Qt::red);
-        darkPalette.setColor(QPalette::Text, Qt::white);
-        darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
-
-        darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
-        darkPalette.setColor(QPalette::HighlightedText, Qt::black);
-        qApp->setPalette(darkPalette);
-
-        qApp->setStyleSheet("QToolTip { color: #ffffff; background-color: #353535; border: 1px solid #53a0ed; }");
+        Skin HoloFusion(1, nullptr);
+        HoloFusion.load();
     }
 
     else
     {
-        QPalette lightPalette;
-        lightPalette.setColor(QPalette::Base, QColor(30,30,30));
-        lightPalette.setColor(QPalette::Link, QColor(42, 130, 218));
-        qApp->setStyleSheet("QToolTip { border: 1px solid #53a0ed; }");
+        Skin CleanFusion(0, nullptr);
+        CleanFusion.load();
     }
     //Ready to show
 

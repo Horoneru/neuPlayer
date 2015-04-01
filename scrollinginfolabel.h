@@ -24,7 +24,12 @@ public:
 
 public slots:
     QString text() const;
-    void setText(QString &text);
+    inline void setText(QString &text)
+    {
+        _text = text;
+        updateText(); //Sets if the label will be on scrolling mode
+        update();
+    }
 
     QString separator() const;
     void setSeparator(QString separator);
@@ -35,6 +40,7 @@ protected:
 
 private:
     void updateText();
+    //Attributes
     QString _text;
     QString _separator;
     QStaticText staticText;

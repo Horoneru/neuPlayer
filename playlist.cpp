@@ -3,7 +3,7 @@
 #include <QFileDialog>
 #include <QDirIterator>
 
-Playlist::Playlist(QMediaPlaylist *liste, int index, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent) :
+Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Playlist)
 {
@@ -127,7 +127,7 @@ void Playlist::setupMode()
 
         /* Update section */
 
-void Playlist::updateList(QMediaPlaylist *listeFichiers)
+void Playlist::updateList(neuPlaylist*listeFichiers)
 {
     ui->a_playlistWidget->clear();
     int const mediaCount = listeFichiers->mediaCount();
@@ -185,6 +185,8 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title)
         ui->a_cover->setPixmap(*a_defaultCover);
     ui->a_titleHeader->setText(title);
     ui->a_titleHeader->setToolTip(title);
+    fadeAnimManager animManager(ui->a_cover, 700, this, fadeAnimManager::FadeIn);
+    animManager.start();
 }
 
         /* Playlist functionality */
@@ -315,7 +317,7 @@ void Playlist::scrollToPlaying()
     ui->a_playlistWidget->scrollTo(ui->a_playlistWidget->currentIndex());
 }
 
-void Playlist::showContextMenu()
+void Playlist::showContextMenu() const
 {
     a_playlistContextMenu->exec(QCursor::pos());
 }

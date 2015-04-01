@@ -10,6 +10,8 @@
 #include <QStandardPaths>
 
 #include "player.h"
+#include "fadeoutwindow.h"
+#include "fadeanimmanager.h"
 namespace Ui {
 class InitialConfig;
 }
@@ -19,7 +21,7 @@ class InitialConfig : public QDialog
 {
     Q_OBJECT
 
-public slots:
+private slots:
 
     void presetWizard();
     void customWizard();
@@ -33,6 +35,7 @@ public slots:
     void closeEvent(QCloseEvent *event);
 public:
     explicit InitialConfig(QWidget *parent = 0);
+private:
     void setupObjects();
     void setupWidgetsInitialVisibility();
     void setupConnections();
@@ -43,7 +46,7 @@ public:
 
     ~InitialConfig();
 
-private:
+    //Attributes
     Ui::InitialConfig *ui;
     QSettings *a_settings;
     Player *neuPlayer;

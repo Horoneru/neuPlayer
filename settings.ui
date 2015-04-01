@@ -172,9 +172,9 @@ pour rafraîchir les médias présents</string>
        <widget class="QLabel" name="a_pathView">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>130</x>
           <y>60</y>
-          <width>221</width>
+          <width>231</width>
           <height>21</height>
          </rect>
         </property>
@@ -368,6 +368,11 @@ pour rafraîchir les médias présents</string>
         <item>
          <property name="text">
           <string>Holo Fusion</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sky Fusion</string>
          </property>
         </item>
        </widget>
@@ -616,7 +621,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 260315</string>
+build 010415</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -632,7 +637,7 @@ build 260315</string>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#346b9e;&quot;&gt;V 1.1.5&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#5555ff;&quot;&gt;V 1.2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

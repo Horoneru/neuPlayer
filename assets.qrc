@@ -42,5 +42,8 @@
         <file>Ressources/skinpreviewlight.png</file>
         <file>Ressources/backgroundpreviewdark.png</file>
         <file>Ressources/backgroundpreviewwhite.jpg</file>
+        <file>Ressources/neucustombackgroundwhite.jpg</file>
+        <file>Ressources/backgroundpreviewcustomwhite.jpg</file>
+        <file>Ressources/skinpreviewcustomlight.jpg</file>
     </qresource>
 </RCC>

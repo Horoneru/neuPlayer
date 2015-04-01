@@ -21,13 +21,6 @@ QString ScrollingInfoLabel::text() const
     return _text;
 }
 
-void ScrollingInfoLabel::setText(QString &text)
-{
-    _text = text;
-    updateText(); //Sets if the label will be on scrolling mode
-    update();
-}
-
 QString ScrollingInfoLabel::separator() const
 {
     return _separator;

@@ -2,7 +2,7 @@
 #include "ui_settings.h"
 
 Settings::Settings(Player *Player, QWidget *parent) :
-    QDialog(parent),
+    QDialog(parent), a_isNewPath(false),
     ui(new Ui::Settings)
 {
     ui->setupUi(this);
@@ -11,7 +11,6 @@ Settings::Settings(Player *Player, QWidget *parent) :
     //Make the Player received as an attribute so we can use it
     passerelle = Player;
     //Restore current config from QSettings
-    a_isNewPath = false;
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_settings->beginGroup("Additional_Features");
     ui->a_libraryAtStartupActivate->setChecked(a_settings->value("libraryAtStartup", false).toBool());
@@ -94,6 +93,7 @@ void Settings::enableLibraryAtStartup()
         a_isLibraryAtStartchecked = true;
         ui->label_8->setHidden(false);
         ui->a_refreshWhenNeededActivate->setHidden(false);
+        ui->a_refreshWhenNeededActivate->setChecked(true);
         ui->a_staticLibraryActivate->setHidden(false);
         ui->a_saveIndexActivate->setHidden(false);
         ui->label_13->setHidden(false);
@@ -107,7 +107,6 @@ void Settings::enableLibraryAtStartup()
         a_isLibraryAtStartchecked = false;
         ui->label_8->setHidden(true);
         ui->a_refreshWhenNeededActivate->setHidden(true);
-        ui->a_staticLibraryActivate->setHidden(true);
         ui->label_9->setHidden(true);
         ui->a_saveIndexActivate->setHidden(true);
         ui->label_13->setHidden(true);
@@ -196,6 +195,16 @@ void Settings::setSkin(int index)
 
         ui->a_SkinDescription->setText("Skin dark pour neuPlayer");
     }
+    if(index == 2) //Sky Fusion
+    {
+        ui->a_skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewcustomlight.jpg"));
+        if(a_bgPath.isEmpty())
+            ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomwhite.jpg"));
+        else
+            ui->a_skinImage_2->setPixmap(QPixmap(a_bgPath));
+
+        ui->a_SkinDescription->setText("Skin light custom pour neuPlayer");
+    }
 }
 
 
@@ -221,6 +230,10 @@ void Settings::reloadDefaultBg()
     if (ui->a_skinPick->currentIndex() == 1) // Holo Fusion
     {
         ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewdark.png"));
+    }
+    if(ui->a_skinPick->currentIndex() == 2) //Sky Fusion
+    {
+        ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomlight.jpg"));
     }
 }
 
@@ -281,12 +294,17 @@ void Settings::confirm()
         a_settings->setValue("playlistAtStartup", false);
 
     /* Skin section */
-    if(a_settings->value("skin") != ui->a_skinPick->currentIndex() || a_settings->value("customimage").toString() != a_bgPath )
-        QMessageBox::information(this, tr("Skin modifié"), tr("Vous devez redémarrer le player pour appliquer les changements de skin !"));
-    a_settings->setValue("skin", ui->a_skinPick->currentIndex());
-    a_settings->setValue("customimage", a_bgPath);
+    int currentSkin = a_settings->value("skin").toInt(); //Backup to test
+    if(currentSkin != ui->a_skinPick->currentIndex() || a_settings->value("customimage").toString() != a_bgPath ) //Si un élément de skin a changé
+    {
+        a_settings->setValue("skin", ui->a_skinPick->currentIndex());
+        a_settings->setValue("customimage", a_bgPath);
+        Skin skin(ui->a_skinPick->currentIndex(), this);
+        skin.load();
+        passerelle->loadSkin();
+        passerelle->update();
+    }
     a_settings->setValue("opacity", a_opacityValue);
-    passerelle->setOpacity();
     this->close();
 }
 
@@ -294,35 +312,11 @@ void Settings::setLibrary()
 {
     if(!ui->a_pathView->text().isEmpty())
     {
-        QStringList listFilter;
-        listFilter << "*.wav";
-        listFilter << "*.mp3";
-        listFilter << "*.mp4";
-        listFilter << "*.m4a";
-        QDirIterator dirIterator(ui->a_pathView->text(), listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
-
-        //I'm doing that to reconstruct the structure of a .m3u8 file so that it forces UT8
-        QFile fileHandler("neuLibrary.m3u8");
-        if(fileHandler.exists())
-            fileHandler.remove();
-        if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            QMessageBox::critical(this, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
-            return;
-        }
-        //We're going to write in this streamer which will serve as a buffer
-        QTextStream out(&fileHandler);
-        out.setCodec("UTF-8");
-        QList <QUrl> medias;
-        while(dirIterator.hasNext())
-        {
-            out << dirIterator.next().prepend("file:///").append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
-            medias.push_back(QUrl(dirIterator.filePath().prepend("file:///").toUtf8()));
-            ui->a_confirm->setText(tr("Sauvegarde..."));
-            qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-        }
-        fileHandler.close();
-        passerelle->setPlaylistOfThePlayer(medias);
+        ui->a_confirm->setText(tr("Sauvegarde..."));
+        neuPlaylist playlist(this);
+        QList <QUrl> medias = playlist.setLibrary(ui->a_pathView->text());
+        if(!medias.isEmpty())
+            passerelle->setPlaylistOfThePlayer(medias);
         ui->a_confirm->setText ("OK");
         a_settings->setValue("trackPosition", 0);
         //The Qt playlist loader will be fooled and will load the playlist smoothly as if it was saved by save();

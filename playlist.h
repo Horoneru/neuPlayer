@@ -3,9 +3,12 @@
 
 #include <QMainWindow>
 #include <QDebug>
-#include "player.h"
 #include <QModelIndex>
 #include <QListWidgetItem>
+
+#include "neuplaylist.h"
+#include "fadeanimmanager.h"
+#include "player.h"
 namespace Ui {
 class Playlist;
 }
@@ -17,7 +20,7 @@ public slots:
     //Basic interface with the player
     void playItem(QModelIndex itemIndex);
     void quickUpdate(QList <QUrl> *items, int currentItemPlusOne);
-    void updateList(QMediaPlaylist *listeFichiers);
+    void updateList(neuPlaylist *listeFichiers);
     //Own actions of the playlist interacting with the player
     void setFolder();
     void reloadLibrary();
@@ -32,7 +35,7 @@ public slots:
     void scrollToPlaying();
     void findItemVisibilityHandler();
     void prepareContextMenu();
-    void showContextMenu();
+    void showContextMenu() const;
     void deleteItem();
     void addItemToQueue();
     void viewInfo();
@@ -41,7 +44,7 @@ public slots:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
 public:
-    explicit Playlist(QMediaPlaylist *liste, int index, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
+    explicit Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
     explicit Playlist(QWidget *parent = 0);
     void setupConnections();
     void setupActions();
@@ -51,13 +54,13 @@ public:
     //Icon
     void setToPlaying(int index);
     void setToPaused(int index);
-    bool const isPlayingState()
+    bool isPlayingState() const
     {
         return a_isPlaying;
     }
 
     void setHeader(QPixmap *cover, QString title); //Sets the cover art and the title
-    int const queuedIndex() //getter
+    int queuedIndex() //getter
     {
         return ++a_queueIndex;
     }

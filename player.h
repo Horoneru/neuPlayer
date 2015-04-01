@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QtMultimedia/QMediaPlayer>
-#include <QtMultimedia/QMediaPlaylist>
 #include <QtMultimedia/QMediaMetaData>
 #include <QFileDialog>
 #include <QFile>
@@ -18,13 +17,15 @@
 #include <QDesktopServices>
 #include <QFileInfo>
 #include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
 #include <QMessageBox>
 #include <QGraphicsOpacityEffect>
-#include <QThread>
 
 #include "tagviewer.h"
 #include "playlist.h"
 #include "settings.h"
+#include "neuplaylist.h"
+#include "fadeoutwindow.h"
 #include "scrollinginfolabel.h"
 namespace Ui {
 class Player;
@@ -82,11 +83,27 @@ public slots:
     void setupPlugins();
     void loadSkin();
     //Events
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event); //Autorise le drop
     void dropEvent(QDropEvent *event); //Effectue le traitement du drop
+    void delayedClose();
 
-    //Accesseurs, mutateurs et senders pour interfacer avec la playlist
+signals:
+    void EndOfMedia();
+public:
+    Ui::Player *ui;
+    explicit Player(QWidget *parent = 0);
+    void loadPlaylist();
+    void setLightCSS();
+    void setDarkCSS();
+    //Do all the check for which label to show and update it.
+    void updateLabel(QString &text);
+    // Routine to update anim target when necessary
+    void updateAnimTarget();
+    //Handles the change of the speed at which the info displayed changes
+    void updateFadeinSpeed();
+    //Méthodes accesseurs et mutateurs
+
     void setPlaylistOpen(bool foo)
     {
         a_isPlaylistOpen = foo;
@@ -111,12 +128,21 @@ public slots:
     }
 
     void addToQueue(int index, int currentlyPlaying);
+    void setOpacity(qreal opacityFromSettings = 0.0);
+    void setRandomMode(bool mode);
+    void setLoopMode(bool mode);
+    bool getRandomState() const
+    {
+        return a_isRandomMode;
+    }
+    bool getLoopState() const
+    {
+        return a_isLoopPlaylistMode;
+    }
+    void setPlaylistOfThePlayer(const QList <QUrl> &medias, bool play = false);
+    ~Player();
 
-signals:
-    void EndOfMedia();
-public:
-    Ui::Player *ui;
-    explicit Player(QWidget *parent = 0);
+private:
     //Méthodes de constructeur
     void setupObjects();
     void setupMenus();
@@ -124,39 +150,18 @@ public:
 
     void forwardAnim(); //Created as a separate module because we call it at several places
     void previousAnim(); //Created for consistency with forwardAnim();
-    //Convenience function
-    void fadeInLabel();
-    //Do all the check for which label to show and update it.
-    void updateLabel(QString &text);
-    // Routine to update anim target when necessary
-    void updateAnimTarget();
-    //Handles the change of the speed at which the info displayed changes
-    void updateFadeinSpeed();
-    //Méthodes accesseurs et mutateurs
-    void setOpacity(qreal opacityFromSettings = 0.0);
-    void setRandomMode(bool mode);
-    void setLoopMode(bool mode);
-    bool const getRandomState()
-    {
-        return a_isRandomMode;
-    }
-    bool const getLoopState()
-    {
-        return a_isLoopPlaylistMode;
-    }
+    void fadeInLabel(); //Convenience function
 
-    void setPlaylistOfThePlayer(QList <QUrl> &medias, bool play = false);
-    ~Player();
-
-private:
+    //Attributs
     QMediaPlayer *neu; //Dat media player
     Playlist *playlist;
     QSettings *a_settings; //Contient les settings de l'application
     QString a_musicUserPath; // Contient un string de l'url du dossier musical de l'utilisateur
     QList <QUrl> a_files; //Conteneur pour récupérer l'url des fichiers audio séléctionnés par explorer
-    QMediaPlaylist a_mediaPlaylist;
+    neuPlaylist a_mediaPlaylist;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
     bool a_hasToSavePlaylistLater;
+    bool a_wasPrevious;
     bool a_hasToStartupPlaylist;
     bool a_deleteTriggered;
     bool a_recoveredProgress;
@@ -167,6 +172,7 @@ private:
     bool a_isPlaying;
     bool a_isScrollingText;
     bool a_hasToSetLabelType;
+    bool a_canClose;
     int a_lastIndex;
     int a_secondesPasse;
     int a_volumeBeforeMute;
@@ -180,6 +186,7 @@ private:
     ScrollingInfoLabel *a_scrollingLabel;
     QPixmap a_coverArt;
     QPropertyAnimation *a_titleAnimate;
+    QPropertyAnimation *a_fadeOut;
     QGraphicsOpacityEffect *a_infoFadein;
     QPropertyAnimation *a_infoFadeAnim;
     //Regular timer, updated each second

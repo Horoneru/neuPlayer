@@ -3,8 +3,8 @@
 #include <QDebug>
 
 InitialConfig::InitialConfig(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::InitialConfig)
+    QDialog(parent), a_page(1),
+    a_canClose(false), ui(new Ui::InitialConfig)
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -14,9 +14,6 @@ InitialConfig::InitialConfig(QWidget *parent) :
     setupObjects();
 
     setupWidgetsInitialVisibility();
-
-    a_page = 1;
-    a_canClose = false;
 
     setupConnections();
 
@@ -100,7 +97,7 @@ void InitialConfig::customWizard()
 {
     ui->a_configureBtn->setVisible(false);
     ui->a_recommendedBtn->setVisible(false);
-    //On on peut maintenant atteindre la prochaine page
+    //On peut maintenant atteindre la prochaine page
     a_page++;
     advanceWizard();
 }
@@ -315,14 +312,10 @@ void InitialConfig::closeEvent(QCloseEvent *event = 0)
     else
     {
         event->ignore();
-        a_anim0->setTargetObject(this);
-        a_anim0->setPropertyName("windowOpacity");
-        a_anim0->setStartValue(1.0);
-        a_anim0->setEndValue(0);
-        a_anim0->setDuration(480);
-        a_anim0->start();
+        FadeOutWindow fadeOut(this, 450, this);
+        fadeOut.start();
         a_timer = new QTimer(this);
-        a_timer->start(500);
+        a_timer->start(650);
         connect(a_timer, SIGNAL(timeout()), this, SLOT(delayedClose()));
     }
 }
