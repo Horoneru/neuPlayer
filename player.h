@@ -139,7 +139,7 @@ public:
     {
         return a_isLoopPlaylistMode;
     }
-    void setPlaylistOfThePlayer(const QList <QUrl> &medias, bool play = false);
+    void updatePlaylistOfThePlayer(const QList <QUrl> &medias, bool play = false);
     ~Player();
 
 private:

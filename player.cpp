@@ -789,7 +789,6 @@ void Player::update_info()
         else
             ui->a_currenttime->setText(QString::number(a_currentTrackMinutes) + ":" + QString::number(a_currentTrackTime));
     }
-
     if(a_isPlaying) //The update_info is now called even when paused so it's a guard
         a_currentTrackTime++;
 }
@@ -899,7 +898,6 @@ void Player::on_volumeChanged(int pos)
     }
     ui->a_volumebtn->setChecked(false);
     neu->setMuted(false);
-
 }
 
 void Player::setVolumeMuted()
@@ -913,7 +911,7 @@ void Player::setVolumeMuted()
         connect(ui->a_volumeslider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
         if(a_idSkin == 1)
             ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumebtn_onPressed.png"));
-        if(a_idSkin == 0)
+        if(a_idSkin == 0 ||  a_idSkin == 2)
             ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumedarkbtn_onPressed.png"));
     }
     else
@@ -1182,7 +1180,7 @@ void Player::addToQueue(int index, int currentlyPlaying)
 }
 
 //Called when setting a folder from playlist
-void Player::setPlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
+void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
 {
     a_mediaPlaylist.clear();
     unsigned int const mediaNumber = medias.size();

@@ -1,6 +1,6 @@
 #include "neuplaylist.h"
 
-neuPlaylist::neuPlaylist(QWidget *parent)
+neuPlaylist::neuPlaylist(QObject *parent)
 {
     a_listFilter << "*.wav";
     a_listFilter << "*.mp3";
@@ -100,6 +100,22 @@ QList <QUrl> neuPlaylist::setLibrary(const QString &path)
         fileHandler.close();
         return medias;
     }
+}
+
+//Returns the updated list
+QList <QUrl> neuPlaylist::update(const QString &path)
+{
+    QDirIterator dirIterator(path, a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+
+    // Variable qui contiendra tous les fichiers correspondant à notre recherche
+    QList <QUrl> urlList;
+    // Tant qu'on n'est pas arrivé à la fin de l'arborescence...
+    while(dirIterator.hasNext())
+    {
+        urlList.append(QUrl::fromLocalFile(dirIterator.next().toUtf8()));
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    }
+    return urlList;
 }
 
 neuPlaylist::~neuPlaylist(){}

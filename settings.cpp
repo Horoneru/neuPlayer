@@ -316,7 +316,7 @@ void Settings::setLibrary()
         neuPlaylist playlist(this);
         QList <QUrl> medias = playlist.setLibrary(ui->a_pathView->text());
         if(!medias.isEmpty())
-            passerelle->setPlaylistOfThePlayer(medias);
+            passerelle->updatePlaylistOfThePlayer(medias);
         ui->a_confirm->setText ("OK");
         a_settings->setValue("trackPosition", 0);
         //The Qt playlist loader will be fooled and will load the playlist smoothly as if it was saved by save();

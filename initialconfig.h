@@ -50,21 +50,8 @@ private:
     Ui::InitialConfig *ui;
     QSettings *a_settings;
     Player *neuPlayer;
-    //All of the opacity effects. They need to be setup one by one...
-    QGraphicsOpacityEffect *a_effectEnter0;
-    QGraphicsOpacityEffect *a_effectEnter1;
-    QGraphicsOpacityEffect *a_effectEnterEnter2;
-    QGraphicsOpacityEffect *a_effectEnter3;
-    QGraphicsOpacityEffect *a_effectShowButtonNext;
-    QGraphicsOpacityEffect *a_effectLeaveButton0;
-    QGraphicsOpacityEffect *a_effectLeavebutton1;
-    QGraphicsOpacityEffect *a_effectNewDescription;
-    QParallelAnimationGroup *a_enterAnimations;
-    QParallelAnimationGroup *a_leaveButtonsAnimations;
-    QPropertyAnimation *a_anim0;
-    QPropertyAnimation *a_anim1;
-    QPropertyAnimation *a_anim2;
-    QPropertyAnimation *a_anim3;
+    //We only need this manager now !
+    fadeAnimManager *animManager;
 
     //Others
     bool a_canClose; //To setup an anim before closing

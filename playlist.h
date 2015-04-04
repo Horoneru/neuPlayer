@@ -13,6 +13,7 @@ namespace Ui {
 class Playlist;
 }
 class Player;
+class neuPlaylist;
 class Playlist : public QMainWindow
 {
     Q_OBJECT
@@ -70,6 +71,7 @@ public:
 private:
     Ui::Playlist *ui;
     Player *a_player;
+    neuPlaylist *a_playlist;
     bool a_isPlaying;
     bool a_isReload;
     QPixmap *a_defaultCover;

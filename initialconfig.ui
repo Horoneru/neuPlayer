@@ -147,7 +147,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color :rgb(124, 194, 255);</string>
+    <string notr="true">color : rgb(20, 114, 255)</string>
    </property>
    <property name="text">
     <string>Lancer l'application ! </string>

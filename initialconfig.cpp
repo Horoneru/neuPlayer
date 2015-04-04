@@ -22,19 +22,7 @@ InitialConfig::InitialConfig(QWidget *parent) :
 
 void InitialConfig::setupObjects()
 {
-    a_effectEnter0 = new QGraphicsOpacityEffect(this);
-    a_effectEnter1 = new QGraphicsOpacityEffect(this);
-    a_effectEnter3 = new QGraphicsOpacityEffect(this);
-    a_effectNewDescription = new QGraphicsOpacityEffect(this);
-    a_anim0 = new QPropertyAnimation(this);
-    a_anim0->setPropertyName("opacity");
-    a_anim1 = new QPropertyAnimation(this);
-    a_anim1->setPropertyName("opacity");
-    a_anim2 = new QPropertyAnimation(this);
-    a_anim2->setPropertyName("opacity");
-    a_anim3 = new QPropertyAnimation(this);
-    a_anim3->setPropertyName("opacity");
-    a_enterAnimations = new QParallelAnimationGroup(this);
+    animManager = new fadeAnimManager(this);
 }
 
 
@@ -60,37 +48,13 @@ void InitialConfig::setupConnections()
 
 void InitialConfig::entranceAnimations()
 {
-    ui->a_welcome->setGraphicsEffect(a_effectEnter0);
-    ui->a_description->setGraphicsEffect(a_effectNewDescription);
-    ui->a_recommendedBtn->setGraphicsEffect(a_effectEnter1);
-    ui->a_configureBtn->setGraphicsEffect(a_effectEnter3);
-
-    //Setup all anims
-    a_anim0->setTargetObject(a_effectNewDescription);
-    a_anim0->setDuration(300);
-    a_anim0->setStartValue(0);
-    a_anim0->setEndValue(1.0);
-
-    a_anim1->setTargetObject(a_effectEnter0);
-    a_anim1->setDuration(300);
-    a_anim1->setStartValue(0);
-    a_anim1->setEndValue(1.0);
-
-    a_anim2->setTargetObject(a_effectEnter1);
-    a_anim2->setDuration(300);
-    a_anim2->setStartValue(0);
-    a_anim2->setEndValue(1.0);
-
-    a_anim3->setTargetObject(a_effectEnter3);
-    a_anim3->setDuration(300);
-    a_anim3->setStartValue(0);
-    a_anim3->setEndValue(1.0);
-
-    a_enterAnimations->addAnimation(a_anim0);
-    a_enterAnimations->addAnimation(a_anim1);
-    a_enterAnimations->addAnimation(a_anim2);
-    a_enterAnimations->addAnimation(a_anim3);
-    a_enterAnimations->start(); //el maestro
+    /* By default this class will make make the target fade in for 300 ms and add it to a parallel animation group */
+    animManager->setDefaultDuration(400); //The animation will be more visible that way
+    animManager->addTarget(ui->a_welcome);
+    animManager->addTarget(ui->a_description);
+    animManager->addTarget(ui->a_recommendedBtn);
+    animManager->addTarget(ui->a_configureBtn);
+    animManager->startGroup(fadeAnimManager::Parallel, false);
 }
 
 void InitialConfig::customWizard()
@@ -142,11 +106,14 @@ void InitialConfig::advanceWizard()
     {
         ui->a_description->setText(tr("Playlist"));
         ui->a_playlistAtStartupCheck->setVisible(true);
-        ui->a_playlistAtStartupCheck->setGraphicsEffect(a_effectEnter0);
         ui->a_nextBtn->setVisible(true);
-        ui->a_nextBtn->setGraphicsEffect(a_effectEnter1);
-        a_enterAnimations->removeAnimation(a_anim3);
-        a_enterAnimations->start(); //Will start anim0, 1 and 2 (description, next, option)
+
+        animManager->setDefaultDuration(300);
+        animManager->clearGroup(fadeAnimManager::Parallel);
+        animManager->addTarget(ui->a_description);
+        animManager->addTarget(ui->a_playlistAtStartupCheck);
+        animManager->addTarget(ui->a_nextBtn);
+        animManager->startGroup(fadeAnimManager::Parallel, false);
     }
     if(a_page == 3)
     {
@@ -158,13 +125,14 @@ void InitialConfig::advanceWizard()
         ui->a_opacityLabel->setVisible(true);
         ui->a_opacitySlide->setVisible(true);
         updateSlideValue(100);
-        ui->a_label->setGraphicsEffect(a_effectEnter3);
-        ui->a_opacityLabel->setGraphicsEffect(a_effectEnter1);
-        a_effectEnterEnter2 = new QGraphicsOpacityEffect(this);
-        ui->a_opacitySlide->setGraphicsEffect(a_effectEnterEnter2);
-        a_anim3->setTargetObject(a_effectEnterEnter2);
-        a_enterAnimations->addAnimation(a_anim3);
-        a_enterAnimations->start();
+
+        animManager->clearGroup(fadeAnimManager::Parallel);
+        animManager->addTarget(ui->a_description);
+        animManager->addTarget(ui->a_label);
+        animManager->addTarget(ui->a_opacityLabel);
+        animManager->addTarget(ui->a_opacitySlide);
+        animManager->startGroup(fadeAnimManager::Parallel, false);
+
         connect(ui->a_opacitySlide, SIGNAL(valueChanged(int)), this, SLOT(updateSlideValue(int)));
     }
 
@@ -177,15 +145,20 @@ void InitialConfig::advanceWizard()
         ui->a_libraryAtStartupCheck_2->setVisible(true);
         ui->a_playlistAtStartupCheck->setVisible(false);
         ui->a_label->setVisible(false);
-        ui->a_libraryAtStartupCheck->setGraphicsEffect(a_effectEnterEnter2);
         ui->a_description->setText(tr("Démarrage avec librairie"));
-        a_enterAnimations->start();
+
+        animManager->clearGroup(fadeAnimManager::Parallel);
+        animManager->addTarget(ui->a_libraryAtStartupCheck);
+        animManager->addTarget(ui->a_libraryAtStartupCheck_2);
+        animManager->addTarget(ui->a_description);
+        animManager->startGroup(fadeAnimManager::Parallel, false);
+
         connect(ui->a_libraryAtStartupCheck, SIGNAL(clicked(bool)), this, SLOT(setLibrary(bool)));
         connect(ui->a_libraryAtStartupCheck_2, SIGNAL(clicked(bool)), this, SLOT(setDefault(bool)));
     }
     if(a_page == 5)
     {
-        this->setCursor(Qt::BusyCursor);
+        this->setCursor(Qt::BusyCursor); //Showing to the user processing is being done
         a_settings->setValue("Additional_Features/libraryAtStartup", ui->a_libraryAtStartupCheck->isChecked());
         a_settings->setValue("Additional_Features/refreshWhenNeeded", ui->a_libraryAtStartupCheck->isChecked());
         a_settings->setValue("saveTrackIndex", true);
@@ -193,6 +166,7 @@ void InitialConfig::advanceWizard()
         a_settings->setValue("libModified", info.lastModified().toMSecsSinceEpoch());
         ui->a_libraryAtStartupCheck->setVisible(false);
         ui->a_libraryAtStartupCheck_2->setVisible(false);
+
         neuPlayer = new Player(); //The player will update itself, and write that the config has been done after that
         neuPlayer->hide(); //The update will force-show, but I don't want to show the player to the user yet ;)
         finalPage();
@@ -245,37 +219,16 @@ void InitialConfig::finalPage()
     ui->a_welcome->setText(tr("Terminé !"));
     ui->a_label->setVisible(true);
     ui->a_label->setText(tr("Si le lecteur n'affiche pas vos musiques\nconfigurez-le manuellement dans les paramètres"));
-    ui->a_label->setGraphicsEffect(a_effectEnter3);
-    ui->a_description->setGraphicsEffect(a_effectNewDescription);
-    ui->a_welcome->setGraphicsEffect(a_effectEnter0);
-    ui->a_finishButton->setGraphicsEffect(a_effectEnter1);
-    a_anim0->setTargetObject(a_effectNewDescription);
-    a_anim0->setDuration(300);
-    a_anim0->setStartValue(0);
-    a_anim0->setEndValue(1.0);
-
-    a_anim1->setTargetObject(a_effectEnter0);
-    a_anim1->setDuration(300);
-    a_anim1->setStartValue(0);
-    a_anim1->setEndValue(1.0);
-
     ui->a_finishButton->setVisible(true);
-    ui->a_finishButton->setFocus();
-    a_anim2->setTargetObject(a_effectEnter1);
-    a_anim2->setDuration(300);
-    a_anim2->setStartValue(0);
-    a_anim2->setEndValue(1.0);
+    ui->a_finishButton->setFocus(); //So the user can hit enter and finish right away
 
-    a_anim3->setTargetObject(a_effectEnter3);
-    a_anim3->setDuration(300);
-    a_anim3->setStartValue(0);
-    a_anim3->setEndValue(1.0);
+    animManager->clearGroup(fadeAnimManager::Parallel);
+    animManager->addTarget(ui->a_welcome);
+    animManager->addTarget(ui->a_label);
+    animManager->addTarget(ui->a_description);
+    animManager->addTarget(ui->a_finishButton);
+    animManager->startGroup(fadeAnimManager::Parallel);
 
-    a_enterAnimations->addAnimation(a_anim0);
-    a_enterAnimations->addAnimation(a_anim1);
-    a_enterAnimations->addAnimation(a_anim2);
-    a_enterAnimations->addAnimation(a_anim3);
-    a_enterAnimations->start();
     this->setCursor(Qt::ArrowCursor);
 }
 

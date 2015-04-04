@@ -22,6 +22,8 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
     a_defaultCover = new QPixmap(":/Ressources/noCoverHeader.png");
     //On reçoit le player, il faut maintenant le mettre en tant qu'attribut pour l'utiliser partout
     a_player = player;
+    //De même, on met la playlist en tant qu'attribut pour l'utiliser plus tard.
+    a_playlist = liste;
     a_previousIndex = 99999; //Pretty sure nobody would reach that value
     a_queueIndex = 0; //used to determine where to place the song you want to queue
 
@@ -185,8 +187,12 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title)
         ui->a_cover->setPixmap(*a_defaultCover);
     ui->a_titleHeader->setText(title);
     ui->a_titleHeader->setToolTip(title);
-    fadeAnimManager animManager(ui->a_cover, 700, this, fadeAnimManager::FadeIn);
-    animManager.start();
+
+    fadeAnimManager animManager(nullptr);
+    animManager.addTarget(ui->a_cover, fadeAnimManager::FadeIn, 700, fadeAnimManager::Parallel);
+    animManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 1000, fadeAnimManager::Parallel);
+    animManager.deleteTarget(ui->a_titleHeader, fadeAnimManager::Parallel);
+    animManager.startGroup(fadeAnimManager::Parallel);
 }
 
         /* Playlist functionality */
@@ -196,10 +202,7 @@ void Playlist::setFolder()
     QString selectDir;
     // On sélectionne le répertoire à partir duquel on va rechercher les fichiers que le player peut lire
     if(!a_isReload)
-    {
         selectDir = (QFileDialog::getExistingDirectory (this,tr("Ouvrir un répertoire"), "", QFileDialog::DontResolveSymlinks));
-    }
-
     else if(!a_settings->value("mediapath").toString().isEmpty())
         selectDir =  a_settings->value("mediapath", "").toString();
 
@@ -210,26 +213,9 @@ void Playlist::setFolder()
             a_player->setIndexOfThePlayer(0, false);
             ui->a_playlistWidget->setCurrentRow(0);
         }
-        // On remplit une QStringList avec chacun des filtres
-        QStringList listFilter;
-        listFilter << "*.wav";
-        listFilter << "*.mp3";
-        listFilter << "*.mp4";
-        listFilter << "*.m4a";
-
-        // On déclare un QDirIterator dans lequel on indique que l'on souhaite parcourir un répertoire et ses sous-répertoires.
-        QDirIterator dirIterator(selectDir, listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
-
-        // Variable qui contiendra tous les fichiers correspondant à notre recherche
-        QList <QUrl> urlList;
-        // Tant qu'on n'est pas arrivé à la fin de l'arborescence...
-        while(dirIterator.hasNext())
-        {
-            urlList.append(QUrl::fromLocalFile(dirIterator.next().toUtf8()));
-            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-        }
+        QList <QUrl> urlList = a_playlist->update(selectDir);
         if(!urlList.empty()) //Don't set anything if there wasn't any content
-            a_player->setPlaylistOfThePlayer(urlList, true);
+            a_player->updatePlaylistOfThePlayer(urlList, true);
      }
 
 }
@@ -301,7 +287,7 @@ void Playlist::prepareContextMenu()
         a_playlistContextMenu->actions().at(1)->setVisible(false);
         a_playlistContextMenu->actions().at(0)->setVisible(false);
     }
-    if(ui->a_playlistWidget->currentItem()->textAlignment() == Qt::AlignCenter)
+    if(ui->a_playlistWidget->currentItem()->textAlignment() == Qt::AlignCenter) //if no music...
     {
         a_playlistContextMenu->actions().at(2)->setVisible(false);
         a_playlistContextMenu->actions().at(1)->setVisible(false);
