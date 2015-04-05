@@ -190,8 +190,7 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title)
 
     fadeAnimManager animManager(nullptr);
     animManager.addTarget(ui->a_cover, fadeAnimManager::FadeIn, 700, fadeAnimManager::Parallel);
-    animManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 1000, fadeAnimManager::Parallel);
-    animManager.deleteTarget(ui->a_titleHeader, fadeAnimManager::Parallel);
+    animManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 350, fadeAnimManager::Parallel);
     animManager.startGroup(fadeAnimManager::Parallel);
 }
 
