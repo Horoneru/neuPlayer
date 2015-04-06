@@ -173,6 +173,7 @@ private:
     bool a_isScrollingText;
     bool a_hasToSetLabelType;
     bool a_canClose;
+    bool a_isStarting;
     int a_lastIndex;
     int a_secondesPasse;
     int a_volumeBeforeMute;

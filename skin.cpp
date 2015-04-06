@@ -45,7 +45,7 @@ void Skin::initSkinPalettes()
 
     a_lightPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     a_lightPalette.setColor(QPalette::HighlightedText, Qt::white);
-    a_lightPaletteCSS = "QToolTip { border: 1px solid #53a0ed; }";
+    a_lightPaletteCSS = "QToolTip { border: 1px solid #53a0ed; background-color: #f0f0f0}";
 }
 
 void Skin::load()

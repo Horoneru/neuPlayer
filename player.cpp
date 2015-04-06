@@ -6,7 +6,7 @@ Player::Player(QWidget *parent) :
     ui(new Ui::Player)
 {
     /*!
-                                            2015 Horoneru                                   1.2.2 stable 050415 active
+                                            2015 Horoneru                                   1.2.3 stable 060415 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (started)
@@ -16,7 +16,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.2.2");
+    QApplication::setApplicationVersion("1.2.3");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -50,6 +50,9 @@ Player::Player(QWidget *parent) :
     //Bool to control if we have to animate the window when closing
     a_canClose = true;
 
+    //Bool that is used to know if we're starting up
+    a_isStarting = true;
+
     ui->a_pausebtn->setVisible(false);
 
     setPlaybackRate();
@@ -75,6 +78,8 @@ Player::Player(QWidget *parent) :
         a_mediaPlaylist.setPlaybackMode(neuPlaylist::Sequential);
 
     setOpacity();
+
+    a_isStarting = false;    //Done !
 }
 
     /*///////Plugins & Setup Section///////*/
@@ -289,7 +294,8 @@ void Player::loadSkin()
     a_idSkin = a_settings->value("skin", 1).toInt();
     if(a_idSkin == 1) //The dark skin is the default, so we don't have to change the initial stylesheet
     {
-        setDarkCSS();
+        if(!a_isStarting)
+            setDarkCSS(); //Because the stylesheet is already set as default
         if(!QFile(a_settings->value("customimage").toString()).exists()) //We won't charge something which doesn't exists
             ui->a_image->setPixmap(QPixmap(":/Ressources/neudarkbg.png"));
         else
@@ -320,8 +326,8 @@ void Player::loadSkin()
 
 void Player::setLightCSS()
 {
-    ui->a_playbtn->setStyleSheet("background-image: url(:/Ressources/Playdarkbtn.png);}"
-                                 ":hover{background-image: url(:/Ressources/Playdarkbtn_onHover.png);}");
+    ui->a_playbtn->setStyleSheet("QPushButton#a_playbtn{background-image: url(:/Ressources/Playdarkbtn.png);}"
+                                 "QPushButton#a_playbtn:hover{background-image: url(:/Ressources/Playdarkbtn_onHover.png);}");
     ui->a_pausebtn->setStyleSheet("QPushButton#a_pausebtn{background-image: url(:/Ressources/Pausedarkbtn.png);}"
                                   "QPushButton#a_pausebtn:hover{background-image: url(:/Ressources/Pausedarkbtn_onHover.png);}");
     ui->a_menubtn->setStyleSheet("QPushButton#a_menubtn{background-image: url(:/Ressources/roundedmenudarkbtn.png);}"
@@ -338,8 +344,8 @@ void Player::setLightCSS()
 
 void Player::setDarkCSS()
 {
-    ui->a_playbtn->setStyleSheet("background-image: url(:/Ressources/Playbtn.png);}"
-                                 ":hover{background-image: url(:/Ressources/Playbtn_onHover.png);}");
+    ui->a_playbtn->setStyleSheet("QPushButton#a_playbtn{background-image: url(:/Ressources/Playbtn.png);}"
+                                 "QPushButton#a_playbtn:hover{background-image: url(:/Ressources/Playbtn_onHover.png);}");
     ui->a_pausebtn->setStyleSheet("QPushButton#a_pausebtn{background-image: url(:/Ressources/Pausebtn.png);}"
                                   "QPushButton#a_pausebtn:hover{background-image: url(:/Ressources/Pausebtn_onHover.png);}");
     ui->a_menubtn->setStyleSheet("QPushButton#a_menubtn{background-image: url(:/Ressources/roundedmenubtn.png);}"
