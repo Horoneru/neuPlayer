@@ -5,7 +5,7 @@ Skin::Skin(QObject *parent) :
 {
     initSkinPalettes();
 }
-Skin::Skin(const int skinId, QObject *parent) :
+Skin::Skin(int skinId, QObject *parent) :
     QObject(parent), a_idSkin(skinId)
 {
     initSkinPalettes();

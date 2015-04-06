@@ -11,10 +11,10 @@ class Skin : public QObject
     Q_OBJECT
 public:
     explicit Skin(QObject *parent = 0);
-    Skin (const int skinId, QObject *parent);
+    Skin (int skinId, QObject *parent);
     ~Skin();
 
-    void setSkin(const int id)
+    void setSkin(int id)
     {
         a_idSkin = id;
     }
@@ -29,7 +29,6 @@ private:
     int a_idSkin;
     QPalette a_darkPalette;
     QString a_darkPaletteCSS;
-
     QPalette a_lightPalette;
     QString a_lightPaletteCSS;
 

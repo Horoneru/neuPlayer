@@ -22,6 +22,7 @@ class fadeAnimManager : public QObject
 public:
     enum FadeMode { FadeOut, FadeIn };
     enum AnimationSequenceType { Parallel, Sequential };
+    //Constructors
     explicit fadeAnimManager(QObject *parent = 0);
     fadeAnimManager(QWidget *target, FadeMode mode , int msecs, AnimationSequenceType sequence, QObject *parent);
     fadeAnimManager(QWidget *target, int msecs, QObject *parent);
@@ -65,8 +66,8 @@ public:
 
     void clearGroup(AnimationSequenceType whichGroup);
 
-    void start();
-    void startGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true);
+    void start(); //Start one animation with the arguments specified on constructor
+    void startGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Starts the animations in the group started
     void fadeOutGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Sets the entire group to FadeOut
     void fadeInGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Sets the entire group to FadeIn
 

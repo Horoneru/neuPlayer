@@ -6,7 +6,6 @@ neuPlaylist::neuPlaylist(QObject *parent)
     a_listFilter << "*.mp3";
     a_listFilter << "*.mp4";
     a_listFilter << "*.m4a";
-
 }
 
 void neuPlaylist::save(const QString &toFileName) //Default

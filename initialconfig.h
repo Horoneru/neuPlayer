@@ -15,7 +15,6 @@
 namespace Ui {
 class InitialConfig;
 }
-
 class Player;
 class InitialConfig : public QDialog
 {
@@ -36,6 +35,7 @@ private slots:
 public:
     explicit InitialConfig(QWidget *parent = 0);
 private:
+    ~InitialConfig();
     void setupObjects();
     void setupWidgetsInitialVisibility();
     void setupConnections();
@@ -43,9 +43,6 @@ private:
     void entranceAnimations();
     void finalPage();
     void presetConfig();
-
-    ~InitialConfig();
-
     //Attributes
     Ui::InitialConfig *ui;
     QSettings *a_settings;
@@ -59,9 +56,6 @@ private:
     QTimer *a_timer;
     int a_page; //"Where are we ?"
     double a_slideValue;
-
-
-
 };
 
 #endif // INITIALCONFIG_H

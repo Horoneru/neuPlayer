@@ -19,7 +19,7 @@ public:
     void save(const QString &toFileName = "neuLibrary.m3u8");
     void save(const QString &toFileName, const QUrl &pathSaved);
     void saveFromPlaylist(const QString &playlistName = "neuLibrary.m3u8");
-    QList <QUrl> setLibrary(const QString &path); //Used by settings.cpp
+    QList<QUrl> setLibrary(const QString &path); //Used by settings.cpp
     QList <QUrl> update(const QString &path); //Used by playlist to update
     ~neuPlaylist();
 

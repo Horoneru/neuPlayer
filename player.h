@@ -104,9 +104,9 @@ public:
     void updateFadeinSpeed();
     //Méthodes accesseurs et mutateurs
 
-    void setPlaylistOpen(bool foo)
+    void setPlaylistOpen(bool open)
     {
-        a_isPlaylistOpen = foo;
+        a_isPlaylistOpen = open;
     }
 
     void setIndexOfThePlayer(int index, bool play);
