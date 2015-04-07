@@ -664,7 +664,7 @@ void Player::setMeta()
     else
         forwardAnim();
 
-    setTypeTimer.start(300); //Set the type 200 ms later
+    setTypeTimer.start(300); //Set the type 300 ms later
 
     a_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
     if(a_coverArt.isNull())
@@ -722,7 +722,7 @@ void Player::updateFadeinSpeed()
     /*                                      How it works
      * A case is the number of seconds an info type will be displayed till we switch over to the next info
      * As they're dependent from the previous one, we always add the seconds of the case before
-     * ex : if each info is less/equal to 15 chars, it'll be case 3,6,9 so that it switches each 3 seconds
+     * ex : if each info is less/equal to 17 chars, it'll be case 3,6,9 so that it switches each 3 seconds
      * */
     if(a_titre.size() <= 17) //17 so it won't go to the else and generate 3 when the default would be 4 (it's an int, it floors)
         a_titleCase = 4;

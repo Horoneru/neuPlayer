@@ -109,7 +109,7 @@ void InitialConfig::advanceWizard()
         ui->a_nextBtn->setVisible(true);
 
         animManager->setDefaultDuration(300);
-        animManager->clearGroup(fadeAnimManager::Parallel);
+//        animManager->clearGroup(fadeAnimManager::Parallel);
         animManager->addTarget(ui->a_description);
         animManager->addTarget(ui->a_playlistAtStartupCheck);
         animManager->addTarget(ui->a_nextBtn);
@@ -227,7 +227,7 @@ void InitialConfig::finalPage()
     animManager->addTarget(ui->a_label);
     animManager->addTarget(ui->a_description);
     animManager->addTarget(ui->a_finishButton);
-    animManager->startGroup(fadeAnimManager::Parallel);
+    animManager->startGroup(fadeAnimManager::Parallel); //Will delete the animation. We're done with it !
 
     this->setCursor(Qt::ArrowCursor);
 }
