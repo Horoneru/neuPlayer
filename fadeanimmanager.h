@@ -29,6 +29,7 @@ public:
     fadeAnimManager(QWidget *target, int msecs, QObject *parent, FadeMode mode = FadeMode::FadeIn);
     fadeAnimManager(QWidget *target, QObject *parent);
     fadeAnimManager(FadeMode mode, QObject *parent);
+    ~fadeAnimManager();
 
     inline const bool isFinished() const
     {
