@@ -86,6 +86,7 @@ public slots:
     void closeEvent(QCloseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event); //Autorise le drop
     void dropEvent(QDropEvent *event); //Effectue le traitement du drop
+    void resizeEvent(QResizeEvent *event);
     void delayedClose();
 
 signals:
@@ -121,7 +122,7 @@ public:
         a_settings->setValue("trackPosition", neu->position());
         int track = a_mediaPlaylist.currentIndex() - 1;
         a_mediaPlaylist.removeMedia(index);
-        if(index < track)
+        if(index <= track)
             a_mediaPlaylist.setCurrentIndex(track);
         if(a_hasToSavePlaylistLater != true)
             a_hasToSavePlaylistLater = true;
@@ -139,9 +140,27 @@ public:
     {
         return a_isLoopPlaylistMode;
     }
+    bool canChangeMusic() const
+    {
+        return a_canChangeMusic;
+    }
+    bool deleteTriggered() const
+    {
+        return a_deleteTriggered;
+    }
     void updatePlaylistOfThePlayer(const QList <QUrl> &medias, bool play = false);
     ~Player();
 
+
+private slots:
+    inline void canChangeMusicNow()
+    {
+        a_canChangeMusic = true;
+    }
+    inline void canShuffleNow()
+    {
+        a_canDoShuffleAgain = true;
+    }
 private:
     //Méthodes de constructeur
     void setupObjects();
@@ -173,6 +192,8 @@ private:
     bool a_isScrollingText;
     bool a_hasToSetLabelType;
     bool a_canClose;
+    bool a_canChangeMusic;
+    bool a_canDoShuffleAgain;
     bool a_isStarting;
     int a_lastIndex;
     int a_secondesPasse;
@@ -194,6 +215,8 @@ private:
     QTimer Timer;
     //The timer which sets the type when it timeouts
     QTimer setTypeTimer;
+    QTimer grantChangeTimer;
+    QTimer grantShuffleAgainTimer;
     /*          Permet l'utilisation de raccourcis clavier
      * qui interagissent directement avec le player sans souris */
     QAction *a_advance;

@@ -1,22 +1,25 @@
 #include "player.h"
 #include "ui_player.h"
 #include <QDebug>
+#include <QBitmap>
+#include <QPainter>
+#include <QRegion>
 Player::Player(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Player)
 {
     /*!
-                                            2015 Horoneru                                   1.2.3 stable 060415 active
+                                            2015 Horoneru                                   1.2.5 stable 110415 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (started)
       > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
-      - Re-design et occuper l'espace alloué par le borderless -> S'occuper des boutons
+      - Re-design et occuper l'espace alloué par le borderless -> buttons done, solution found, need to see how to implement later on
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.2.3");
+    QApplication::setApplicationVersion("1.2.5");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -50,8 +53,17 @@ Player::Player(QWidget *parent) :
     //Bool to control if we have to animate the window when closing
     a_canClose = true;
 
+    //Bool to avoid the user to go too fast.
+    a_canChangeMusic = true;
+
+    //Bool to avoid the user going too fast again when shuffling the playlist
+    a_canDoShuffleAgain = true;
+
     //Bool that is used to know if we're starting up
     a_isStarting = true;
+
+    //Bool to indicate the playlist needs to be refreshed on the disk
+    a_hasToSavePlaylistLater = false;
 
     ui->a_pausebtn->setVisible(false);
 
@@ -153,6 +165,36 @@ void Player::setupObjects()
     Timer.setInterval(1000);
     //Timer that delays the check of which label type to use
     setTypeTimer.setSingleShot(true);
+    //Timer that delays When the user can change music again (avoid reading null data when going too fast)
+    grantChangeTimer.setSingleShot(true);
+    //Timer that delays the time when the user can shuffle again
+    grantShuffleAgainTimer.setSingleShot(true);
+
+    /* Could be used later on for frameless window capacities
+    QRegion region;
+
+    // middle and borders
+    region += this->rect().adjusted(6, 0, -6, 0);
+    region += this->rect().adjusted(0, 6, 0, -6);
+
+    // top left
+    QRect corner(this->rect().topLeft(), QSize(6*2, 6*2));
+    region += QRegion(corner, QRegion::Ellipse);
+
+    // top right
+    corner.moveTopRight(this->rect().topRight());
+    region += QRegion(corner, QRegion::Ellipse);
+
+    // bottom left
+    corner.moveBottomLeft(this->rect().bottomLeft());
+    region += QRegion(corner, QRegion::Ellipse);
+
+    // bottom right
+    corner.moveBottomRight(this->rect().bottomRight());
+    region += QRegion(corner, QRegion::Ellipse);
+    setMask(region);
+    */
+
 }
 
 
@@ -216,6 +258,8 @@ void Player::setupConnections()
     connect(neu, SIGNAL(metaDataChanged()), this, SLOT(setMeta()));
     connect(&Timer, SIGNAL(timeout()), this, SLOT(update_info()));
     connect(&setTypeTimer, SIGNAL(timeout()), this, SLOT(setType()));
+    connect(&grantChangeTimer, SIGNAL(timeout()), this, SLOT(canChangeMusicNow()));
+    connect(&grantShuffleAgainTimer, SIGNAL(timeout()), this, SLOT(canShuffleNow()));
     connect(this, SIGNAL(EndOfMedia()), this, SLOT(endOfMediaGuard()));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
     connect(a_openMedia, SIGNAL(triggered()), this, SLOT(openMedia()));
@@ -259,7 +303,7 @@ void Player::setupPlugins()
 
 void Player::loadPlaylist()
 {
-    if(a_settings->value("usingFavorites").toBool() == true) //Are we on the favorites playlist ?
+    if(a_settings->value("usingFavorites", false).toBool() == true) //Are we on the favorites playlist ?
         a_mediaPlaylist.load(QUrl::fromLocalFile("favorites.m3u8"), "m3u8");
     else
         a_mediaPlaylist.load(QUrl::fromLocalFile("neuLibrary.m3u8"), "m3u8"); //Defaults to normal library
@@ -453,6 +497,8 @@ void Player::pauseMedia()
 
 void Player::forwardMedia()
 {
+    if(!a_canChangeMusic)
+        return;
     a_lastIndex = a_mediaPlaylist.currentIndex();
     a_mediaPlaylist.next();
     if(a_mediaPlaylist.currentMedia().isNull())
@@ -486,6 +532,8 @@ void Player::forwardAnim()
 
 void Player::previousMedia()
 {
+    if(!a_canChangeMusic)
+        return;
     a_lastIndex = a_mediaPlaylist.currentIndex();
     a_mediaPlaylist.previous();
     if(a_mediaPlaylist.currentMedia().isNull())
@@ -518,14 +566,11 @@ QMediaPlayer::Error Player::errorHandling(QMediaPlayer::Error error)
         break;
     case QMediaPlayer::ResourceError:
         ui->a_label->setText(tr("erreur : Unresolved Resource"));
-        a_mediaPlaylist.previous();
-        current = a_mediaPlaylist.currentIndex();
+        current = a_mediaPlaylist.previousIndex(1);
+        deleteMedia(current);
         qDebug() << a_mediaPlaylist.media(current).canonicalUrl();
-        a_mediaPlaylist.removeMedia(current);
         if(a_isPlaylistOpen)
             playlist->updateList(&a_mediaPlaylist);
-        a_mediaPlaylist.setCurrentIndex(current - 2);
-        a_hasToSavePlaylistLater = true; //Prevent error from coming back.
         break;
     case QMediaPlayer::FormatError :
         ui->a_label->setText(tr("erreur : Format non supporté"));
@@ -659,12 +704,17 @@ void Player::setMeta()
     a_hasToSetLabelType = true;
     ui->a_label->setText(a_titre);
     ui->a_label->setToolTip(a_titre);
-    if(a_wasPrevious)
-        previousAnim();
-    else
-        forwardAnim();
+    if(!a_deleteTriggered) //To avoid animation, because the user wouldn't expect it
+    {
+        if(a_wasPrevious)
+            previousAnim();
+        else
+            forwardAnim();
+    }
 
+    a_canChangeMusic = false;
     setTypeTimer.start(300); //Set the type 300 ms later
+    grantChangeTimer.start(200);
 
     a_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
     if(a_coverArt.isNull())
@@ -941,6 +991,8 @@ void Player::volumeDown()
 
 void Player::setShuffle()
 {
+    if(!a_canDoShuffleAgain)
+        return;
     if(neu->media().isNull()) //On évite de planter en essayant de play quelque chose qui n'existe pas
     {
         openMedia(); //On demande à l'utilisateur de séléctionner quelque chose
@@ -965,6 +1017,8 @@ void Player::setShuffle()
             a_hasToSavePlaylistLater = true; // Will update playlist to load the correct one when booting up later on
         if(a_isPlaylistOpen)
             playlist->updateList(&a_mediaPlaylist);
+        a_canDoShuffleAgain = false;
+        grantShuffleAgainTimer.start(500);
     }
 }
 
@@ -1054,6 +1108,9 @@ void Player::showTagViewer()
 }
 
     /*///////Events Section///////*/
+void Player::resizeEvent(QResizeEvent *event)
+{
+}
 
 void Player::dragEnterEvent(QDragEnterEvent *event)
 {

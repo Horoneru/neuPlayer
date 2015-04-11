@@ -5,16 +5,13 @@
 
 Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Playlist)
+    ui(new Ui::Playlist), a_isReload (false) //That bool can result in unexpected behaviour if it's not initialized
 {
     ui->setupUi(this);
     ui->a_searchLine->setHidden(true);
     /*!
       TODO :
-      Had some ideas. Need to implement them now !
-      >à faire après release:
-       #fignoler le find pour pas qu'il crash << peut-être jamais fait... à voir.
-       #Ajouter un addtoFav au contextmenu et implanter des onglets différents playlist/favoris
+       #Ajouter un addtoFav au contextmenu et implanter des onglets différents playlist/favoris << Soon after some internal optimizations overall
     */
     this->setAcceptDrops(true);
     ui->a_playlistWidget->setDragEnabled(false); //I can't handle it well as of now :/
@@ -26,7 +23,6 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
     a_playlist = liste;
     a_previousIndex = 99999; //Pretty sure nobody would reach that value
     a_queueIndex = 0; //used to determine where to place the song you want to queue
-
     setupActions();
 
     //Setup list
@@ -174,7 +170,7 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title)
 {
     if(a_previousIndex != 99999) //Default value of a_previousIndex
     {
-        ui->a_playlistWidget->item(a_previousIndex)->setIcon(QIcon(":/Ressources/blank.png)"));
+        ui->a_playlistWidget->item(a_previousIndex)->setIcon(QIcon());
     }
     a_queueIndex = 0;
     a_previousIndex = index;
@@ -187,11 +183,13 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title)
         ui->a_cover->setPixmap(*a_defaultCover);
     ui->a_titleHeader->setText(title);
     ui->a_titleHeader->setToolTip(title);
-
-    fadeAnimManager animManager(nullptr);
-    animManager.addTarget(ui->a_cover, fadeAnimManager::FadeIn, 700, fadeAnimManager::Parallel);
-    animManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 350, fadeAnimManager::Parallel);
-    animManager.startGroup(fadeAnimManager::Parallel);
+    if(!a_player->deleteTriggered())
+    {
+        fadeAnimManager animManager(this);
+        animManager.addTarget(ui->a_cover, fadeAnimManager::FadeIn, 500, fadeAnimManager::Parallel);
+        animManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 350, fadeAnimManager::Parallel);
+        animManager.startGroup(fadeAnimManager::Parallel, true);
+    }
 }
 
         /* Playlist functionality */
@@ -257,6 +255,8 @@ void Playlist::setShuffle()
 
 void Playlist::playItem(QModelIndex itemIndex)
 {
+    while(!a_player->canChangeMusic())
+        QApplication::processEvents(QEventLoop::AllEvents);
     if(a_previousIndex != 99999)
     {
         ui->a_playlistWidget->item(a_previousIndex)->setIcon(QIcon(":/Ressources/blank.png)"));
