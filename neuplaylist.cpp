@@ -89,15 +89,16 @@ QList <QUrl> neuPlaylist::setLibrary(const QString &path)
         //We're going to write in this streamer which will serve as a buffer
         QTextStream out(&fileHandler);
         out.setCodec("UTF-8");
-        QList <QUrl> medias;
+        QList <QUrl> *medias;
+        medias = new QList <QUrl>();
         while(dirIterator.hasNext())
         {
             out << dirIterator.next().prepend("file:///").append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
-            medias.push_back(QUrl(dirIterator.filePath().prepend("file:///").toUtf8()));
+            medias->append(QUrl(dirIterator.filePath().prepend("file:///").toUtf8()));
             qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
         }
         fileHandler.close();
-        return medias;
+        return *medias;
     }
 }
 
@@ -107,14 +108,15 @@ QList <QUrl> neuPlaylist::update(const QString &path)
     QDirIterator dirIterator(path, a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     // Variable qui contiendra tous les fichiers correspondant à notre recherche
-    QList <QUrl> urlList;
+    QList <QUrl> *urlList;
+    urlList = new QList <QUrl>();
     // Tant qu'on n'est pas arrivé à la fin de l'arborescence...
     while(dirIterator.hasNext())
     {
-        urlList.append(QUrl::fromLocalFile(dirIterator.next().toUtf8()));
+        urlList->append(QUrl::fromLocalFile(dirIterator.next().toUtf8()));
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
-    return urlList;
+    return *urlList;
 }
 
 neuPlaylist::~neuPlaylist(){}
