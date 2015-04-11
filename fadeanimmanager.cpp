@@ -62,7 +62,7 @@ void fadeAnimManager::setGroupToFadeOut(fadeAnimManager::AnimationSequenceType t
         const int groupSize = a_sequentialAnimations->animationCount();
         for (int i(0); i < groupSize; i++)
         {
-            QPropertyAnimation *anim = (QPropertyAnimation*) a_sequentialAnimations->animationAt(i);
+            auto *anim = (QPropertyAnimation*) a_sequentialAnimations->animationAt(i);
             anim->setStartValue(1.0);
             anim->setEndValue(0.0);
         }
@@ -72,7 +72,7 @@ void fadeAnimManager::setGroupToFadeOut(fadeAnimManager::AnimationSequenceType t
         const int groupSize = a_parallelAnimations->animationCount();
         for (int i(0); i < groupSize; i++)
         {
-            QPropertyAnimation *anim = (QPropertyAnimation*) a_parallelAnimations->animationAt(i);
+            auto *anim = (QPropertyAnimation*) a_parallelAnimations->animationAt(i);
             anim->setStartValue(1.0);
             anim->setEndValue(0.0);
         }
@@ -88,7 +88,7 @@ void fadeAnimManager::setGroupToFadeIn(fadeAnimManager::AnimationSequenceType ty
         const int groupSize = a_sequentialAnimations->animationCount();
         for (int i(0); i < groupSize; i++)
         {
-            QPropertyAnimation *anim = (QPropertyAnimation*) a_sequentialAnimations->animationAt(i);
+            auto *anim = (QPropertyAnimation*) a_sequentialAnimations->animationAt(i);
             anim->setStartValue(0.0);
             anim->setEndValue(1.0);
         }
@@ -98,7 +98,7 @@ void fadeAnimManager::setGroupToFadeIn(fadeAnimManager::AnimationSequenceType ty
         const int groupSize = a_parallelAnimations->animationCount();
         for (int i(0); i < groupSize; i++)
         {
-            QPropertyAnimation *anim = (QPropertyAnimation*) a_parallelAnimations->animationAt(i);
+            auto *anim = (QPropertyAnimation*) a_parallelAnimations->animationAt(i);
             anim->setStartValue(0.0);
             anim->setEndValue(1.0);
         }
@@ -242,14 +242,14 @@ void fadeAnimManager::deleteTarget(QWidget *targetToDelete, fadeAnimManager::Ani
         auto animToRemove =  searchTarget(targetToDelete, Parallel);
         if(animToRemove == nullptr)
             return;
-        a_parallelAnimations->removeAnimation(searchTarget(targetToDelete, Parallel));
+        a_parallelAnimations->removeAnimation(animToRemove);
     }
     else
     {
         auto animToRemove =  searchTarget(targetToDelete, Sequential);
         if(animToRemove == nullptr)
             return;
-        a_sequentialAnimations->removeAnimation(searchTarget(targetToDelete, Sequential));
+        a_sequentialAnimations->removeAnimation(animToRemove);
     }
 }
 
@@ -260,8 +260,8 @@ void fadeAnimManager::editTarget(QWidget *targetToModify, fadeAnimManager::FadeM
         auto animToModify =  searchTarget(targetToModify, Parallel);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Parallel);
-        QGraphicsOpacityEffect *container = (QGraphicsOpacityEffect*) anim->targetObject();
+        auto *anim = (QPropertyAnimation*) animToModify;
+        auto *container = (QGraphicsOpacityEffect*) anim->targetObject();
         setMode(anim, mode, container);
     }
     else
@@ -269,8 +269,8 @@ void fadeAnimManager::editTarget(QWidget *targetToModify, fadeAnimManager::FadeM
         auto animToModify =  searchTarget(targetToModify, Sequential);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Sequential);
-        QGraphicsOpacityEffect *container = (QGraphicsOpacityEffect*) anim->targetObject();
+        auto *anim = (QPropertyAnimation*) animToModify;
+        auto *container = (QGraphicsOpacityEffect*) anim->targetObject();
         setMode(anim, mode, container);
     }
 }
@@ -282,7 +282,7 @@ void fadeAnimManager::changeTargetGroup(QWidget *targetToModify, fadeAnimManager
         auto animToModify =  searchTarget(targetToModify, Parallel);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Parallel);
+        auto *anim = (QPropertyAnimation*) animToModify;
         a_parallelAnimations->removeAnimation(anim);
         a_sequentialAnimations->addAnimation(anim);
 
@@ -292,7 +292,7 @@ void fadeAnimManager::changeTargetGroup(QWidget *targetToModify, fadeAnimManager
         auto animToModify =  searchTarget(targetToModify, Sequential);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Sequential);
+        auto *anim = (QPropertyAnimation*) animToModify;
         a_sequentialAnimations->removeAnimation(anim);
         a_parallelAnimations->addAnimation(anim);
     }
@@ -313,7 +313,7 @@ void fadeAnimManager::editTarget(QWidget *targetToModify, int msecs, fadeAnimMan
         auto animToModify =  searchTarget(targetToModify, Parallel);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Parallel);
+        auto *anim = (QPropertyAnimation*) animToModify;
         anim->setDuration(msecs);
     }
     else
@@ -321,7 +321,7 @@ void fadeAnimManager::editTarget(QWidget *targetToModify, int msecs, fadeAnimMan
         auto animToModify =  searchTarget(targetToModify, Sequential);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Sequential);
+        auto *anim = (QPropertyAnimation*) animToModify;
         anim->setDuration(msecs);
     }
 }
@@ -333,8 +333,8 @@ void fadeAnimManager::editTarget(QWidget *targetToModify, fadeAnimManager::FadeM
         auto animToModify =  searchTarget(targetToModify, Parallel);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Parallel);
-        QGraphicsOpacityEffect *container = (QGraphicsOpacityEffect*) anim->targetObject();
+        auto *anim = (QPropertyAnimation*) animToModify;
+        auto *container = (QGraphicsOpacityEffect*) anim->targetObject();
         setMode(anim, mode, container);
         anim->setDuration(msecs);
     }
@@ -343,14 +343,14 @@ void fadeAnimManager::editTarget(QWidget *targetToModify, fadeAnimManager::FadeM
         auto animToModify =  searchTarget(targetToModify, Sequential);
         if(animToModify == nullptr)
             return;
-        QPropertyAnimation *anim = (QPropertyAnimation*) searchTarget(targetToModify, Sequential);
-        QGraphicsOpacityEffect *container = (QGraphicsOpacityEffect*) anim->targetObject();
+        auto *anim = (QPropertyAnimation*) animToModify;
+        auto *container = (QGraphicsOpacityEffect*) anim->targetObject();
         setMode(anim, mode, container);
         anim->setDuration(msecs);
     }
 }
 
-void fadeAnimManager::start()
+void fadeAnimManager::start(bool deleteWhenFinished)
 {
     QPropertyAnimation *anim;
     a_effectContainer = new QGraphicsOpacityEffect(nullptr);
@@ -358,7 +358,10 @@ void fadeAnimManager::start()
     a_target->setGraphicsEffect(a_effectContainer);
     anim->setDuration(a_duration);
     setMode(anim, a_mode, a_effectContainer);
-    anim->start();
+    if(deleteWhenFinished)
+        anim->start(QAbstractAnimation::DeleteWhenStopped);
+    else
+        anim->start();
 }
 
 void fadeAnimManager::setMode(QPropertyAnimation *anim, FadeMode mode, QGraphicsOpacityEffect *container)

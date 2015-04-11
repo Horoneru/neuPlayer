@@ -67,7 +67,7 @@ public:
 
     void clearGroup(AnimationSequenceType whichGroup);
 
-    void start(); //Start one animation with the arguments specified on constructor
+    void start(bool deleteWhenFinished = true); //Start one animation with the arguments specified on constructor
     void startGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Starts the animations in the group started
     void fadeOutGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Sets the entire group to FadeOut
     void fadeInGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Sets the entire group to FadeIn
