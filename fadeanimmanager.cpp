@@ -15,13 +15,6 @@ fadeAnimManager::fadeAnimManager(QWidget *target, fadeAnimManager::FadeMode mode
 
 }
 
-fadeAnimManager::fadeAnimManager(QWidget *target, int msecs,
-                                 QObject *parent) :
-    QObject(parent), a_target(target), a_duration(msecs),
-    a_timerEnabled(false), a_groupAlreadyInit(false), a_finished(false)
-{
-}
-
 fadeAnimManager::fadeAnimManager(QWidget *target, int msecs, QObject *parent, fadeAnimManager::FadeMode mode) :
     QObject(parent), a_target(target),
     a_duration(msecs), a_mode(mode), a_timerEnabled(false),

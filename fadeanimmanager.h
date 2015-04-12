@@ -25,7 +25,6 @@ public:
     //Constructors
     explicit fadeAnimManager(QObject *parent = 0);
     fadeAnimManager(QWidget *target, FadeMode mode , int msecs, AnimationSequenceType sequence, QObject *parent);
-    fadeAnimManager(QWidget *target, int msecs, QObject *parent);
     fadeAnimManager(QWidget *target, int msecs, QObject *parent, FadeMode mode = FadeMode::FadeIn);
     fadeAnimManager(QWidget *target, QObject *parent);
     fadeAnimManager(FadeMode mode, QObject *parent);
