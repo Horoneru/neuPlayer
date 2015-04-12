@@ -372,6 +372,11 @@ void Player::loadSkin()
                 ui->a_image->setPixmap(QPixmap(a_settings->value("customimage").toString()));
         }
     }
+    if(!a_isStarting)
+    {
+        fadeAnimManager anim(ui->a_image, 1000, this);
+        anim.start();
+    }
 }
 
 void Player::setLightCSS()
