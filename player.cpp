@@ -1,15 +1,21 @@
 #include "player.h"
 #include "ui_player.h"
 #include <QDebug>
-#include <QBitmap>
-#include <QPainter>
-#include <QRegion>
 Player::Player(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Player)
+    ui(new Ui::Player),
+    /* Background ressources */
+    a_neuDarkBg(":/Ressources/neudarkbg.png"), a_neuLightBg(":/Ressources/neubackgroundwhite.jpg"), a_neuLightCustombg(":/Ressources/neucustombackgroundwhite.jpg"),
+    /* Volume icons ressources */
+    a_volumeIcon(":/Ressources/volumebtn.png"), a_volumeDarkIcon(":/Ressources/volumedarkbtn.png"), a_volumeMutedIcon(":/Ressources/volumebtn_onPressed.png"),
+    a_volumeMutedDarkIcon(":/Ressources/volumedarkbtn_onPressed.png"), a_volumeLowIcon(":/Ressources/volumebtn2.png"), a_volumeLowDarkIcon(":/Ressources/volumedarkbtn2.png"),
+    /* No CSS controls ressources */
+    a_previousIcon(":/Ressources/previousbtn.png"), a_previousDarkIcon(":/Ressources/previousdarkbtn.png"),
+    a_forwardIcon(":/Ressources/forwardbtn.png"), a_forwardDarkIcon(":/Ressources/forwarddarkbtn.png")
+
 {
     /*!
-                                            2015 Horoneru                                   1.2.5 stable 110415 active
+                                            2015 Horoneru                                   1.2.5 stable 120415 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (started)
@@ -19,7 +25,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.2.5");
+    QApplication::setApplicationVersion("1.2.6");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -106,6 +112,8 @@ void Player::setupObjects()
     a_playbackState = a_settings->value("playbackrate", 0).toInt();
     a_isRandomMode = a_settings->value("random", false).toBool();
     a_isLoopPlaylistMode = a_settings->value("loop", false).toBool();
+
+    //Prepare all icons, storing them on attributes
 
     //Prepare animation
     a_titleAnimate = new QPropertyAnimation(ui->a_label, "pos", this);
@@ -341,7 +349,7 @@ void Player::loadSkin()
         if(!a_isStarting)
             setDarkCSS(); //Because the stylesheet is already set as default
         if(!QFile(a_settings->value("customimage").toString()).exists()) //We won't charge something which doesn't exists
-            ui->a_image->setPixmap(QPixmap(":/Ressources/neudarkbg.png"));
+            ui->a_image->setPixmap(a_neuDarkBg);
         else
             ui->a_image->setPixmap(QPixmap(a_settings->value("customimage").toString()));
     }
@@ -352,20 +360,18 @@ void Player::loadSkin()
         if(a_idSkin == 0)
         {
             if(!QFile(a_settings->value("customimage").toString()).exists())
-                ui->a_image->setPixmap(QPixmap(":/Ressources/neubackgroundwhite.jpg"));
+                ui->a_image->setPixmap(a_neuLightBg);
             else
                 ui->a_image->setPixmap(QPixmap(a_settings->value("customimage").toString()));
         }
         else //Custom bg
         {
             if(!QFile(a_settings->value("customimage").toString()).exists())
-                ui->a_image->setPixmap(QPixmap(":/Ressources/neucustombackgroundwhite.jpg"));
+                ui->a_image->setPixmap(a_neuLightCustombg);
             else
                 ui->a_image->setPixmap(QPixmap(a_settings->value("customimage").toString()));
         }
     }
-
-
 }
 
 void Player::setLightCSS()
@@ -381,9 +387,9 @@ void Player::setLightCSS()
     ui->a_volumeslider->setStyleSheet("QSlider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
 
     //Stylize the rest by putting icons...
-    ui->a_forward->setIcon(QIcon(":/Ressources/forwarddarkbtn.png"));
-    ui->a_previous->setIcon(QIcon(":/Ressources/previousdarkbtn.png"));
-    ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumedarkbtn.png"));
+    ui->a_forward->setIcon(a_forwardDarkIcon);
+    ui->a_previous->setIcon(a_previousDarkIcon);
+    on_volumeChanged(neu->volume()); //Will reload the correct icon for volume
 }
 
 void Player::setDarkCSS()
@@ -399,9 +405,9 @@ void Player::setDarkCSS()
     ui->a_volumeslider->setStyleSheet("QSlider::handle:horizontal {image: url(:/Ressources/handle.png);}");
 
     //Stylize the rest by putting icons...
-    ui->a_forward->setIcon(QIcon(":/Ressources/forwardbtn.png"));
-    ui->a_previous->setIcon(QIcon(":/Ressources/previousbtn.png"));
-    ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumebtn.png"));
+    ui->a_forward->setIcon(a_forwardIcon);
+    ui->a_previous->setIcon(a_previousIcon);
+    on_volumeChanged(neu->volume()); //Will reload the correct icon for volume
 }
 
 void Player::checkForNewMedias()
@@ -941,16 +947,16 @@ void Player::on_volumeChanged(int pos)
     if(pos <= 50)
     {
         if(a_idSkin == 1)
-            ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumebtn2.png"));
+            ui->a_volumebtn->setIcon(a_volumeLowIcon);
         else
-            ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumedarkbtn2.png"));
+            ui->a_volumebtn->setIcon(a_volumeLowDarkIcon);
     }
     else
     {
         if(a_idSkin == 1)
-            ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumebtn.png"));
+            ui->a_volumebtn->setIcon(a_volumeIcon);
         else
-            ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumedarkbtn.png"));
+            ui->a_volumebtn->setIcon(a_volumeDarkIcon);
     }
     ui->a_volumebtn->setChecked(false);
     neu->setMuted(false);
@@ -966,9 +972,9 @@ void Player::setVolumeMuted()
         ui->a_volumeslider->setValue(0);
         connect(ui->a_volumeslider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
         if(a_idSkin == 1)
-            ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumebtn_onPressed.png"));
+            ui->a_volumebtn->setIcon(a_volumeMutedIcon);
         if(a_idSkin == 0 ||  a_idSkin == 2)
-            ui->a_volumebtn->setIcon(QIcon(":/Ressources/volumedarkbtn_onPressed.png"));
+            ui->a_volumebtn->setIcon(a_volumeMutedDarkIcon);
     }
     else
     {

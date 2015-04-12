@@ -20,11 +20,15 @@
 #include <QParallelAnimationGroup>
 #include <QMessageBox>
 #include <QGraphicsOpacityEffect>
+#include <QBitmap>
+#include <QPainter>
+#include <QRegion>
 
 #include "tagviewer.h"
 #include "playlist.h"
 #include "settings.h"
 #include "neuplaylist.h"
+#include "fadeanimmanager.h"
 #include "fadeoutwindow.h"
 #include "scrollinginfolabel.h"
 namespace Ui {
@@ -204,7 +208,16 @@ private:
     int a_titleCase;
     int a_artistCase;
     int a_albumCase;
+    //Meta datas
     QString a_titre, a_artiste, a_album;
+    /* Icons stored on attributes to avoid reloading each time */
+    const QIcon a_forwardIcon, a_forwardDarkIcon;
+    const QIcon a_previousIcon, a_previousDarkIcon;
+    const QIcon a_volumeIcon, a_volumeDarkIcon;
+    const QIcon a_volumeLowIcon, a_volumeLowDarkIcon;
+    const QIcon a_volumeMutedIcon, a_volumeMutedDarkIcon;
+    const QPixmap a_neuDarkBg, a_neuLightBg, a_neuLightCustombg;
+
     ScrollingInfoLabel *a_scrollingLabel;
     QPixmap a_coverArt;
     QPropertyAnimation *a_titleAnimate;

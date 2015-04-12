@@ -23,7 +23,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -621,7 +621,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 110415</string>
+build 120415</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
