@@ -15,7 +15,7 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.2.5 stable 120415 active
+                                            2015 Horoneru                                   1.3.1 stable 120415 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (started)
@@ -25,7 +25,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.2.6");
+    QApplication::setApplicationVersion("1.3.1");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -80,7 +80,7 @@ Player::Player(QWidget *parent) :
     //Paramètres loadés après car les connexions se chargent de traiter les nouvelles données
     setupPlugins();
 
-    ui->a_volumeslider->setValue(a_settings->value("volume", 50).toInt());
+    a_volumeSlider->setValue(a_settings->value("volume", 50).toInt());
 
     a_alwaysOnTopHandler->setChecked(a_settings->value("visibilite", false).toBool());
 
@@ -113,7 +113,23 @@ void Player::setupObjects()
     a_isRandomMode = a_settings->value("random", false).toBool();
     a_isLoopPlaylistMode = a_settings->value("loop", false).toBool();
 
-    //Prepare all icons, storing them on attributes
+    //Prepare custom Sliders
+    a_progressSlider = new Slider(ui->centralWidget);
+    a_progressSlider->setGeometry(QRect(130, 26, 121, 20));
+    a_progressSlider->setOrientation(Qt::Horizontal);
+    a_progressSlider->setInvertedAppearance(false);
+    a_progressSlider->setInvertedControls(false);
+    a_progressSlider->setTickPosition(QSlider::NoTicks);
+    a_progressSlider->setTickInterval(10);
+    a_progressSlider->setToolTip(tr("Alt + droite ou gauche pour parcourir"));
+
+
+    a_volumeSlider = new Slider(ui->centralWidget);
+    a_volumeSlider->setGeometry(QRect(310, 30, 61, 16));
+    a_volumeSlider->setMaximum(99);
+    a_volumeSlider->setValue(50);
+    a_volumeSlider->setOrientation(Qt::Horizontal);
+    a_volumeSlider->setToolTip(tr("Volume (Ctrl haut ou bas) "));
 
     //Prepare animation
     a_titleAnimate = new QPropertyAnimation(ui->a_label, "pos", this);
@@ -258,8 +274,8 @@ void Player::setupConnections()
     connect(&a_mediaPlaylist, SIGNAL(loaded()), this, SLOT(finishingUp()));
     connect(neu, SIGNAL(durationChanged(qint64)), this, SLOT(on_durationChanged(qint64)));
     connect(neu, SIGNAL(positionChanged(qint64)), this, SLOT(UpdateProgress(qint64)));
-    connect(ui->a_progressslider, SIGNAL(sliderMoved(int)), this, SLOT(seekProgress(int)));
-    connect(ui->a_volumeslider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
+    connect(a_progressSlider, SIGNAL(sliderMoved(int)), this, SLOT(seekProgress(int)));
+    connect(a_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
     connect(ui->a_volumebtn, SIGNAL(clicked()), this, SLOT(setVolumeMuted()));
     connect(a_volumeUp, SIGNAL(triggered()), this, SLOT(volumeUp()));
     connect(a_volumeDown, SIGNAL(triggered()), this, SLOT(volumeDown()));
@@ -388,8 +404,8 @@ void Player::setLightCSS()
     ui->a_menubtn->setStyleSheet("QPushButton#a_menubtn{background-image: url(:/Ressources/roundedmenudarkbtn.png);}"
                                  "QPushButton#a_menubtn:hover{background-image: url(:/Ressources/roundedmenudarkbtn_onHover.png);}");
 
-    ui->a_progressslider->setStyleSheet("QSlider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
-    ui->a_volumeslider->setStyleSheet("QSlider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
+    a_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
+    a_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
 
     //Stylize the rest by putting icons...
     ui->a_forward->setIcon(a_forwardDarkIcon);
@@ -406,8 +422,8 @@ void Player::setDarkCSS()
     ui->a_menubtn->setStyleSheet("QPushButton#a_menubtn{background-image: url(:/Ressources/roundedmenubtn.png);}"
                                  "QPushButton#a_menubtn:hover{background-image: url(:/Ressources/roundedmenubtn_onHover.png);}");
 
-    ui->a_progressslider->setStyleSheet("QSlider::handle:horizontal {image: url(:/Ressources/handle.png);}");
-    ui->a_volumeslider->setStyleSheet("QSlider::handle:horizontal {image: url(:/Ressources/handle.png);}");
+    a_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
+    a_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
 
     //Stylize the rest by putting icons...
     ui->a_forward->setIcon(a_forwardIcon);
@@ -577,11 +593,14 @@ QMediaPlayer::Error Player::errorHandling(QMediaPlayer::Error error)
         break;
     case QMediaPlayer::ResourceError:
         ui->a_label->setText(tr("erreur : Unresolved Resource"));
-        current = a_mediaPlaylist.previousIndex(1);
-        deleteMedia(current);
+        a_mediaPlaylist.previous();
+        current = a_mediaPlaylist.currentIndex();
         qDebug() << a_mediaPlaylist.media(current).canonicalUrl();
+        a_mediaPlaylist.removeMedia(current);
         if(a_isPlaylistOpen)
             playlist->updateList(&a_mediaPlaylist);
+        a_mediaPlaylist.setCurrentIndex(current - 2);
+        a_hasToSavePlaylistLater = true; //Prevent error from coming back.
         break;
     case QMediaPlayer::FormatError :
         ui->a_label->setText(tr("erreur : Format non supporté"));
@@ -673,7 +692,7 @@ void Player::openMedia()
         {
             a_mediaPlaylist.setCurrentIndex(0);
             playlist->setCurrentItem(0, &a_coverArt, a_titre);
-            playlist->updateList(&a_mediaPlaylist);
+            playlist->updateList(&a_mediaPlaylist, true);
         }
     }
 }
@@ -862,7 +881,7 @@ void Player::update_info()
     /*///////SliderBar Section///////*/
 void Player::UpdateProgress(qint64 pos)
 {
-    ui->a_progressslider->setValue(pos);
+    a_progressSlider->setValue(pos);
     pos /= 1000;
     a_currentTrackMinutes = 0;
     // cf setMeta()
@@ -908,7 +927,7 @@ void Player::seekProgress(int pos)
 
 void Player::on_durationChanged(qint64 pos)
 {
-    ui->a_progressslider->setMaximum(pos);
+    a_progressSlider->setMaximum(pos);
     pos /= 1000;
     int minutes = 0;
     // Fait en sorte d'update le label de temps actuel
@@ -972,10 +991,10 @@ void Player::setVolumeMuted()
     if(ui->a_volumebtn->isChecked())
     {
         a_volumeBeforeMute = neu->volume();
-        disconnect(ui->a_volumeslider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
+        disconnect(a_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
         neu->setMuted(true);
-        ui->a_volumeslider->setValue(0);
-        connect(ui->a_volumeslider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
+        a_volumeSlider->setValue(0);
+        connect(a_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
         if(a_idSkin == 1)
             ui->a_volumebtn->setIcon(a_volumeMutedIcon);
         if(a_idSkin == 0 ||  a_idSkin == 2)
@@ -984,18 +1003,18 @@ void Player::setVolumeMuted()
     else
     {
         neu->setMuted(false);
-        ui->a_volumeslider->setValue(a_volumeBeforeMute); //On laisse le _onvolumeChanged() faire le boulot de remettre les bonnes icones
+        a_volumeSlider->setValue(a_volumeBeforeMute); //On laisse le _onvolumeChanged() faire le boulot de remettre les bonnes icones
     }
 }
 
 void Player::volumeUp()
 {
-    ui->a_volumeslider->setSliderPosition(neu->volume() + 10);
+    a_volumeSlider->setSliderPosition(neu->volume() + 10);
 }
 
 void Player::volumeDown()
 {
-    ui->a_volumeslider->setSliderPosition(neu->volume() - 10);
+    a_volumeSlider->setSliderPosition(neu->volume() - 10);
 }
 
     /*///////Menu Actions Section///////*/
@@ -1027,7 +1046,7 @@ void Player::setShuffle()
         if(a_settings->value("Additional_Features/libraryAtStartup", false).toBool() == true)
             a_hasToSavePlaylistLater = true; // Will update playlist to load the correct one when booting up later on
         if(a_isPlaylistOpen)
-            playlist->updateList(&a_mediaPlaylist);
+            playlist->updateList(&a_mediaPlaylist, true);
         a_canDoShuffleAgain = false;
         grantShuffleAgainTimer.start(500);
     }
@@ -1131,20 +1150,19 @@ void Player::dragEnterEvent(QDragEnterEvent *event)
 
 void Player::dropEvent(QDropEvent *event)
 {
-    a_mediaPlaylist.clear();
     ui->a_label->setText("Loading...");
+    neu->stop();
+    Timer.stop(); //We don't want to fade in while we're loading, right ?
     this->setCursor(Qt::BusyCursor);
     unsigned int const numberUrls = event->mimeData()->urls().size();
+    QList <QUrl> listUrls;
     for (unsigned int i(0); i < numberUrls; i++)
     {
-        a_mediaPlaylist.addMedia(event->mimeData()->urls().at(i));
+        listUrls.append(event->mimeData()->urls().at(i));
         //Permet de toujours rendre l'application plus ou moins utilisable
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
-    if(a_isPlaylistOpen)
-        playlist->updateList(&a_mediaPlaylist);
-    playMedia();
-    this->setCursor(Qt::ArrowCursor);
+    updatePlaylistOfThePlayer(listUrls, true);
 }
 
 void Player::closeEvent(QCloseEvent *event)
@@ -1157,7 +1175,7 @@ void Player::closeEvent(QCloseEvent *event)
         }
         a_settings->setValue("pos", pos());
         a_settings->setValue("size", size());
-        a_settings->setValue("volume", ui->a_volumeslider->value());
+        a_settings->setValue("volume", a_volumeSlider->value());
         a_settings->setValue("visibilite", a_alwaysOnTopHandler->isChecked());
         a_settings->setValue("playbackrate", a_playbackState);
         a_settings->setValue("random", a_isRandomMode);
@@ -1257,12 +1275,14 @@ void Player::addToQueue(int index, int currentlyPlaying)
 void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
 {
     a_mediaPlaylist.clear();
+    setCursor(Qt::BusyCursor);
     unsigned int const mediaNumber = medias.size();
     for(unsigned int i (0); i < mediaNumber; i++ )
     {
         a_mediaPlaylist.addMedia(medias.at(i));
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
+    qDebug() << mediaNumber;
     neu->setPlaylist(&a_mediaPlaylist); //Re-set to update...
     if(a_isPlaylistOpen)
         playlist->updateList(&a_mediaPlaylist);
@@ -1277,6 +1297,7 @@ void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
         ui->a_pausebtn->setVisible(false);
         connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     }
+    setCursor(Qt::ArrowCursor);
 }
 
 //Destructor

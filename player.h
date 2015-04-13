@@ -26,6 +26,7 @@
 
 #include "tagviewer.h"
 #include "playlist.h"
+#include "slider.h"
 #include "settings.h"
 #include "neuplaylist.h"
 #include "fadeanimmanager.h"
@@ -177,6 +178,8 @@ private:
 
     //Attributs
     QMediaPlayer *neu; //Dat media player
+    Slider *a_progressSlider;
+    Slider *a_volumeSlider;
     Playlist *playlist;
     QSettings *a_settings; //Contient les settings de l'application
     QString a_musicUserPath; // Contient un string de l'url du dossier musical de l'utilisateur
