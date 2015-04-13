@@ -48,7 +48,6 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
     setupConnections();
 
     setupMode();
-    a_startingUp = false;
 }
 
 void Playlist::setupActions()
