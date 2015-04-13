@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     neuplaylist.cpp \
     skin.cpp \
     fadeoutwindow.cpp \
-    fadeanimmanager.cpp
+    fadeanimmanager.cpp \
+    slider.cpp
 
 HEADERS  += player.h \
     playlist.h \
@@ -33,7 +34,8 @@ HEADERS  += player.h \
     neuplaylist.h \
     skin.h \
     fadeoutwindow.h \
-    fadeanimmanager.h
+    fadeanimmanager.h \
+    slider.h
 
 FORMS    += player.ui \
     playlist.ui \
