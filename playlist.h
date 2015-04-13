@@ -21,7 +21,7 @@ public slots:
     //Basic interface with the player
     void playItem(QModelIndex itemIndex);
     void quickUpdate(QList <QUrl> *items, int currentItemPlusOne);
-    void updateList(neuPlaylist *listeFichiers);
+    void updateList(neuPlaylist *listeFichiers, bool setZeroIndex = false);
     //Own actions of the playlist interacting with the player
     void setFolder();
     void reloadLibrary();

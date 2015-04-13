@@ -14,6 +14,8 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
        #Ajouter un addtoFav au contextmenu et implanter des onglets différents playlist/favoris << Soon after some internal optimizations overall
     */
     this->setAcceptDrops(true);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+
     ui->a_playlistWidget->setDragEnabled(false); //I can't handle it well as of now :/
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_defaultCover = new QPixmap(":/Ressources/noCoverHeader.png");
@@ -46,6 +48,7 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
     setupConnections();
 
     setupMode();
+    a_startingUp = false;
 }
 
 void Playlist::setupActions()
@@ -125,8 +128,13 @@ void Playlist::setupMode()
 
         /* Update section */
 
-void Playlist::updateList(neuPlaylist*listeFichiers)
+void Playlist::updateList(neuPlaylist*listeFichiers, bool setZeroIndex)
 {
+    if(a_currentIndex != 0 && setZeroIndex) //Helps not to crash. Each index is reset to 0 so there isn't any out of bound, but only when we're not starting up
+    {
+        a_player->setIndexOfThePlayer(0, false);
+        ui->a_playlistWidget->setCurrentRow(0);
+    }
     ui->a_playlistWidget->clear();
     int const mediaCount = listeFichiers->mediaCount();
     for(int i(0); i < mediaCount; i++)
@@ -136,7 +144,6 @@ void Playlist::updateList(neuPlaylist*listeFichiers)
         ui->a_playlistWidget->item(i)->setData(Qt::ToolTipRole, filepath);
         ui->a_playlistWidget->item(i)->setData(Qt::WhatsThisRole, i);
     }
-
 }
 
 void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne)
@@ -255,8 +262,8 @@ void Playlist::setShuffle()
 
 void Playlist::playItem(QModelIndex itemIndex)
 {
-    while(!a_player->canChangeMusic())
-        QApplication::processEvents(QEventLoop::AllEvents);
+    if(!a_player->canChangeMusic())
+        return;
     if(a_previousIndex != 99999)
     {
         ui->a_playlistWidget->item(a_previousIndex)->setIcon(QIcon(":/Ressources/blank.png)"));
@@ -318,6 +325,8 @@ void Playlist::deleteItem()
     {
         int index = ui->a_playlistWidget->currentRow();
         a_player->deleteMedia(index);
+        if(index <= a_queueIndex + a_currentIndex) //So if we're deleting something that was added, we update the queue index
+            a_queueIndex--;
         ui->a_playlistWidget->takeItem(index);
     }
 }
@@ -393,7 +402,6 @@ void Playlist::dropEvent(QDropEvent *event)
 void Playlist::closeEvent(QCloseEvent *)
 {
     a_player->setPlaylistOpen(false);
-    this->deleteLater();
 }
 
 Playlist::~Playlist()
