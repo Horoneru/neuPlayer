@@ -30,7 +30,7 @@
 #include "settings.h"
 #include "neuplaylist.h"
 #include "fadeanimmanager.h"
-#include "fadeoutwindow.h"
+#include "fadewindow.h"
 #include "scrollinginfolabel.h"
 namespace Ui {
 class Player;

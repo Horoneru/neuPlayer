@@ -10,7 +10,7 @@
 #include <QStandardPaths>
 
 #include "player.h"
-#include "fadeoutwindow.h"
+#include "fadewindow.h"
 #include "fadeanimmanager.h"
 namespace Ui {
 class InitialConfig;

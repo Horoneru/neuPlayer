@@ -265,7 +265,7 @@ void InitialConfig::closeEvent(QCloseEvent *event = 0)
     else
     {
         event->ignore();
-        FadeOutWindow fadeOut(this, 450, this);
+        FadeWindow fadeOut(this, 450, FadeWindow::FadeOut, this);
         fadeOut.start();
         a_timer = new QTimer(this);
         a_timer->start(650);
