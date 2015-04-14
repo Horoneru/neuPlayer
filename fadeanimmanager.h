@@ -12,7 +12,6 @@
 /*   Convenience class to fade in or out any QWidget,
  *   The class manages internally groups for you, making code cleaner.
  *   Created by Horoneru the 31/03/15
- *   V0.8 (updated 04/04/15), already implemented throughout the player.
 */
 
 
