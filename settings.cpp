@@ -17,6 +17,7 @@ Settings::Settings(Player *Player, QWidget *parent) :
     ui->a_refreshWhenNeededActivate->setChecked(a_settings->value("refreshWhenNeeded", true).toBool());
     ui->a_staticLibraryActivate->setChecked(a_settings->value("staticLibrary", false).toBool());
     ui->a_saveIndexActivate->setChecked(a_settings->value("saveTrackIndex", true).toBool());
+    ui->a_framelessCheck->setChecked(a_settings->value("framelessWindow", false).toBool());
     a_settings->endGroup();
     a_bgPath = a_settings->value("customimage", "").toString();
     a_opacityValue = a_settings->value("opacity", 100).toReal();
@@ -76,6 +77,7 @@ void Settings::setupConnections()
     connect(ui->a_opacitySlide, SIGNAL(valueChanged(int)), this, SLOT(updateOpacity(int)));
     connect(ui->a_confirm, SIGNAL(clicked()), this, SLOT(confirm()));
     connect(ui->a_confirm_2, SIGNAL(clicked()), this, SLOT(confirm()));
+    connect(ui->a_framelessCheck, SIGNAL(clicked()), this, SLOT(popupFramelessWindow()));
     connect(ui->TEMP, SIGNAL(clicked()), this, SLOT(TEMP()));
 }
 
@@ -142,6 +144,20 @@ void Settings::popupStaticlib()
     }
     else
         a_isStaticLibChecked = false;
+}
+
+void Settings::popupFramelessWindow()
+{
+    if(ui->a_framelessCheck->isChecked())
+    {
+        QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"), tr("Vous devez redémarrer pour utiliser le player sans bordures"));
+        msgbox.exec();
+    }
+    else
+    {
+        QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"), tr("Vous devez redémarrer pour utiliser le player avec ses bordures"));
+        msgbox.exec();
+    }
 }
 
 void Settings::changeMusicPath()
@@ -279,8 +295,6 @@ void Settings::confirm()
 
         else if (!ui->a_saveIndexActivate->isChecked())
             a_settings->setValue("Additional_Features/saveTrackIndex", false);
-        qDebug() << a_settings->value("Additional_Features/saveTrackIndex").toBool();
-
         a_settings->setValue("Additional_Features/libraryAtStartup", true);
 
     }
@@ -292,6 +306,10 @@ void Settings::confirm()
         a_settings->setValue("playlistAtStartup", true);
     else
         a_settings->setValue("playlistAtStartup", false);
+    if(ui->a_framelessCheck->isChecked())
+        a_settings->setValue("Additional_Features/framelessWindow", true);
+    else
+        a_settings->setValue("Additional_Features/framelessWindow", false);
 
     /* Skin section */
     int currentSkin = a_settings->value("skin").toInt(); //Backup to test

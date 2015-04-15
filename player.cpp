@@ -15,17 +15,18 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.3.1 stable 120415 active
+                                            2015 Horoneru                                   1.3.3 stable 150415 active
       TODO
       à faire : (/ ordre d'importance)
+      > Updater (HIGH PRIORITY, started)
       > add to fav au niveau playlist (started)
       > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
-      - Re-design et occuper l'espace alloué par le borderless -> buttons done, solution found, need to see how to implement later on
+      - Re-design et occuper l'espace alloué par le borderless (DONE)
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.3.1");
+    QApplication::setApplicationVersion("1.3.3");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -86,6 +87,18 @@ Player::Player(QWidget *parent) :
 
     if(a_settings->value("playlistAtStartup").toBool() == true)
         a_hasToStartupPlaylist = true; //Will trigger the playlist startup
+
+    if(a_settings->value("Additional_Features/framelessWindow", false).toBool())
+    {
+        a_isFrameless = true;
+        setFramelessButtonsVisibility(true);
+        a_canClose = false;
+    }
+    else
+    {
+        a_isFrameless = false;
+        setFramelessButtonsVisibility(false);
+    }
 
     if(a_isRandomMode)
     {
@@ -193,32 +206,6 @@ void Player::setupObjects()
     grantChangeTimer.setSingleShot(true);
     //Timer that delays the time when the user can shuffle again
     grantShuffleAgainTimer.setSingleShot(true);
-
-    /* Could be used later on for frameless window capacities
-    QRegion region;
-
-    // middle and borders
-    region += this->rect().adjusted(6, 0, -6, 0);
-    region += this->rect().adjusted(0, 6, 0, -6);
-
-    // top left
-    QRect corner(this->rect().topLeft(), QSize(6*2, 6*2));
-    region += QRegion(corner, QRegion::Ellipse);
-
-    // top right
-    corner.moveTopRight(this->rect().topRight());
-    region += QRegion(corner, QRegion::Ellipse);
-
-    // bottom left
-    corner.moveBottomLeft(this->rect().bottomLeft());
-    region += QRegion(corner, QRegion::Ellipse);
-
-    // bottom right
-    corner.moveBottomRight(this->rect().bottomRight());
-    region += QRegion(corner, QRegion::Ellipse);
-    setMask(region);
-    */
-
 }
 
 
@@ -294,6 +281,8 @@ void Player::setupConnections()
     connect(a_tagViewer, SIGNAL(triggered()), this, SLOT(showTagViewer()));
     connect(a_accessSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
     connect(&a_mediaPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
+    connect(ui->a_closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->a_hideButton, SIGNAL(clicked()), this, SLOT(showMinimized()));
 }
 
 void Player::setupPlugins()
@@ -357,6 +346,12 @@ void Player::setOpacity(qreal opacityFromSettings)
     }
 }
 
+void Player::setFramelessButtonsVisibility(bool visible)
+{
+    ui->a_closeButton->setVisible(visible);
+    ui->a_hideButton->setVisible(visible);
+}
+
 void Player::loadSkin()
 {
     a_idSkin = a_settings->value("skin", 1).toInt();
@@ -406,6 +401,13 @@ void Player::setLightCSS()
 
     a_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
     a_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
+    if(a_isFrameless)
+    {
+    ui->a_closeButton->setStyleSheet("QPushButton#a_closeButton{background-image: url(:/Ressources/closeButtonDark.png);}"
+                                 "QPushButton#a_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
+    ui->a_hideButton->setStyleSheet("QPushButton#a_hideButton{background-image: url(:/Ressources/hideButtonDark.png);}"
+                                 "QPushButton#a_hideButton:hover{background-image: url(:/Ressources/hideButtonDark_onHover.png);}");
+    }
 
     //Stylize the rest by putting icons...
     ui->a_forward->setIcon(a_forwardDarkIcon);
@@ -425,6 +427,13 @@ void Player::setDarkCSS()
     a_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
     a_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
 
+    if(a_isFrameless)
+    {
+    ui->a_closeButton->setStyleSheet("QPushButton#a_closeButton{background-image: url(:/Ressources/closeButton.png);}"
+                                 "QPushButton#a_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
+    ui->a_hideButton->setStyleSheet("QPushButton#a_hideButton{background-image: url(:/Ressources/hideButton.png);}"
+                                 "QPushButton#a_hideButton:hover{background-image: url(:/Ressources/hideButton_onHover.png);}");
+    }
     //Stylize the rest by putting icons...
     ui->a_forward->setIcon(a_forwardIcon);
     ui->a_previous->setIcon(a_previousIcon);
@@ -1055,7 +1064,7 @@ void Player::setShuffle()
 void Player::windowFlagsHandler()
 {
     if(a_alwaysOnTopHandler->isChecked())
-        this->setWindowFlags(Qt::WindowStaysOnTopHint);
+        this->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     else
         this->setWindowFlags(Qt::Window);
     this->show();
@@ -1101,7 +1110,7 @@ void Player::showPlaylist()
         a_isPlaylistOpen = true;
         if(a_mediaPlaylist.mediaCount()!= 0)
             playlist = new Playlist(&a_mediaPlaylist, a_mediaPlaylist.currentIndex(), this, &a_coverArt, a_titre, a_isPlaying, this);
-        else if(ui->a_label->text() != "Stoppé" || ui->a_label->text() == "Stopped")
+        else if(neu->media().isNull())
             playlist = new Playlist(&a_mediaPlaylist, -1, this, &a_coverArt, a_titre, a_isPlaying, this);
 
         playlist->show();
@@ -1173,7 +1182,10 @@ void Player::closeEvent(QCloseEvent *event)
         {
             saveCurrentPlaylist();
         }
-        a_settings->setValue("pos", pos());
+        if(a_settings->value("Additional_Features/framelessWindow").toBool())
+            a_settings->setValue("pos", QPoint(this->x() - 8, this->y() - 31)); //Little hack to set the value correctly
+        else
+            a_settings->setValue("pos", pos());
         a_settings->setValue("size", size());
         a_settings->setValue("volume", a_volumeSlider->value());
         a_settings->setValue("visibilite", a_alwaysOnTopHandler->isChecked());
@@ -1190,7 +1202,7 @@ void Player::closeEvent(QCloseEvent *event)
         Timer.setSingleShot(true);
         Timer.start(400);
         connect(&Timer, SIGNAL(timeout()), this, SLOT(delayedClose()));
-        FadeOutWindow fadeOut(this, 200, this);
+        FadeWindow fadeOut(this, 200, FadeWindow::FadeOut, this);
         fadeOut.start();
     }
 }

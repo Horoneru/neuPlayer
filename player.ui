@@ -61,6 +61,18 @@ QPushButton#a_pausebtn{
 QPushButton#a_pausebtn:hover{
 	background-image: url(:/Ressources/Pausebtn_onHover.png);
 }
+QPushButton#a_closeButton{
+	background-image: url(:/Ressources/closeButton.png);
+}
+QPushButton#a_closeButton:hover{
+	background-image: url(:/Ressources/closeButton_onHover.png);
+}
+QPushButton#a_hideButton{
+	background-image: url(:/Ressources/hideButton.png);
+}
+QPushButton#a_hideButton:hover{
+	background-image: url(:/Ressources/hideButton_onHover.png);
+}
 QSlider::handle:horizontal {
 	image: url(:/Ressources/handle.png);
 }</string>
@@ -87,6 +99,9 @@ QSlider::handle:horizontal {
       <weight>50</weight>
       <bold>false</bold>
      </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
     </property>
     <property name="text">
      <string/>
@@ -186,10 +201,10 @@ QSlider::handle:horizontal {
    <widget class="QPushButton" name="a_menubtn">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>16</y>
-      <width>31</width>
-      <height>41</height>
+      <x>372</x>
+      <y>23</y>
+      <width>24</width>
+      <height>22</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -200,7 +215,7 @@ QSlider::handle:horizontal {
     </property>
     <property name="iconSize">
      <size>
-      <width>35</width>
+      <width>30</width>
       <height>35</height>
      </size>
     </property>
@@ -326,6 +341,56 @@ QSlider::handle:horizontal {
      <string>--:--</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="a_closeButton">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>0</y>
+      <width>18</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Fermer le player (ALT + F4)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>16</width>
+      <height>15</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="a_hideButton">
+    <property name="geometry">
+     <rect>
+      <x>363</x>
+      <y>0</y>
+      <width>18</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Réduire le player</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>15</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>a_image</zorder>
    <zorder>a_label</zorder>
    <zorder>a_playbtn</zorder>
@@ -335,6 +400,8 @@ QSlider::handle:horizontal {
    <zorder>horizontalLayoutWidget_2</zorder>
    <zorder>a_currenttime</zorder>
    <zorder>a_duration</zorder>
+   <zorder>a_closeButton</zorder>
+   <zorder>a_hideButton</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

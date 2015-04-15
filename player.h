@@ -171,6 +171,7 @@ private:
     void setupObjects();
     void setupMenus();
     void setupConnections();
+    void setFramelessButtonsVisibility(bool visible);
 
     void forwardAnim(); //Created as a separate module because we call it at several places
     void previousAnim(); //Created for consistency with forwardAnim();
@@ -186,6 +187,7 @@ private:
     QList <QUrl> a_files; //Conteneur pour récupérer l'url des fichiers audio séléctionnés par explorer
     neuPlaylist a_mediaPlaylist;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
+    bool a_isFrameless;
     bool a_hasToSavePlaylistLater;
     bool a_wasPrevious;
     bool a_hasToStartupPlaylist;

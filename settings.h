@@ -17,6 +17,7 @@ private slots:
     void changeMusicPath();
     void popupRNlib();
     void popupStaticlib();
+    void popupFramelessWindow();
     void setLibrary();
     void setSkin(int index);
     void changeBg();

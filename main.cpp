@@ -1,6 +1,7 @@
 #include "player.h"
 #include "skin.h"
 #include "initialconfig.h"
+#include "framelesshelper.h"
 #include <QApplication>
 #include <QStyleFactory>
 #include <QTranslator>
@@ -47,7 +48,8 @@ int main(int argc, char *argv[])
         CleanFusion.load();
     }
     //Ready to show
-
+    //Create the helper so it isn't destroyed right away
+    NcFramelessHelper helper(nullptr);
     QFile fileHandler(".configdone"); //So you config before anything else
     if(!fileHandler.exists()) //If there is the config to do, the config will launch the app when done
     {
@@ -56,7 +58,14 @@ int main(int argc, char *argv[])
     }
     else
     {
-        Player *neuPlayer = new Player();
+        Player *neuPlayer = new Player(nullptr);
+        if(a_settings.value("Additional_Features/framelessWindow", false).toBool())
+        {
+            if(a_settings.value("visibilite").toBool())
+                helper.activateOn(neuPlayer, true);
+            else
+                helper.activateOn(neuPlayer);
+        }
         neuPlayer->show();
     }
     fileHandler.close();

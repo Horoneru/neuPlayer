@@ -243,6 +243,23 @@ pour rafraîchir les médias présents</string>
          <string>Lancer la playlist au démarrage du player</string>
         </property>
        </widget>
+       <widget class="QCheckBox" name="a_framelessCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>210</y>
+          <width>271</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Activez cette action pour avoir une fenêtre plus petite.
+Vous avez besoin de redémarrer le player pour appliquer </string>
+        </property>
+        <property name="text">
+         <string>Utiliser le player sans bordures</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QPushButton" name="a_confirm">
        <property name="geometry">
@@ -621,7 +638,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 120415</string>
+build 150415</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -637,7 +654,7 @@ build 120415</string>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.2.5&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.3.3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
