@@ -21,9 +21,10 @@ SOURCES += main.cpp\
     scrollinginfolabel.cpp \
     neuplaylist.cpp \
     skin.cpp \
-    fadeoutwindow.cpp \
     fadeanimmanager.cpp \
-    slider.cpp
+    slider.cpp \
+    framelesshelper.cpp \
+    fadewindow.cpp
 
 HEADERS  += player.h \
     playlist.h \
@@ -33,9 +34,10 @@ HEADERS  += player.h \
     scrollinginfolabel.h \
     neuplaylist.h \
     skin.h \
-    fadeoutwindow.h \
     fadeanimmanager.h \
-    slider.h
+    slider.h \
+    framelesshelper.h \
+    fadewindow.h
 
 FORMS    += player.ui \
     playlist.ui \
