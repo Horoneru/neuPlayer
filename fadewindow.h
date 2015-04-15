@@ -7,7 +7,7 @@
 #include <QWindow>
 #include <QPropertyAnimation>
 
-/*   Convenience class to fade out easily windows
+/*   Convenience class to fade easily windows
  *   Created by Horoneru the 30/03/15
 */
 
