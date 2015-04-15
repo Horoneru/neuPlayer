@@ -16,7 +16,6 @@
         <file>Ressources/previousbtn_onHover.png</file>
         <file>Ressources/previousdarkbtn.png</file>
         <file>Ressources/previousdarkbtn_onHover.png</file>
-        <file>Ressources/roundedmenubtn.png</file>
         <file>Ressources/roundedmenubtn_onHover.png</file>
         <file>Ressources/roundedmenudarkbtn.png</file>
         <file>Ressources/roundedmenudarkbtn_onHover.png</file>
@@ -45,5 +44,14 @@
         <file>Ressources/neucustombackgroundwhite.jpg</file>
         <file>Ressources/backgroundpreviewcustomwhite.jpg</file>
         <file>Ressources/skinpreviewcustomlight.jpg</file>
+        <file>Ressources/closeButton.png</file>
+        <file>Ressources/closeButtonDark.png</file>
+        <file>Ressources/hideButton.png</file>
+        <file>Ressources/hideButtonDark.png</file>
+        <file>Ressources/roundedmenubtn.png</file>
+        <file>Ressources/closeButton_onHover.png</file>
+        <file>Ressources/closeButtonDark_onHover.png</file>
+        <file>Ressources/hideButton_onHover.png</file>
+        <file>Ressources/hideButtonDark_onHover.png</file>
     </qresource>
 </RCC>
