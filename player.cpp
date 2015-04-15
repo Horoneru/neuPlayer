@@ -1110,9 +1110,6 @@ void Player::showPlaylist()
         a_isPlaylistOpen = true;
         if(a_mediaPlaylist.mediaCount()!= 0)
             playlist = new Playlist(&a_mediaPlaylist, a_mediaPlaylist.currentIndex(), this, &a_coverArt, a_titre, a_isPlaying, this);
-        else if(neu->media().isNull())
-            playlist = new Playlist(&a_mediaPlaylist, -1, this, &a_coverArt, a_titre, a_isPlaying, this);
-
         playlist->show();
     }
     else

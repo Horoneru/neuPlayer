@@ -31,13 +31,19 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
 
     updateList(liste);
 
+
     if(!liste->isEmpty()) //If it's okay
     {
-        ui->a_playlistWidget->scrollToItem(ui->a_playlistWidget->item(index));
-        setCurrentItem(index, cover, title);
-        //Update the icon if the player is paused or stopped
-        if(!playingState)
-            setToPaused(index);
+        if(index == -1) //If it's stopped or something weird is going on
+            ui->a_titleHeader->setText(tr("Séléctionnez une musique à lire"));
+        else //Okay, gogo
+        {
+            ui->a_playlistWidget->scrollToItem(ui->a_playlistWidget->item(index));
+            setCurrentItem(index, cover, title);
+            //Update the icon if the player is paused or stopped
+            if(!playingState)
+                setToPaused(index);
+        }
     }
     else //If not, shows there's nothing
     {
