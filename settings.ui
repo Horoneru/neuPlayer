@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>431</width>
-    <height>336</height>
+    <height>365</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -32,12 +32,15 @@
       <bool>false</bool>
      </property>
      <property name="documentMode">
+      <bool>true</bool>
+     </property>
+     <property name="tabsClosable">
       <bool>false</bool>
      </property>
      <property name="movable">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="settings">
       <attribute name="title">
        <string>Paramètres Généraux</string>
       </attribute>
@@ -288,7 +291,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="skinning">
       <attribute name="title">
        <string>Apparence</string>
       </attribute>
@@ -539,7 +542,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="about">
       <attribute name="title">
        <string>À propos</string>
       </attribute>
