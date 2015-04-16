@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QModelIndex>
 #include <QListWidgetItem>
+#include <QPointer>
 
 #include "neuplaylist.h"
 #include "fadeanimmanager.h"
@@ -40,6 +41,7 @@ public slots:
     void deleteItem();
     void addItemToQueue();
     void viewInfo();
+    void sendNewInfos();
     //Events
     void closeEvent(QCloseEvent *);
     void dragEnterEvent(QDragEnterEvent *event);
@@ -93,6 +95,7 @@ private:
     QAction *a_deleteItemFromQueue;
     QAction *a_addToFav;
     QSettings *a_settings;
+    QMediaPlayer *a_tempPlayer;
 };
 
 #endif // PLAYLIST_H

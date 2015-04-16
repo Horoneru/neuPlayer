@@ -288,7 +288,7 @@ void Playlist::prepareContextMenu()
 {
     if(a_currentIndex != ui->a_playlistWidget->currentRow())
     {
-        a_playlistContextMenu->actions().at(2)->setVisible(false);
+        a_playlistContextMenu->actions().at(2)->setVisible(true);
         a_playlistContextMenu->actions().at(1)->setVisible(true);
         a_playlistContextMenu->actions().at(0)->setVisible(true);
     }
@@ -338,8 +338,35 @@ void Playlist::deleteItem()
 
 void Playlist::viewInfo()
 {
-    scrollToPlaying();
-    a_player->showTagViewer();
+    if(a_currentIndex == ui->a_playlistWidget->currentRow()) //If you're selecting the currently playing music
+        a_player->showTagViewer();
+    else //Let's find a workaround to give you info Qt shouldn't let me get !
+    {
+        a_tempPlayer = new QMediaPlayer(nullptr);
+        connect(a_tempPlayer, SIGNAL(metaDataChanged()), this, SLOT(sendNewInfos()));
+        a_tempPlayer->setMuted(true); //Don't let the user know that this ugly code is happening
+        a_tempPlayer->setMedia(QMediaContent(ui->a_playlistWidget->currentItem()->toolTip()));
+        a_tempPlayer->stop();
+    }
+
+}
+
+void Playlist::sendNewInfos()
+{
+    QList<QString> metaDatas;
+    metaDatas.append(a_tempPlayer->metaData("TrackNumber").toString());
+    metaDatas.append(a_tempPlayer->metaData("Title").toString());
+    metaDatas.append(a_tempPlayer->metaData("ContributingArtist").toString());
+    metaDatas.append(a_tempPlayer->metaData("AlbumTitle").toString());
+    metaDatas.append(a_tempPlayer->metaData("Year").toString());
+    metaDatas.append(a_tempPlayer->metaData("Genre").toString());
+
+    //Load it now !
+    QPixmap coverArt = QPixmap::fromImage(QImage(a_tempPlayer->metaData("ThumbnailImage").value<QImage>()));
+    QPointer<TagViewer> TagWindow = new TagViewer(metaDatas, &coverArt, this);
+    a_tempPlayer->deleteLater();
+    a_tempPlayer = nullptr;
+    TagWindow->show();
 }
 
 void Playlist::findItemVisibilityHandler()
