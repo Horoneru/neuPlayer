@@ -22,9 +22,8 @@ void TagViewer::setupInfos(QPixmap *cover)
     ui->a_album->setToolTip(a_metas.at(3));
     ui->a_year->setText(a_metas.at(4));
     ui->a_genre->setText(a_metas.at(5));
-    ui->a_coverArt->setPixmap(*cover);
-    if(ui->a_coverArt->pixmap()->isNull())
-        ui->a_coverArt->setText("<i> No cover art </i>");
+    if(!cover->isNull())
+        ui->a_coverArt->setPixmap(*cover);
 }
 TagViewer::~TagViewer()
 {
