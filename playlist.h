@@ -53,7 +53,7 @@ public:
     void setupActions();
     void setupMode();
     /*Setters and getters */
-    void setCurrentItem(int index, QPixmap *cover, QString title);
+    void setCurrentItem(int index, QPixmap *cover, QString title, bool playing);
     //Icon
     void setToPlaying(int index);
     void setToPaused(int index);

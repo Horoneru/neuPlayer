@@ -700,7 +700,7 @@ void Player::openMedia()
         if(a_isPlaylistOpen)
         {
             a_mediaPlaylist.setCurrentIndex(0);
-            playlist->setCurrentItem(0, &a_coverArt, a_titre);
+            playlist->setCurrentItem(0, &a_coverArt, a_titre, true);
             playlist->updateList(&a_mediaPlaylist, true);
         }
     }
@@ -764,7 +764,7 @@ void Player::setMeta()
         a_settings->setValue("currentTrack", a_lastIndex);
          }
     if(a_isPlaylistOpen)
-        playlist->setCurrentItem(a_mediaPlaylist.currentIndex(), &a_coverArt, a_titre);
+        playlist->setCurrentItem(a_mediaPlaylist.currentIndex(), &a_coverArt, a_titre, a_isPlaying);
     updateFadeinSpeed();
     Timer.start();
 }
