@@ -320,7 +320,7 @@ QSlider::handle:horizontal {
      <rect>
       <x>100</x>
       <y>20</y>
-      <width>25</width>
+      <width>28</width>
       <height>29</height>
      </rect>
     </property>
@@ -331,9 +331,9 @@ QSlider::handle:horizontal {
    <widget class="QLabel" name="a_duration">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>252</x>
       <y>20</y>
-      <width>25</width>
+      <width>28</width>
       <height>29</height>
      </rect>
     </property>
