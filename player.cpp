@@ -533,7 +533,7 @@ void Player::pauseMedia()
 
 void Player::forwardMedia()
 {
-    if(!a_canChangeMusic)
+    if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0 )
         return;
     a_lastIndex = a_mediaPlaylist.currentIndex();
     a_mediaPlaylist.next();
@@ -568,7 +568,7 @@ void Player::forwardAnim()
 
 void Player::previousMedia()
 {
-    if(!a_canChangeMusic)
+    if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0)
         return;
     a_lastIndex = a_mediaPlaylist.currentIndex();
     a_mediaPlaylist.previous();
