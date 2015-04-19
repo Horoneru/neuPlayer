@@ -710,7 +710,6 @@ void Player::setMeta()
 {
     //New track, we start at 0 secs !
     a_secondesPasse = 0; //For infos
-    a_currentTrackTime = 0, a_currentTrackMinutes = 0; //For progress display
     // On check pour savoir si les metas sont nulles ou avec une chaine vide pour avoir une donnée correcte à afficher
     if(!neu->metaData("Title").isNull() && !neu->metaData("Title").operator ==(""))
         a_titre = neu->metaData("Title").toString();
@@ -873,37 +872,41 @@ void Player::update_info()
         updateLabel(a_titre);
         fadeInLabel();
     }
-
-    if(a_currentTrackTime == 60)
-    {
-        a_currentTrackTime = 0;
-        a_currentTrackMinutes++;
-        //Pour avoir ce fichu 0 en plus quand il n'y a pas encore de dizaine !
-        if(a_currentTrackTime < 10)
-            ui->a_currenttime->setText(QString::number(a_currentTrackMinutes) + ":0" + QString::number(a_currentTrackTime));
-        else
-            ui->a_currenttime->setText(QString::number(a_currentTrackMinutes) + ":" + QString::number(a_currentTrackTime));
-    }
-    if(a_isPlaying) //The update_info is now called even when paused so it's a guard
-        a_currentTrackTime++;
 }
     /*///////SliderBar Section///////*/
 void Player::UpdateProgress(qint64 pos)
 {
     a_progressSlider->setValue(pos);
+    updateProgressDisplay(pos, true);
+}
+
+//This method updates the seconds and minutes displayed when playing and if isProgress is false it will update the duration (on_durationChanged event)
+void Player::updateProgressDisplay(qint64 pos, bool isProgress)
+{
     pos /= 1000;
-    a_currentTrackMinutes = 0;
-    // cf setMeta()
+    int minutes = 0;
+    // Fait en sorte d'update le label de temps actuel
     while (pos % 60 != pos)
     {
         pos -= 60;
-        a_currentTrackMinutes++;
+        minutes++;
     }
-    a_currentTrackTime = pos;
-    if(a_currentTrackTime < 10)
-        ui->a_currenttime->setText(QString::number(a_currentTrackMinutes) + ":0" + QString::number(a_currentTrackTime));
+    //duration vaut maintenant les secondes restantes...
+    int secondes = pos;
+    if(secondes < 10)
+    {
+        if(isProgress)
+            ui->a_currenttime->setText(QString::number(minutes) + ":0" + QString::number(secondes));
+        else
+            ui->a_duration->setText(QString::number(minutes) + ":0" + QString::number(secondes));
+    }
     else
-        ui->a_currenttime->setText(QString::number(a_currentTrackMinutes) + ":" + QString::number(a_currentTrackTime));
+    {
+        if(isProgress)
+            ui->a_currenttime->setText(QString::number(minutes) + ":" + QString::number(secondes));
+        else
+            ui->a_duration->setText(QString::number(minutes) + ":" + QString::number(secondes));
+    }
 }
 
 //Produit grâce à un signal EndOfMedia();
@@ -937,20 +940,7 @@ void Player::seekProgress(int pos)
 void Player::on_durationChanged(qint64 pos)
 {
     a_progressSlider->setMaximum(pos);
-    pos /= 1000;
-    int minutes = 0;
-    // Fait en sorte d'update le label de temps actuel
-    while (pos % 60 != pos)
-    {
-        pos -= 60;
-        minutes++;
-    }
-    //duration vaut maintenant les secondes restantes...
-    int secondes = pos;
-    if(secondes < 10)
-        ui->a_duration->setText(QString::number(minutes) + ":0" + QString::number(secondes));
-    else
-        ui->a_duration->setText(QString::number(minutes) + ":" + QString::number(secondes));
+    updateProgressDisplay(pos, false);
 }
 
 //Accessible par raccourci clavier ALT + Right
@@ -1291,7 +1281,6 @@ void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
         a_mediaPlaylist.addMedia(medias.at(i));
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
-    qDebug() << mediaNumber;
     neu->setPlaylist(&a_mediaPlaylist); //Re-set to update...
     if(a_isPlaylistOpen)
         playlist->updateList(&a_mediaPlaylist);
