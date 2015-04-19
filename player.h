@@ -176,6 +176,7 @@ private:
     void forwardAnim(); //Created as a separate module because we call it at several places
     void previousAnim(); //Created for consistency with forwardAnim();
     void fadeInLabel(); //Convenience function
+    void updateProgressDisplay(qint64 pos, bool isProgress); //Used to update the display of both duration (isProgress = false) and progress (isProgress = true)
 
     //Attributs
     QMediaPlayer *neu; //Dat media player
