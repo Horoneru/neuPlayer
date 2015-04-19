@@ -10,7 +10,7 @@ void Slider::mousePressEvent(QMouseEvent * event)
     initStyleOption(&opt);
     QRect sr = style()->subControlRect(QStyle::CC_Slider, &opt, QStyle::SC_SliderHandle, this);
 
-    if (event->button() == ((Qt::LeftButton) || (Qt::MiddleButton)) &&
+    if (event->button() == (Qt::LeftButton) &&
         sr.contains(event->pos()) == false)
     {
       int newVal;
