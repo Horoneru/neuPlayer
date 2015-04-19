@@ -207,8 +207,6 @@ private:
     int a_lastIndex;
     int a_secondesPasse;
     int a_volumeBeforeMute;
-    int a_currentTrackTime;
-    int a_currentTrackMinutes;
     //The three int delays at which we switch over
     int a_titleCase;
     int a_artistCase;
