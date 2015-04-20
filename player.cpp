@@ -15,10 +15,10 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.3.3 stable 150415 active
+                                            2015 Horoneru                                   1.3.4 stable 200415 active
       TODO
       à faire : (/ ordre d'importance)
-      > Updater (HIGH PRIORITY, started)
+      > Updater (HIGH PRIORITY, polishing it)
       > add to fav au niveau playlist (started)
       > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
@@ -26,7 +26,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.3.3");
+    QApplication::setApplicationVersion("1.3.4");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
