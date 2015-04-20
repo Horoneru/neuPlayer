@@ -115,177 +115,187 @@ pas de transparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="108"/>
+        <location filename="player.ui" line="123"/>
         <source>Jouer (Espace)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="123"/>
-        <location filename="player.ui" line="151"/>
+        <location filename="player.ui" line="138"/>
+        <location filename="player.ui" line="166"/>
         <source>Space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="139"/>
+        <location filename="player.ui" line="154"/>
         <source>Pause (Espace)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="313"/>
-        <location filename="player.ui" line="326"/>
+        <location filename="player.ui" line="328"/>
+        <location filename="player.ui" line="341"/>
         <source>--:--</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="124"/>
+        <location filename="player.cpp" line="137"/>
         <source>Alt + droite ou gauche pour parcourir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="167"/>
+        <location filename="player.ui" line="182"/>
         <source>Volume (cliquez pour muet)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="196"/>
+        <location filename="player.ui" line="211"/>
         <source>Menu (Click droit)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="224"/>
+        <location filename="player.ui" line="239"/>
         <source>Précédent (Ctrl + Gauche)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="240"/>
+        <location filename="player.ui" line="255"/>
         <source>Ctrl+Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="256"/>
+        <location filename="player.ui" line="271"/>
         <source>Suivant (Ctrl + Droite)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.ui" line="272"/>
+        <location filename="player.ui" line="287"/>
         <source>Ctrl+Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="173"/>
+        <location filename="player.ui" line="354"/>
+        <source>Fermer le player (ALT + F4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="player.ui" line="379"/>
+        <source>Réduire le player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="player.cpp" line="186"/>
         <source>Ouvrir des fichiers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="175"/>
+        <location filename="player.cpp" line="188"/>
         <source>Ouvrir la liste de lecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="177"/>
+        <location filename="player.cpp" line="190"/>
         <source>Toujours visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="180"/>
+        <location filename="player.cpp" line="193"/>
         <source>Paramètres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="229"/>
+        <location filename="player.cpp" line="216"/>
         <source>Vitesse de lecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="185"/>
+        <location filename="player.cpp" line="198"/>
         <source>Voir les tags</source>
         <oldsource>Éditez les tags</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="439"/>
+        <location filename="player.cpp" line="448"/>
         <source>Des changements ont été detectés dans votre base depuis la dernière mise à jour de celle-ci.
 Voulez-vous l&apos;actualiser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="595"/>
+        <location filename="player.cpp" line="604"/>
         <source>erreur : Unresolved Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="612"/>
+        <location filename="player.cpp" line="621"/>
         <source>erreur : Network error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="908"/>
+        <location filename="player.cpp" line="920"/>
         <source>Stoppé</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="615"/>
+        <location filename="player.cpp" line="624"/>
         <source>Erreur ! </source>
         <oldsource>(Erreur ! </oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="132"/>
+        <location filename="player.cpp" line="145"/>
         <source>Volume (Ctrl haut ou bas) </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="183"/>
+        <location filename="player.cpp" line="196"/>
         <source>Mélanger la playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="453"/>
+        <location filename="player.cpp" line="462"/>
         <source>Mise à jour librairie...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="456"/>
+        <location filename="player.cpp" line="465"/>
         <source>Aucun média trouvé</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="606"/>
+        <location filename="player.cpp" line="615"/>
         <source>erreur : Format non supporté</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="615"/>
+        <location filename="player.cpp" line="624"/>
         <source>Vous n&apos;avez pas les droits pour accéder à ce fichier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="618"/>
+        <location filename="player.cpp" line="627"/>
         <source>Erreur Critique !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="618"/>
+        <location filename="player.cpp" line="627"/>
         <source>Le service du player est indisponible. Impossible de lire le fichier !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="677"/>
+        <location filename="player.cpp" line="686"/>
         <source>Sélectionnez des médias à lire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="677"/>
+        <location filename="player.cpp" line="686"/>
         <source>Flux audios (*.mp3 *.mp4 *.m4a *.wav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="713"/>
+        <location filename="player.cpp" line="721"/>
         <source>Artiste Inconnu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="717"/>
+        <location filename="player.cpp" line="725"/>
         <source>Album Inconnu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -324,32 +334,37 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="57"/>
+        <location filename="playlist.cpp" line="38"/>
+        <source>Séléctionnez une musique à lire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playlist.cpp" line="60"/>
         <source>Sélectionner un dossier à lire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="59"/>
+        <location filename="playlist.cpp" line="62"/>
         <source>Recharger la bibliothèque</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="70"/>
+        <location filename="playlist.cpp" line="73"/>
         <source>Supprimer de la file d&apos;attente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="72"/>
+        <location filename="playlist.cpp" line="75"/>
         <source>Ajouter à la file d&apos;attente</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="74"/>
+        <location filename="playlist.cpp" line="77"/>
         <source>Voir les informations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="209"/>
+        <location filename="playlist.cpp" line="215"/>
         <source>Ouvrir un répertoire</source>
         <translation type="unfinished"></translation>
     </message>
@@ -362,189 +377,202 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="42"/>
+        <location filename="settings.ui" line="45"/>
         <source>Paramètres Généraux</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="54"/>
+        <location filename="settings.ui" line="57"/>
         <source>Fonctions supplémentaires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="66"/>
+        <location filename="settings.ui" line="69"/>
         <source>Activer le chargement de la bibilothèque au démarrage du player</source>
         <oldsource>Activer le chargement de la bibilothèque au démarrage</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="109"/>
+        <location filename="settings.ui" line="112"/>
         <source>Créer une base de donnée statique (léger)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="143"/>
+        <location filename="settings.ui" line="146"/>
         <source>Créer une base de donnée dynamique (Recommandé)</source>
         <oldsource>Créer une base de données dynamique (Recommandé)</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="217"/>
+        <location filename="settings.ui" line="220"/>
         <source>Activer le Tag Viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="156"/>
+        <location filename="settings.ui" line="159"/>
         <source>Changer base</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="105"/>
+        <location filename="settings.ui" line="108"/>
         <source>Ce mode est plus léger car il ne fait que charger les données musicales.
 En revanche, lors d&apos;une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="138"/>
+        <location filename="settings.ui" line="141"/>
         <source>Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu
 dans le dossier où réside les données musicales, mais il permet d&apos;être tenu au courant lorsque le dossier a été modifié,
 pour rafraîchir les médias présents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="169"/>
+        <location filename="settings.ui" line="172"/>
         <source>Votre base actuelle est : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="201"/>
+        <location filename="settings.ui" line="204"/>
         <source>Sauvegarder la musique en lecture avant de fermer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="230"/>
+        <location filename="settings.ui" line="233"/>
         <source>Actualiser base</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="243"/>
+        <location filename="settings.ui" line="246"/>
         <source>Lancer la playlist au démarrage du player</source>
         <oldsource>Lancer la playlist au démarrage</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="257"/>
-        <location filename="settings.ui" line="301"/>
+        <location filename="settings.ui" line="259"/>
+        <source>Activez cette action pour avoir une fenêtre plus petite.
+Vous avez besoin de redémarrer le player pour appliquer </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settings.ui" line="263"/>
+        <source>Utiliser le player sans bordures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settings.ui" line="277"/>
+        <location filename="settings.ui" line="321"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="270"/>
-        <location filename="settings.ui" line="314"/>
+        <location filename="settings.ui" line="290"/>
+        <location filename="settings.ui" line="334"/>
         <source>Fermer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="276"/>
+        <location filename="settings.ui" line="296"/>
         <source>Apparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="333"/>
+        <location filename="settings.ui" line="353"/>
         <source>Skin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="351"/>
+        <location filename="settings.ui" line="371"/>
         <source>Description Skin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="370"/>
+        <location filename="settings.ui" line="390"/>
         <source>Holo Fusion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="375"/>
+        <location filename="settings.ui" line="395"/>
         <source>Sky Fusion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="412"/>
+        <location filename="settings.ui" line="432"/>
         <source>Image de fond</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="446"/>
+        <location filename="settings.ui" line="466"/>
         <source>Changer l&apos;image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="459"/>
+        <location filename="settings.ui" line="479"/>
         <source>Rétablir défaut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="472"/>
+        <location filename="settings.ui" line="492"/>
         <source>Veuillez séléctionner une image de 400 x 50 px pour un bon rendu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="485"/>
+        <location filename="settings.ui" line="505"/>
         <source>Opacité : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="520"/>
+        <location filename="settings.ui" line="540"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="527"/>
+        <location filename="settings.ui" line="547"/>
         <source>À propos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="621"/>
+        <location filename="settings.ui" line="641"/>
         <source>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 120415</source>
+build 200415</source>
         <oldsource>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 060415</oldsource>
+build 150415</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="640"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.2.5&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.2.3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <location filename="settings.ui" line="660"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.3.4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.3.3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="656"/>
+        <location filename="settings.ui" line="676"/>
         <source>Working dir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="365"/>
+        <location filename="settings.ui" line="385"/>
         <source>Clean Fusion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="389"/>
-        <location filename="settings.ui" line="430"/>
+        <location filename="settings.ui" line="409"/>
+        <location filename="settings.ui" line="450"/>
         <source>Image preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="576"/>
+        <location filename="settings.ui" line="596"/>
+        <location filename="settings.cpp" line="153"/>
+        <location filename="settings.cpp" line="158"/>
         <source>neuPlayer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.ui" line="598"/>
+        <location filename="settings.ui" line="618"/>
         <source>Lecteur multimédia portable créé avec l&apos;envie de délivrer un lecteur
 petit mais puissant sans consommer énormément de ressources.</source>
         <oldsource>Lecteur multimédia portabe créé avec l&apos;envie de délivrer un lecteur
@@ -552,38 +580,48 @@ petit mais puissant sans consommer énormément de ressources.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="124"/>
-        <location filename="settings.cpp" line="139"/>
+        <location filename="settings.cpp" line="126"/>
+        <location filename="settings.cpp" line="141"/>
         <source>Information sur ce mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="124"/>
+        <location filename="settings.cpp" line="126"/>
         <source>Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu dans le dossier où réside les données musicales, mais il permet d&apos;être tenu au courant lorsque le dossier a été modifié, pour rafraîchir les médias présents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="139"/>
+        <location filename="settings.cpp" line="141"/>
         <source>Ce mode est plus léger car il ne fait que charger les données musicales. En revanche, lors d&apos;une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="149"/>
+        <location filename="settings.cpp" line="153"/>
+        <source>Vous devez redémarrer pour utiliser le player sans bordures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settings.cpp" line="158"/>
+        <source>Vous devez redémarrer pour utiliser le player avec ses bordures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settings.cpp" line="165"/>
         <source>Selectionnez votre répertoire de musique</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="213"/>
+        <location filename="settings.cpp" line="229"/>
         <source>Sélectionnez un fond pour le player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="213"/>
+        <location filename="settings.cpp" line="229"/>
         <source>Images (*.jpg *.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="313"/>
+        <location filename="settings.cpp" line="333"/>
         <source>Sauvegarde...</source>
         <translation type="unfinished"></translation>
     </message>
