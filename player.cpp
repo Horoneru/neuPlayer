@@ -15,7 +15,7 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.3.4 stable 200415 active
+                                            2015 Horoneru                                   1.3.5 stable 210415 active
       TODO
       à faire : (/ ordre d'importance)
       > Updater (HIGH PRIORITY, polishing it)
@@ -26,7 +26,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.3.4");
+    QApplication::setApplicationVersion("1.3.5");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -74,6 +74,18 @@ Player::Player(QWidget *parent) :
 
     ui->a_pausebtn->setVisible(false);
 
+    if(a_settings->value("Additional_Features/framelessWindow", false).toBool() == true)
+    {
+        a_isFrameless = true;
+        setFramelessButtonsVisibility(true);
+        a_canClose = false;
+    }
+    else
+    {
+        a_isFrameless = false;
+        setFramelessButtonsVisibility(false);
+    }
+
     setPlaybackRate();
 
     setupConnections();
@@ -87,18 +99,6 @@ Player::Player(QWidget *parent) :
 
     if(a_settings->value("playlistAtStartup").toBool() == true)
         a_hasToStartupPlaylist = true; //Will trigger the playlist startup
-
-    if(a_settings->value("Additional_Features/framelessWindow", false).toBool())
-    {
-        a_isFrameless = true;
-        setFramelessButtonsVisibility(true);
-        a_canClose = false;
-    }
-    else
-    {
-        a_isFrameless = false;
-        setFramelessButtonsVisibility(false);
-    }
 
     if(a_isRandomMode)
     {
