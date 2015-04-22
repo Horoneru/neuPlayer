@@ -53,5 +53,7 @@
         <file>Ressources/closeButtonDark_onHover.png</file>
         <file>Ressources/hideButton_onHover.png</file>
         <file>Ressources/hideButtonDark_onHover.png</file>
+        <file>Ressources/neuPlayerv2.png</file>
+        <file>Ressources/updater-icon.png</file>
     </qresource>
 </RCC>
