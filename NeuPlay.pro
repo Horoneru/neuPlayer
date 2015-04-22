@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     fadeanimmanager.cpp \
     slider.cpp \
     framelesshelper.cpp \
-    fadewindow.cpp
+    fadewindow.cpp \
+    updaterhandler.cpp
 
 HEADERS  += player.h \
     playlist.h \
@@ -37,7 +38,8 @@ HEADERS  += player.h \
     fadeanimmanager.h \
     slider.h \
     framelesshelper.h \
-    fadewindow.h
+    fadewindow.h \
+    updaterhandler.h
 
 FORMS    += player.ui \
     playlist.ui \
@@ -49,4 +51,3 @@ RESOURCES += \
     assets.qrc
 
 TRANSLATIONS = neuplayer_en.ts neuplayer_fr.ts
-OTHER_FILES +=
