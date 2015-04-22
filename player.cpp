@@ -15,18 +15,19 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.3.5 stable 210415 active
+                                            2015 Horoneru                                   1.4.0 stable 220415 active
       TODO
       à faire : (/ ordre d'importance)
-      > Updater (HIGH PRIORITY, polishing it)
       > add to fav au niveau playlist (started)
+      > Fade-in/Fade-out when starting/pausing/between songs
+      - Further skinning options !
       > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
       - Re-design et occuper l'espace alloué par le borderless (DONE)
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.3.5");
+    QApplication::setApplicationVersion("1.4.0");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -207,7 +208,6 @@ void Player::setupObjects()
     //Timer that delays the time when the user can shuffle again
     grantShuffleAgainTimer.setSingleShot(true);
 }
-
 
 void Player::setupMenus()
 {
@@ -499,6 +499,8 @@ void Player::setupNewLibrary()
 
 void Player::playMedia()
 {
+    if(a_isStarting)
+        return; // Not ready yet !
     /* Those silly disconnect-reconnect are made so the openMedia(); method isn't called multiple times.
      * For whatever reasons if I don't do it, it will be called about 2 to 4 times ! */
 
@@ -597,6 +599,7 @@ void Player::previousAnim()
 QMediaPlayer::Error Player::errorHandling(QMediaPlayer::Error error)
 {
     int current;
+    bool stateBefore = a_isPlaying;
     switch (error) {
     case QMediaPlayer::NoError:
         break;
@@ -608,7 +611,11 @@ QMediaPlayer::Error Player::errorHandling(QMediaPlayer::Error error)
         a_mediaPlaylist.removeMedia(current);
         if(a_isPlaylistOpen)
             playlist->updateList(&a_mediaPlaylist);
+        neu->setPlaylist(&a_mediaPlaylist);
         a_mediaPlaylist.setCurrentIndex(current - 2);
+        a_isPlaying = stateBefore;
+        if(a_isPlaying)
+            playMedia();
         a_hasToSavePlaylistLater = true; //Prevent error from coming back.
         break;
     case QMediaPlayer::FormatError :
@@ -653,7 +660,6 @@ void Player::statusChanged(QMediaPlayer::MediaStatus status)
         }
         break;
     case QMediaPlayer::EndOfMedia:
-        a_isPlaying = false;
         forwardMedia();
     }
 }
@@ -872,6 +878,9 @@ void Player::update_info()
         updateLabel(a_titre);
         fadeInLabel();
     }
+    if(!a_menu->isVisible() && a_alwaysOnTopHandler->isChecked()) //If we're always on top, this assure that we're always on top, even if on Windows explorer gets on top
+        if(!a_isPlaylistOpen) //Raising also raises the widgets of the playlist... Can be weird if you're using it's context menus...
+            this->raise();
 }
     /*///////SliderBar Section///////*/
 void Player::UpdateProgress(qint64 pos)
@@ -1120,7 +1129,7 @@ void Player::showTagViewer()
     if(neu->media().isNull())
         return;
 
-    /* Add meta datas to a list which will be treated by the tageditor constructor */
+    /* Add meta datas to a list which will be treated by the tagViewer constructor */
     QList<QString> metaDatas;
     metaDatas.append(neu->metaData("TrackNumber").toString());
     metaDatas.append(a_titre);

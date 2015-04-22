@@ -218,6 +218,7 @@ void Playlist::setFolder()
 
     if(!selectDir.isEmpty())
     {
+        setCursor(Qt::BusyCursor);
         if(a_currentIndex != 0) //Helps not to crash. Each index is reset to 0 so there isn't any out of bound.
         {
             a_player->setIndexOfThePlayer(0, false);
@@ -226,6 +227,7 @@ void Playlist::setFolder()
         QList <QUrl> urlList = a_playlist->update(selectDir);
         if(!urlList.empty()) //Don't set anything if there wasn't any content
             a_player->updatePlaylistOfThePlayer(urlList, true);
+        setCursor(Qt::ArrowCursor);
      }
 
 }
