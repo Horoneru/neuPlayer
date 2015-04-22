@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Setup</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="assets.qrc">
+    <normaloff>:/Ressources/neuPlayerv2.png</normaloff>:/Ressources/neuPlayerv2.png</iconset>
+  </property>
   <widget class="QLabel" name="a_welcome">
    <property name="geometry">
     <rect>

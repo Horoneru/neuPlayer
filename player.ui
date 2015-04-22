@@ -30,7 +30,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="assets.qrc">
-    <normaloff>:/Ressources/neuPlayer.png</normaloff>:/Ressources/neuPlayer.png</iconset>
+    <normaloff>:/Ressources/neuPlayerv2.png</normaloff>:/Ressources/neuPlayerv2.png</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
