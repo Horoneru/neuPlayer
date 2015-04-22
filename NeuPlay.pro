@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 RC_FILE = win-icon.rc
-TARGET = NeuPlayer
+TARGET = neuPlayer
 TEMPLATE = app
 
 
