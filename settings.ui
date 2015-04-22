@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>431</width>
-    <height>365</height>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -552,8 +552,8 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
        </property>
        <property name="geometry">
         <rect>
-         <x>95</x>
-         <y>18</y>
+         <x>100</x>
+         <y>60</y>
          <width>50</width>
          <height>50</height>
         </rect>
@@ -568,7 +568,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="assets.qrc">:/Ressources/neuPlayer.png</pixmap>
+        <pixmap resource="assets.qrc">:/Ressources/neuPlayerv2.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -580,8 +580,8 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
       <widget class="QLabel" name="label_2">
        <property name="geometry">
         <rect>
-         <x>145</x>
-         <y>28</y>
+         <x>150</x>
+         <y>70</y>
          <width>141</width>
          <height>29</height>
         </rect>
@@ -602,8 +602,8 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>70</y>
+         <x>25</x>
+         <y>112</y>
          <width>371</width>
          <height>61</height>
         </rect>
@@ -625,8 +625,8 @@ petit mais puissant sans consommer énormément de ressources.</string>
       <widget class="QLabel" name="label_4">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>140</y>
+         <x>25</x>
+         <y>182</y>
          <width>371</width>
          <height>91</height>
         </rect>
@@ -641,7 +641,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 200415</string>
+build 220415</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -657,23 +657,46 @@ build 200415</string>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.3.4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v1.4.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QPushButton" name="TEMP">
+      <widget class="QPushButton" name="a_checkUpdatesBtn">
        <property name="geometry">
         <rect>
-         <x>330</x>
+         <x>264</x>
          <y>20</y>
-         <width>75</width>
+         <width>141</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
-        <string>Working dir</string>
+        <string>Vérifier les mises à jour</string>
+       </property>
+       <property name="icon">
+        <iconset resource="assets.qrc">
+         <normaloff>:/Ressources/updater-icon.png</normaloff>:/Ressources/updater-icon.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="a_gotoWorkingDir">
+       <property name="geometry">
+        <rect>
+         <x>2</x>
+         <y>20</y>
+         <width>131</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Répertoire du programme</string>
        </property>
       </widget>
      </widget>
