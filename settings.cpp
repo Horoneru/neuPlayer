@@ -2,7 +2,7 @@
 #include "ui_settings.h"
 
 Settings::Settings(Player *Player, QWidget *parent) :
-    QDialog(parent), a_isNewPath(false),
+    QDialog(parent), a_isNewPath(false), a_isUpdateHandlerAlreadyCalled(false),
     ui(new Ui::Settings)
 {
     ui->setupUi(this);
@@ -78,7 +78,8 @@ void Settings::setupConnections()
     connect(ui->a_confirm, SIGNAL(clicked()), this, SLOT(confirm()));
     connect(ui->a_confirm_2, SIGNAL(clicked()), this, SLOT(confirm()));
     connect(ui->a_framelessCheck, SIGNAL(clicked()), this, SLOT(popupFramelessWindow()));
-    connect(ui->TEMP, SIGNAL(clicked()), this, SLOT(TEMP()));
+    connect(ui->a_gotoWorkingDir, SIGNAL(clicked()), this, SLOT(gotoWorkingDir()));
+    connect(ui->a_checkUpdatesBtn, SIGNAL(clicked()), this, SLOT(checkUpdates()));
 }
 
 
@@ -346,11 +347,19 @@ void Settings::setLibrary()
      }
 }
 
-void Settings::TEMP()
+void Settings::gotoWorkingDir()
 {
-    QString workingdir = QDir::currentPath();
-    QUrl path(workingdir);
-    QDesktopServices::openUrl(path);
+    QDesktopServices::openUrl(QUrl::fromLocalFile("")); //Cross-platform solution, always works.
+}
+
+void Settings::checkUpdates()
+{
+    if(!a_isUpdateHandlerAlreadyCalled)
+    {
+        a_handler = new UpdaterHandler(this);
+        a_isUpdateHandlerAlreadyCalled = true;
+    }
+    a_handler->start("neuPlayer", QApplication::applicationVersion(), "http://sd-2.archive-host.com/membres/up/16630996856616518/version.txt", "http://sd-2.archive-host.com/membres/up/16630996856616518/neuPlayer.exe", "show");
 }
 
 Settings::~Settings()

@@ -5,6 +5,7 @@
 #include <QDirIterator>
 #include "player.h"
 #include "skin.h"
+#include "updaterhandler.h"
 namespace Ui {
 class Settings;
 }
@@ -24,7 +25,8 @@ private slots:
     void reloadDefaultBg();
     void updateOpacity(int value);
     void confirm(); //Master method : apply everything and close when pressing OK
-    void TEMP(); /*! REMOVE ME WHEN FINISHED */
+    void gotoWorkingDir();
+    void checkUpdates();
 public:
     explicit Settings(Player *Player, QWidget *parent = 0);
     ~Settings();
@@ -38,6 +40,8 @@ private:
     QSettings *a_settings;
     Player *passerelle;
     QString a_bgPath;
+    UpdaterHandler *a_handler;
+    bool a_isUpdateHandlerAlreadyCalled;
     bool a_isLibraryAtStartchecked;
     bool a_isDynamicLibChecked;
     bool a_isStaticLibChecked;
