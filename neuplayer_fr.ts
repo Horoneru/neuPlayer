@@ -9,54 +9,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="31"/>
+        <location filename="initialconfig.ui" line="35"/>
         <source>Bienvenue ! </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="55"/>
+        <location filename="initialconfig.ui" line="59"/>
         <source>Cet assistant vous aidera à paramétrer rapidement neuPlayer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="79"/>
+        <location filename="initialconfig.ui" line="83"/>
         <source>Utiliser les paramètres recommandés</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="100"/>
+        <location filename="initialconfig.ui" line="104"/>
         <source>Configurer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="153"/>
+        <location filename="initialconfig.ui" line="157"/>
         <source>Lancer l&apos;application ! </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="169"/>
+        <location filename="initialconfig.ui" line="173"/>
         <source>Lancer la playlist au démarrage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="182"/>
+        <location filename="initialconfig.ui" line="186"/>
         <source>Activer ou non le chargement de la librairie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="203"/>
+        <location filename="initialconfig.ui" line="207"/>
         <location filename="initialconfig.cpp" line="221"/>
         <source>Si le lecteur n&apos;affiche pas vos musiques
 configurez-le manuellement dans les paramètres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="251"/>
+        <location filename="initialconfig.ui" line="255"/>
         <source>100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.ui" line="264"/>
+        <location filename="initialconfig.ui" line="268"/>
         <source>Chemin par défaut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -137,7 +137,7 @@ pas de transparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="137"/>
+        <location filename="player.cpp" line="138"/>
         <source>Alt + droite ou gauche pour parcourir</source>
         <translation type="unfinished"></translation>
     </message>
@@ -182,22 +182,22 @@ pas de transparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="186"/>
+        <location filename="player.cpp" line="187"/>
         <source>Ouvrir des fichiers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="188"/>
+        <location filename="player.cpp" line="189"/>
         <source>Ouvrir la liste de lecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="190"/>
+        <location filename="player.cpp" line="191"/>
         <source>Toujours visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="193"/>
+        <location filename="player.cpp" line="194"/>
         <source>Paramètres</source>
         <translation type="unfinished"></translation>
     </message>
@@ -207,7 +207,7 @@ pas de transparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="198"/>
+        <location filename="player.cpp" line="199"/>
         <source>Voir les tags</source>
         <oldsource>Éditez les tags</oldsource>
         <translation type="unfinished"></translation>
@@ -219,33 +219,33 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="604"/>
+        <location filename="player.cpp" line="607"/>
         <source>erreur : Unresolved Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="621"/>
+        <location filename="player.cpp" line="628"/>
         <source>erreur : Network error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="920"/>
+        <location filename="player.cpp" line="929"/>
         <source>Stoppé</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="624"/>
+        <location filename="player.cpp" line="631"/>
         <source>Erreur ! </source>
         <oldsource>(Erreur ! </oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="145"/>
+        <location filename="player.cpp" line="146"/>
         <source>Volume (Ctrl haut ou bas) </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="196"/>
+        <location filename="player.cpp" line="197"/>
         <source>Mélanger la playlist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -260,42 +260,42 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="615"/>
+        <location filename="player.cpp" line="622"/>
         <source>erreur : Format non supporté</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="624"/>
+        <location filename="player.cpp" line="631"/>
         <source>Vous n&apos;avez pas les droits pour accéder à ce fichier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="627"/>
+        <location filename="player.cpp" line="634"/>
         <source>Erreur Critique !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="627"/>
+        <location filename="player.cpp" line="634"/>
         <source>Le service du player est indisponible. Impossible de lire le fichier !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="686"/>
+        <location filename="player.cpp" line="692"/>
         <source>Sélectionnez des médias à lire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="686"/>
+        <location filename="player.cpp" line="692"/>
         <source>Flux audios (*.mp3 *.mp4 *.m4a *.wav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="721"/>
+        <location filename="player.cpp" line="727"/>
         <source>Artiste Inconnu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="725"/>
+        <location filename="player.cpp" line="731"/>
         <source>Album Inconnu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -535,22 +535,27 @@ Vous avez besoin de redémarrer le player pour appliquer </source>
         <source>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 200415</source>
+build 220415</source>
         <oldsource>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 150415</oldsource>
+build 200415</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="settings.ui" line="660"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.3.4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.3.3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v1.4.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#7d86ff;&quot;&gt;V 1.3.4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="settings.ui" line="676"/>
-        <source>Working dir</source>
+        <source>Vérifier les mises à jour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settings.ui" line="699"/>
+        <source>Répertoire du programme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -566,8 +571,8 @@ build 150415</oldsource>
     </message>
     <message>
         <location filename="settings.ui" line="596"/>
-        <location filename="settings.cpp" line="153"/>
-        <location filename="settings.cpp" line="158"/>
+        <location filename="settings.cpp" line="154"/>
+        <location filename="settings.cpp" line="159"/>
         <source>neuPlayer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -580,48 +585,48 @@ petit mais puissant sans consommer énormément de ressources.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="126"/>
-        <location filename="settings.cpp" line="141"/>
+        <location filename="settings.cpp" line="127"/>
+        <location filename="settings.cpp" line="142"/>
         <source>Information sur ce mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="126"/>
+        <location filename="settings.cpp" line="127"/>
         <source>Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu dans le dossier où réside les données musicales, mais il permet d&apos;être tenu au courant lorsque le dossier a été modifié, pour rafraîchir les médias présents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="141"/>
+        <location filename="settings.cpp" line="142"/>
         <source>Ce mode est plus léger car il ne fait que charger les données musicales. En revanche, lors d&apos;une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="153"/>
+        <location filename="settings.cpp" line="154"/>
         <source>Vous devez redémarrer pour utiliser le player sans bordures</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="158"/>
+        <location filename="settings.cpp" line="159"/>
         <source>Vous devez redémarrer pour utiliser le player avec ses bordures</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="165"/>
+        <location filename="settings.cpp" line="166"/>
         <source>Selectionnez votre répertoire de musique</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="229"/>
+        <location filename="settings.cpp" line="230"/>
         <source>Sélectionnez un fond pour le player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="229"/>
+        <location filename="settings.cpp" line="230"/>
         <source>Images (*.jpg *.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="333"/>
+        <location filename="settings.cpp" line="334"/>
         <source>Sauvegarde...</source>
         <translation type="unfinished"></translation>
     </message>
