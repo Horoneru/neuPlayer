@@ -1,11 +1,10 @@
 # neuPlayer
 - <i>This software is available in French and english. It'll automatically adjust for you when executing it </i>
-
 ##Downloads
 
-A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 010415)
+A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 220415)
 
-There will be more links available for other OS when I'll be reaching a version which seems stable enough and meeting certain criterias I fixed.
+There will be more links available for other OS soon.
 
 
 ##Presentation 
@@ -23,9 +22,8 @@ Its main goals are :
   - <b>Portability</b>
   - <b>Simplicity</b>
   - <b>Customization</b>
-  
- 
- With those in mind, I'm trying to do a player which can possibly be the daily-driver of most people who just start the player and let the music play while they work.
+
+With those in mind, I'm trying to do a player which can possibly be the daily-driver of most people who just start the player and let the music play while they work.
 
 ##Features
  As of 10/03/15, I decided to make this project public on GitHub. Right now it features : 
@@ -41,20 +39,19 @@ Its main goals are :
  
  - 1.0 x, 0.5x, 2.0x playback
  
- - <b>Skinning ! </b>
+ - <b>Skinning !</b>
  
- And more coming soon...
+ - Frameless Window capabilities !
+
+ - Smooth animations
 
 
 ## How to compile
 
 If you want to compile neuPlayer manually you just need [Qt](https://www.qt.io/) (version 5.2.0 or above is required)
 
-To compile it, run `qmake` and `make`.
+To compile it, run `qmake`and build
  
 ## License
 **This software is licensed under GNU GPL version 3.**
 You can find the full text of the license [here](LICENSE.txt).
- 
-  
-
