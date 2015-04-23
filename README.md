@@ -1,5 +1,6 @@
 # neuPlayer
-- <i>This software is available in French and english. It'll automatically adjust for you when executing it </i>
+<i>This software is available in French and english. It'll automatically adjust for you when executing it </i>
+ 
 ##Downloads
 
 A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 220415)
