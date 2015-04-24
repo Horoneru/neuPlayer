@@ -222,16 +222,16 @@ private:
     const QIcon a_volumeMutedIcon, a_volumeMutedDarkIcon;
     const QPixmap a_neuDarkBg, a_neuLightBg, a_neuLightCustombg;
 
-    ScrollingInfoLabel *a_scrollingLabel;
+    ScrollingInfoLabel *a_scrollingLabel; //Custom label
     QPixmap a_coverArt;
     QPropertyAnimation *a_titleAnimate;
-    QPropertyAnimation *a_fadeOut;
     QGraphicsOpacityEffect *a_infoFadein;
     QPropertyAnimation *a_infoFadeAnim;
     //Regular timer, updated each second
     QTimer Timer;
     //The timer which sets the type when it timeouts
     QTimer setTypeTimer;
+    //The timers slowing down operations so there's no crash
     QTimer grantChangeTimer;
     QTimer grantShuffleAgainTimer;
     /*          Permet l'utilisation de raccourcis clavier

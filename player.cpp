@@ -667,7 +667,7 @@ void Player::statusChanged(QMediaPlayer::MediaStatus status)
 void Player::stateChanged(QMediaPlayer::State state)
 {
     //Handle the update of the bool a_isPlaying
-    //Permits an up-to-date icon in the playlist
+    //Permits an up-to-date icon in the playlist and an info on what is the player's playing state
     switch(state)
     {
     case QMediaPlayer::PlayingState:
