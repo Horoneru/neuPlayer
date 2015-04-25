@@ -48,7 +48,7 @@ public slots:
     void saveCurrentPlaylist();
     //Basic Media Controls
     void playMedia();
-    QMediaPlayer::Error errorHandling(QMediaPlayer::Error error);
+    void errorHandling(QMediaPlayer::Error error);
     void statusChanged(QMediaPlayer::MediaStatus status);
     void stateChanged(QMediaPlayer::State state);
     void setType();
@@ -84,14 +84,12 @@ public slots:
     void showSettings();
     void showPlaylist();
     void showTagViewer(); //Uses QList <QString> for the sake of consistency
-    //Load plugins selected
-    void setupPlugins();
+
     void loadSkin();
     //Events
     void closeEvent(QCloseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event); //Autorise le drop
     void dropEvent(QDropEvent *event); //Effectue le traitement du drop
-    void resizeEvent(QResizeEvent *event);
     void delayedClose();
 
 signals:
@@ -113,6 +111,12 @@ public:
     void setPlaylistOpen(bool open)
     {
         a_isPlaylistOpen = open;
+        if(!a_isPlaylistOpen)
+            a_playlist = nullptr;
+    }
+    void setSettingsOpen(bool open)
+    {
+        a_isSettingsOpen = open;
     }
 
     void setIndexOfThePlayer(int index, bool play);
@@ -171,6 +175,8 @@ private:
     void setupObjects();
     void setupMenus();
     void setupConnections();
+    //Load plugins selected
+    void setupPlugins();
     void setFramelessButtonsVisibility(bool visible);
 
     void forwardAnim(); //Created as a separate module because we call it at several places
@@ -182,10 +188,8 @@ private:
     QMediaPlayer *neu; //Dat media player
     Slider *a_progressSlider;
     Slider *a_volumeSlider;
-    Playlist *playlist;
+    Playlist *a_playlist;
     QSettings *a_settings; //Contient les settings de l'application
-    QString a_musicUserPath; // Contient un string de l'url du dossier musical de l'utilisateur
-    QList <QUrl> a_files; //Conteneur pour récupérer l'url des fichiers audio séléctionnés par explorer
     neuPlaylist a_mediaPlaylist;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
     bool a_isFrameless;
@@ -194,6 +198,7 @@ private:
     bool a_hasToStartupPlaylist;
     bool a_deleteTriggered;
     bool a_recoveredProgress;
+    bool a_isSettingsOpen;
     bool a_isPlaylistOpen;
     bool a_isRandomMode;
     bool a_isLoopPlaylistMode;
@@ -247,7 +252,6 @@ private:
     QAction *halfrate;
     QAction *doublerate;
     int a_playbackState;
-    QList <QAction> actions;
     QMenu *a_menu;
     QAction *a_openMedia;
     QAction *a_accessSettings;

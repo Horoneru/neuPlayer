@@ -1,6 +1,7 @@
 #include "neuplaylist.h"
 
-neuPlaylist::neuPlaylist(QObject *parent)
+neuPlaylist::neuPlaylist(QObject *parent) :
+    QMediaPlaylist(parent)
 {
     a_listFilter << "*.wav";
     a_listFilter << "*.mp3";

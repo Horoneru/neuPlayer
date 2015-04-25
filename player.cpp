@@ -15,7 +15,7 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.4.0 stable 220415 active
+                                            2015 Horoneru                                   1.4.1 stable 250415 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (started)
@@ -27,7 +27,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.4.0");
+    QApplication::setApplicationVersion("1.4.1");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -36,6 +36,9 @@ Player::Player(QWidget *parent) :
     setupMenus();
     // Bool to control playlist state
     a_isPlaylistOpen = false;
+
+    //Same logic
+    a_isSettingsOpen = false;
 
     //Bool to detect a delete. Used to manage a possible problem after a delete
     a_deleteTriggered = false;
@@ -122,10 +125,12 @@ void Player::setupObjects()
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     resize(a_settings->value("size", QSize(400, 47) ).toSize());
     move(a_settings->value("pos", QPoint(200,200)).toPoint());
-    a_musicUserPath = a_settings->value("mediapath", "").toString();
     a_playbackState = a_settings->value("playbackrate", 0).toInt();
     a_isRandomMode = a_settings->value("random", false).toBool();
     a_isLoopPlaylistMode = a_settings->value("loop", false).toBool();
+
+    //Media Player
+    neu = new QMediaPlayer(this);
 
     //Prepare custom Sliders
     a_progressSlider = new Slider(ui->centralWidget);
@@ -161,9 +166,6 @@ void Player::setupObjects()
     a_scrollingLabel->setFont(font);
     a_scrollingLabel->setGeometry(QRect(100, 0, 181, 31));
     a_scrollingLabel->setMinimumSize(QSize(170, 30));
-
-    //Media Player
-    neu = new QMediaPlayer(this);
 
     //Raccourcis clavier pour parcourir les éléments du player
     a_advance = new QAction(this);
@@ -443,7 +445,7 @@ void Player::setDarkCSS()
 void Player::checkForNewMedias()
 {
     QFileInfo currentInfo (a_settings->value("mediapath").toString());
-    if(a_settings->value("libModified").toULongLong() < currentInfo.lastModified().toMSecsSinceEpoch())
+    if(a_settings->value("libModified").toLongLong() < currentInfo.lastModified().toMSecsSinceEpoch())
     {
         int reponse = QMessageBox::information(this, "neuPlayer", tr("Des changements ont été detectés dans votre base depuis la dernière mise à jour de celle-ci.\nVoulez-vous l'actualiser ?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Ignore);
         if(reponse == QMessageBox::Yes)
@@ -516,7 +518,7 @@ void Player::playMedia()
         ui->a_pausebtn->setVisible(true);
         connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
         if(a_isPlaylistOpen)
-            playlist->setToPlaying(a_mediaPlaylist.currentIndex());
+            a_playlist->setToPlaying(a_mediaPlaylist.currentIndex());
         return; //We don't want to go to that last line
     }
     connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
@@ -530,7 +532,7 @@ void Player::pauseMedia()
     ui->a_pausebtn->setVisible(false);
     connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     if(a_isPlaylistOpen)
-        playlist->setToPaused(a_mediaPlaylist.currentIndex());
+        a_playlist->setToPaused(a_mediaPlaylist.currentIndex());
 }
 
 void Player::forwardMedia()
@@ -596,7 +598,7 @@ void Player::previousAnim()
     a_titleAnimate->start();
 }
 
-QMediaPlayer::Error Player::errorHandling(QMediaPlayer::Error error)
+void Player::errorHandling(QMediaPlayer::Error error)
 {
     int current;
     bool stateBefore = a_isPlaying;
@@ -610,7 +612,7 @@ QMediaPlayer::Error Player::errorHandling(QMediaPlayer::Error error)
         qDebug() << a_mediaPlaylist.media(current).canonicalUrl();
         a_mediaPlaylist.removeMedia(current);
         if(a_isPlaylistOpen)
-            playlist->updateList(&a_mediaPlaylist);
+            a_playlist->updateList(&a_mediaPlaylist);
         neu->setPlaylist(&a_mediaPlaylist);
         a_mediaPlaylist.setCurrentIndex(current - 2);
         a_isPlaying = stateBefore;
@@ -635,7 +637,6 @@ QMediaPlayer::Error Player::errorHandling(QMediaPlayer::Error error)
         break;
     }
     a_isPlaying = false;
-    return error;
 }
 
 void Player::statusChanged(QMediaPlayer::MediaStatus status)
@@ -689,15 +690,15 @@ void Player::showMenu()
 
 void Player::openMedia()
 {
-    a_files = QFileDialog::getOpenFileUrls(this, tr("Sélectionnez des médias à lire"), (QStandardPaths::locate(QStandardPaths::MusicLocation, QString(), QStandardPaths::LocateDirectory)) , tr("Flux audios (*.mp3 *.mp4 *.m4a *.wav)"));
-    if(a_files.isEmpty()) //It was a mistake I guess, so don't do anything
+    QList <QUrl> files = QFileDialog::getOpenFileUrls(this, tr("Sélectionnez des médias à lire"), (QStandardPaths::locate(QStandardPaths::MusicLocation, QString(), QStandardPaths::LocateDirectory)) , tr("Flux audios (*.mp3 *.mp4 *.m4a *.wav)"));
+    if(files.isEmpty()) //It was a mistake I guess, so don't do anything
         return;
     //Clear before processing
     a_mediaPlaylist.clear();
-    unsigned int const fileNumber = a_files.size();
+    unsigned int const fileNumber = files.size();
     for(unsigned int i (0); i < fileNumber; i++ )
     {
-        a_mediaPlaylist.addMedia(a_files.at(i));
+        a_mediaPlaylist.addMedia(files.at(i));
     }
     if(!a_mediaPlaylist.isEmpty())
     {
@@ -706,8 +707,8 @@ void Player::openMedia()
         if(a_isPlaylistOpen)
         {
             a_mediaPlaylist.setCurrentIndex(0);
-            playlist->setCurrentItem(0, &a_coverArt, a_titre, true);
-            playlist->updateList(&a_mediaPlaylist, true);
+            a_playlist->setCurrentItem(0, &a_coverArt, a_titre, true);
+            a_playlist->updateList(&a_mediaPlaylist, true);
         }
     }
 }
@@ -769,7 +770,7 @@ void Player::setMeta()
         a_settings->setValue("currentTrack", a_lastIndex);
          }
     if(a_isPlaylistOpen)
-        playlist->setCurrentItem(a_mediaPlaylist.currentIndex(), &a_coverArt, a_titre, a_isPlaying);
+        a_playlist->setCurrentItem(a_mediaPlaylist.currentIndex(), &a_coverArt, a_titre, a_isPlaying);
     updateFadeinSpeed();
     Timer.start();
 }
@@ -878,8 +879,8 @@ void Player::update_info()
         updateLabel(a_titre);
         fadeInLabel();
     }
-    if(!a_menu->isVisible() && a_alwaysOnTopHandler->isChecked()) //If we're always on top, this assure that we're always on top, even if on Windows explorer gets on top
-        if(!a_isPlaylistOpen) //Raising also raises the widgets of the playlist... Can be weird if you're using it's context menus...
+    if(!a_menu->isVisible() &&  a_alwaysOnTopHandler->isChecked()) //If we're always on top, this assure that we're always on top, even if on Windows explorer gets on top
+        if(!a_isPlaylistOpen && !a_isSettingsOpen) //Raising also raises over the widgets of these windows... Can be weird if you're using it's context menus...
             this->raise();
 }
     /*///////SliderBar Section///////*/
@@ -940,8 +941,8 @@ void Player::seekProgress(int pos)
         connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
 
     }
-    if(a_isPlaylistOpen && !playlist->isPlayingState())
-        playlist->setToPlaying(a_mediaPlaylist.currentIndex());
+    if(a_isPlaylistOpen && !a_playlist->isPlayingState())
+        a_playlist->setToPlaying(a_mediaPlaylist.currentIndex());
     if(pos > neu->duration())
         forwardMedia();
 }
@@ -1054,7 +1055,7 @@ void Player::setShuffle()
         if(a_settings->value("Additional_Features/libraryAtStartup", false).toBool() == true)
             a_hasToSavePlaylistLater = true; // Will update playlist to load the correct one when booting up later on
         if(a_isPlaylistOpen)
-            playlist->updateList(&a_mediaPlaylist, true);
+            a_playlist->updateList(&a_mediaPlaylist, true);
         a_canDoShuffleAgain = false;
         grantShuffleAgainTimer.start(500);
     }
@@ -1108,19 +1109,20 @@ void Player::showPlaylist()
     {
         a_isPlaylistOpen = true;
         if(a_mediaPlaylist.mediaCount()!= 0)
-            playlist = new Playlist(&a_mediaPlaylist, a_mediaPlaylist.currentIndex(), this, &a_coverArt, a_titre, a_isPlaying, this);
-        playlist->show();
+            a_playlist = new Playlist(&a_mediaPlaylist, a_mediaPlaylist.currentIndex(), this, &a_coverArt, a_titre, a_isPlaying, this);
+        a_playlist->show();
     }
     else
     {
-        playlist->showNormal();
-        playlist->activateWindow();
+        a_playlist->showNormal();
+        a_playlist->activateWindow();
     }
 }
 
 void Player::showSettings()
 {
-    Settings *settings = new Settings(this, this);
+    a_isSettingsOpen = true;
+    QPointer <Settings> settings = new Settings(this, this);
     settings->show();
 }
 
@@ -1138,14 +1140,11 @@ void Player::showTagViewer()
     metaDatas.append(neu->metaData("Year").toString());
     metaDatas.append(neu->metaData("Genre").toString());
     //Load it now !
-    TagViewer *TagWindow = new TagViewer(metaDatas, &a_coverArt , this);
+    QPointer <TagViewer> TagWindow = new TagViewer(metaDatas, &a_coverArt , this);
     TagWindow->exec();
 }
 
     /*///////Events Section///////*/
-void Player::resizeEvent(QResizeEvent *event)
-{
-}
 
 void Player::dragEnterEvent(QDragEnterEvent *event)
 {
@@ -1261,7 +1260,7 @@ void Player::addMediasToThePlayer(QList<QUrl> &medias)
         a_mediaPlaylist.insertMedia(insertTo, QUrl(medias.at(i)));
     }
     if(a_isPlaylistOpen)
-        playlist->quickUpdate(&medias, a_mediaPlaylist.currentIndex() + 1);
+        a_playlist->quickUpdate(&medias, a_mediaPlaylist.currentIndex() + 1);
     if(a_hasToSavePlaylistLater != true)
         a_hasToSavePlaylistLater = true;
 }
@@ -1269,12 +1268,12 @@ void Player::addMediasToThePlayer(QList<QUrl> &medias)
 //When added to queue
 void Player::addToQueue(int index, int currentlyPlaying)
 {
-    int insertTo = currentlyPlaying + playlist->queuedIndex(); //if you add one music, it'll place the next one next to it, ect...
+    int insertTo = currentlyPlaying + a_playlist->queuedIndex(); //if you add one music, it'll place the next one next to it, ect...
     QMediaContent media(a_mediaPlaylist.media(index)); //We copy the media
     a_mediaPlaylist.insertMedia(insertTo, media);
     QList <QUrl> temp;
     temp.append(a_mediaPlaylist.media(insertTo).canonicalUrl());
-    playlist->quickUpdate(&temp, insertTo); //The quick update will place the media at insertTo index without reloading the whole playlist
+    a_playlist->quickUpdate(&temp, insertTo); //The quick update will place the media at insertTo index without reloading the whole playlist
     if(a_hasToSavePlaylistLater != true)
         a_hasToSavePlaylistLater = true;
 }
@@ -1292,7 +1291,7 @@ void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
     }
     neu->setPlaylist(&a_mediaPlaylist); //Re-set to update...
     if(a_isPlaylistOpen)
-        playlist->updateList(&a_mediaPlaylist);
+        a_playlist->updateList(&a_mediaPlaylist);
     if(a_hasToSavePlaylistLater != true)
         a_hasToSavePlaylistLater = true;
     if(play)

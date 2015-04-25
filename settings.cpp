@@ -364,6 +364,7 @@ void Settings::checkUpdates()
 
 Settings::~Settings()
 {
+    passerelle->setSettingsOpen(false);
     delete ui;
     delete a_settings;
 }

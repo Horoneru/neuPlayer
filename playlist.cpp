@@ -18,7 +18,7 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
 
     ui->a_playlistWidget->setDragEnabled(false); //I can't handle it well as of now :/
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
-    a_defaultCover = new QPixmap(":/Ressources/noCoverHeader.png");
+    a_defaultCover.load(":/Ressources/noCoverHeader.png");
     //On reçoit le player, il faut maintenant le mettre en tant qu'attribut pour l'utiliser partout
     a_player = player;
     //De même, on met la playlist en tant qu'attribut pour l'utiliser plus tard.
@@ -193,7 +193,7 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
     //Use data received
     ui->a_cover->setPixmap(*cover);
     if(ui->a_cover->pixmap()->isNull())
-        ui->a_cover->setPixmap(*a_defaultCover);
+        ui->a_cover->setPixmap(a_defaultCover);
     ui->a_titleHeader->setText(title);
     ui->a_titleHeader->setToolTip(title);
     if(!a_player->deleteTriggered())

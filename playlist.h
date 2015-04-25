@@ -76,7 +76,7 @@ private:
     neuPlaylist *a_playlist;
     bool a_isPlaying;
     bool a_isReload;
-    QPixmap *a_defaultCover;
+    QPixmap a_defaultCover;
     int a_previousIndex;
     int a_currentIndex;
     int a_queueIndex;
