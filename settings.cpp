@@ -163,28 +163,33 @@ void Settings::popupFramelessWindow()
 
 void Settings::changeMusicPath()
 {
-    a_settings->setValue("mediapath", QFileDialog::getExistingDirectory(this, tr("Selectionnez votre répertoire de musique"),"", QFileDialog::DontResolveSymlinks));
-    if(a_settings->value("mediapath") == ui->a_pathView->text())
-    {
-        a_isNewPath = false;
-    }
+    QString path = QFileDialog::getExistingDirectory(this, tr("Selectionnez votre répertoire de musique"),"", QFileDialog::DontResolveSymlinks);
+    if (path.isEmpty())
+        return;
     else
     {
-        a_isNewPath = true;
-        if(a_isLibraryAtStartchecked && (a_isDynamicLibChecked || a_isStaticLibChecked))
+        if(path == ui->a_pathView->text())
         {
-            a_settings->setValue("currentTrack", 0);
-            a_settings->setValue("trackPosition", 0);
+            a_isNewPath = false;
+        }
+        else
+        {
+            a_isNewPath = true;
+            a_settings->setValue("mediapath", path);
+            if(a_isLibraryAtStartchecked && (a_isDynamicLibChecked || a_isStaticLibChecked))
+            {
+                a_settings->setValue("currentTrack", 0);
+                a_settings->setValue("trackPosition", 0);
+            }
+        }
+        ui->a_pathView->setText(path);
+        ui->a_pathView->setToolTip(path);
+        if(!path.isEmpty() && !ui->a_libraryAtStartupActivate->isChecked()) //If the user didn't check but selected something...
+        {
+            ui->a_libraryAtStartupActivate->setChecked(true); //...Check the library at startup and...
+            enableLibraryAtStartup(); //...Enable it
         }
     }
-    ui->a_pathView->setText(a_settings->value("mediapath").toString());
-    ui->a_pathView->setToolTip(ui->a_pathView->text());
-    if(!ui->a_pathView->text().isEmpty()) //If the user didn't check but selected something, check the library at startup and enable it
-        if(!ui->a_libraryAtStartupActivate->isChecked())
-        {
-            ui->a_libraryAtStartupActivate->setChecked(true);
-            enableLibraryAtStartup();
-        }
 }
 
                     /* Skin Section */
