@@ -4,14 +4,11 @@
 
 InitialConfig::InitialConfig(QWidget *parent) :
     QDialog(parent), a_page(1),
-    a_canClose(false), ui(new Ui::InitialConfig)
+    a_canClose(false), ui(new Ui::InitialConfig), a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowOpacity(100);
-    a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
-
-    setupObjects();
 
     setupWidgetsInitialVisibility();
 
@@ -19,12 +16,6 @@ InitialConfig::InitialConfig(QWidget *parent) :
 
     entranceAnimations(); //It's time for an appearance ~
 }
-
-void InitialConfig::setupObjects()
-{
-    animManager = new fadeAnimManager(this);
-}
-
 
 void InitialConfig::setupWidgetsInitialVisibility()
 {
@@ -49,12 +40,12 @@ void InitialConfig::setupConnections()
 void InitialConfig::entranceAnimations()
 {
     /* By default this class will make make the target fade in for 300 ms and add it to a parallel animation group */
-    animManager->setDefaultDuration(400); //The animation will be more visible that way
-    animManager->addTarget(ui->a_welcome);
-    animManager->addTarget(ui->a_description);
-    animManager->addTarget(ui->a_recommendedBtn);
-    animManager->addTarget(ui->a_configureBtn);
-    animManager->startGroup(fadeAnimManager::Parallel, false);
+    a_animManager.setDefaultDuration(400); //The animation will be more visible that way
+    a_animManager.addTarget(ui->a_welcome);
+    a_animManager.addTarget(ui->a_description);
+    a_animManager.addTarget(ui->a_recommendedBtn);
+    a_animManager.addTarget(ui->a_configureBtn);
+    a_animManager.startGroup(fadeAnimManager::Parallel, false);
 }
 
 void InitialConfig::customWizard()
@@ -80,16 +71,16 @@ void InitialConfig::presetWizard()
 //Do the work of configuring the player's data when choosing recommended option
 void InitialConfig::presetConfig()
 {
-    a_settings->beginGroup("Additional_Features");
-    a_settings->setValue("libraryAtStartup", true);
-    a_settings->setValue("refreshWhenNeeded", true);
-    a_settings->setValue("saveTrackIndex", true);
-    a_settings->endGroup();
-    a_settings->setValue("playlistAtStartup", false);
-    a_settings->setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
+    a_settings.beginGroup("Additional_Features");
+    a_settings.setValue("libraryAtStartup", true);
+    a_settings.setValue("refreshWhenNeeded", true);
+    a_settings.setValue("saveTrackIndex", true);
+    a_settings.endGroup();
+    a_settings.setValue("playlistAtStartup", false);
+    a_settings.setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
     qDebug() << QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-    QFileInfo info (a_settings->value("mediapath").toString());
-    a_settings->setValue("libModified", info.lastModified().toMSecsSinceEpoch());
+    QFileInfo info (a_settings.value("mediapath").toString());
+    a_settings.setValue("libModified", info.lastModified().toMSecsSinceEpoch());
     neuPlayer = new Player(); //The player will update itself, and write that the config has been done after that
     neuPlayer->hide(); //The update will force-show, but I don't want to show the player to the user yet ;)
 }
@@ -108,16 +99,16 @@ void InitialConfig::advanceWizard()
         ui->a_playlistAtStartupCheck->setVisible(true);
         ui->a_nextBtn->setVisible(true);
 
-        animManager->setDefaultDuration(300);
-//        animManager->clearGroup(fadeAnimManager::Parallel);
-        animManager->addTarget(ui->a_description);
-        animManager->addTarget(ui->a_playlistAtStartupCheck);
-        animManager->addTarget(ui->a_nextBtn);
-        animManager->startGroup(fadeAnimManager::Parallel, false);
+        a_animManager.setDefaultDuration(300);
+        a_animManager.clearGroup(fadeAnimManager::Parallel);
+        a_animManager.addTarget(ui->a_description);
+        a_animManager.addTarget(ui->a_playlistAtStartupCheck);
+        a_animManager.addTarget(ui->a_nextBtn);
+        a_animManager.startGroup(fadeAnimManager::Parallel, false);
     }
     if(a_page == 3)
     {
-        a_settings->setValue("playlistAtStartup", ui->a_playlistAtStartupCheck->isChecked());
+        a_settings.setValue("playlistAtStartup", ui->a_playlistAtStartupCheck->isChecked());
         ui->a_playlistAtStartupCheck->setVisible(false);
         ui->a_description->setText(tr("Opacité"));
         ui->a_label->setText(tr("Laissez à 100% si vous ne souhaitez\npas de transparence"));
@@ -126,19 +117,19 @@ void InitialConfig::advanceWizard()
         ui->a_opacitySlide->setVisible(true);
         updateSlideValue(100);
 
-        animManager->clearGroup(fadeAnimManager::Parallel);
-        animManager->addTarget(ui->a_description);
-        animManager->addTarget(ui->a_label);
-        animManager->addTarget(ui->a_opacityLabel);
-        animManager->addTarget(ui->a_opacitySlide);
-        animManager->startGroup(fadeAnimManager::Parallel, false);
+        a_animManager.clearGroup(fadeAnimManager::Parallel);
+        a_animManager.addTarget(ui->a_description);
+        a_animManager.addTarget(ui->a_label);
+        a_animManager.addTarget(ui->a_opacityLabel);
+        a_animManager.addTarget(ui->a_opacitySlide);
+        a_animManager.startGroup(fadeAnimManager::Parallel, false);
 
         connect(ui->a_opacitySlide, SIGNAL(valueChanged(int)), this, SLOT(updateSlideValue(int)));
     }
 
     if(a_page == 4)
     {
-        a_settings->setValue("opacity", a_slideValue);
+        a_settings.setValue("opacity", a_slideValue);
         ui->a_opacityLabel->setVisible(false);
         ui->a_opacitySlide->setVisible(false);
         ui->a_libraryAtStartupCheck->setVisible(true);
@@ -147,11 +138,11 @@ void InitialConfig::advanceWizard()
         ui->a_label->setVisible(false);
         ui->a_description->setText(tr("Démarrage avec librairie"));
 
-        animManager->clearGroup(fadeAnimManager::Parallel);
-        animManager->addTarget(ui->a_libraryAtStartupCheck);
-        animManager->addTarget(ui->a_libraryAtStartupCheck_2);
-        animManager->addTarget(ui->a_description);
-        animManager->startGroup(fadeAnimManager::Parallel, false);
+        a_animManager.clearGroup(fadeAnimManager::Parallel);
+        a_animManager.addTarget(ui->a_libraryAtStartupCheck);
+        a_animManager.addTarget(ui->a_libraryAtStartupCheck_2);
+        a_animManager.addTarget(ui->a_description);
+        a_animManager.startGroup(fadeAnimManager::Parallel, false);
 
         connect(ui->a_libraryAtStartupCheck, SIGNAL(clicked(bool)), this, SLOT(setLibrary(bool)));
         connect(ui->a_libraryAtStartupCheck_2, SIGNAL(clicked(bool)), this, SLOT(setDefault(bool)));
@@ -159,14 +150,13 @@ void InitialConfig::advanceWizard()
     if(a_page == 5)
     {
         this->setCursor(Qt::BusyCursor); //Showing to the user processing is being done
-        a_settings->setValue("Additional_Features/libraryAtStartup", ui->a_libraryAtStartupCheck->isChecked());
-        a_settings->setValue("Additional_Features/refreshWhenNeeded", ui->a_libraryAtStartupCheck->isChecked());
-        a_settings->setValue("saveTrackIndex", true);
-        QFileInfo info (a_settings->value("mediapath").toString());
-        a_settings->setValue("libModified", info.lastModified().toMSecsSinceEpoch());
+        a_settings.setValue("Additional_Features/libraryAtStartup", ui->a_libraryAtStartupCheck->isChecked());
+        a_settings.setValue("Additional_Features/refreshWhenNeeded", ui->a_libraryAtStartupCheck->isChecked());
+        a_settings.setValue("saveTrackIndex", true);
+        QFileInfo info (a_settings.value("mediapath").toString());
+        a_settings.setValue("libModified", info.lastModified().toMSecsSinceEpoch());
         ui->a_libraryAtStartupCheck->setVisible(false);
         ui->a_libraryAtStartupCheck_2->setVisible(false);
-
         neuPlayer = new Player(); //The player will update itself, and write that the config has been done after that
         neuPlayer->hide(); //The update will force-show, but I don't want to show the player to the user yet ;)
         finalPage();
@@ -186,7 +176,7 @@ void InitialConfig::setDefault(bool isActivated)
 {
     if(isActivated)
     {
-        a_settings->setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
+        a_settings.setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
         ui->a_libraryAtStartupCheck->setChecked(true);
     }
 }
@@ -200,14 +190,14 @@ void InitialConfig::setLibrary(bool isActivated)
         if(tempPath.isEmpty())
         {
             ui->a_libraryAtStartupCheck_2->setChecked(true);
-            a_settings->setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
-            QMessageBox::information(this, tr("Information"), "default folder : " + a_settings->value("mediapath").toString()); //On get depuis le QSettings pour avoir un string normal affichable
+            a_settings.setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
+            QMessageBox::information(this, tr("Information"), "default folder : " + a_settings.value("mediapath").toString()); //On get depuis le QSettings pour avoir un string normal affichable
         }
         else //Sinon on a de quoi remplir la var
         {
             ui->a_libraryAtStartupCheck_2->setChecked(false);
             a_mediaPath = tempPath;
-            a_settings->setValue("mediapath", a_mediaPath);
+            a_settings.setValue("mediapath", a_mediaPath);
         }
     }
 }
@@ -221,21 +211,19 @@ void InitialConfig::finalPage()
     ui->a_label->setText(tr("Si le lecteur n'affiche pas vos musiques\nconfigurez-le manuellement dans les paramètres"));
     ui->a_finishButton->setVisible(true);
     ui->a_finishButton->setFocus(); //So the user can hit enter and finish right away
-
-    animManager->clearGroup(fadeAnimManager::Parallel);
-    animManager->addTarget(ui->a_welcome);
-    animManager->addTarget(ui->a_label);
-    animManager->addTarget(ui->a_description);
-    animManager->addTarget(ui->a_finishButton);
-    animManager->startGroup(fadeAnimManager::Parallel); //Will delete the animation. We're done with it !
-
+    a_animManager.clearGroup(fadeAnimManager::Parallel);
+    a_animManager.addTarget(ui->a_welcome);
+    a_animManager.addTarget(ui->a_label);
+    a_animManager.addTarget(ui->a_description);
+    a_animManager.addTarget(ui->a_finishButton);
+    a_animManager.startGroup(fadeAnimManager::Parallel); //Will delete the animation. We're done with it !
     this->setCursor(Qt::ArrowCursor);
 }
 
 void InitialConfig::finishWizard()
 {
     a_page = 10;
-    if(a_settings->value("playlistAtStartup").toBool() == true)
+    if(a_settings.value("playlistAtStartup").toBool() == true)
         neuPlayer = new Player();
     neuPlayer->show();
     neuPlayer->setIndexOfThePlayer(0, false);
@@ -265,11 +253,10 @@ void InitialConfig::closeEvent(QCloseEvent *event = 0)
     else
     {
         event->ignore();
-        FadeWindow fadeOut(this, 450, FadeWindow::FadeOut, this);
-        fadeOut.start();
-        a_timer = new QTimer(this);
-        a_timer->start(650);
-        connect(a_timer, SIGNAL(timeout()), this, SLOT(delayedClose()));
+        QPointer <FadeWindow> fadeOut = new FadeWindow(this, 450, FadeWindow::FadeOut, this);
+        fadeOut->start();
+        a_timer.start(650);
+        connect(&a_timer, SIGNAL(timeout()), this, SLOT(delayedClose()));
     }
 }
 

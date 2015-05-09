@@ -128,7 +128,7 @@ public:
     void deleteMedia(int index)
     {
         a_deleteTriggered = true;
-        a_settings->setValue("trackPosition", neu->position());
+        a_settings.setValue("trackPosition", neu->position());
         int track = a_mediaPlaylist.currentIndex() - 1;
         a_mediaPlaylist.removeMedia(index);
         if(index <= track)
@@ -189,7 +189,7 @@ private:
     Slider *a_progressSlider;
     Slider *a_volumeSlider;
     Playlist *a_playlist;
-    QSettings *a_settings; //Contient les settings de l'application
+    QSettings a_settings; //Contient les settings de l'application
     neuPlaylist a_mediaPlaylist;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
     bool a_isFrameless;
@@ -241,23 +241,24 @@ private:
     QTimer grantShuffleAgainTimer;
     /*          Permet l'utilisation de raccourcis clavier
      * qui interagissent directement avec le player sans souris */
-    QAction *a_advance;
-    QAction *a_back;
-    QAction *a_volumeUp;
-    QAction *a_volumeDown;
+    QAction a_advance;
+    QAction a_back;
+    QAction a_volumeUp;
+    QAction a_volumeDown;
     //Menu et ses actions
-    QMenu *a_playbackMenu;
-    QActionGroup *a_playbackrates;
-    QAction *normalrate;
-    QAction *halfrate;
-    QAction *doublerate;
+    QMenu a_playbackMenu;
+    QActionGroup a_playbackrates;
+    QAction a_normalrate;
+    QAction a_halfrate;
+    QAction a_doublerate;
     int a_playbackState;
-    QMenu *a_menu;
-    QAction *a_openMedia;
-    QAction *a_accessSettings;
-    QAction *a_tagViewer;
-    QAction *a_showPlaylist;
-    QAction *a_alwaysOnTopHandler; //Set les flags pour always on top ou non
-    QAction *a_shuffle;
+    QMenu a_menu;
+    QAction a_openMedia;
+    QAction a_accessSettings ;
+    QAction a_tagViewer;
+    QAction a_showPlaylist;
+    QAction a_alwaysOnTopHandler; //Set les flags pour always on top ou non
+    QAction a_shuffle;
 };
+
 #endif // PLAYER_H

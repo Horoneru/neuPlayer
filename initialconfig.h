@@ -36,7 +36,6 @@ public:
     explicit InitialConfig(QWidget *parent = 0);
 private:
     ~InitialConfig();
-    void setupObjects();
     void setupWidgetsInitialVisibility();
     void setupConnections();
 
@@ -45,15 +44,15 @@ private:
     void presetConfig();
     //Attributes
     Ui::InitialConfig *ui;
-    QSettings *a_settings;
+    QSettings a_settings;
     Player *neuPlayer;
     //We only need this manager now !
-    fadeAnimManager *animManager;
+    fadeAnimManager a_animManager;
 
     //Others
     bool a_canClose; //To setup an anim before closing
     QString a_mediaPath;
-    QTimer *a_timer;
+    QTimer a_timer;
     int a_page; //"Where are we ?"
     double a_slideValue;
 };

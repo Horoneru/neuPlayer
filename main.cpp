@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         exit(0); // Exit process immediately
     }
 
-    QSettings a_settings("neuPlayer.ini", QSettings::IniFormat);
+    QSettings settings("neuPlayer.ini", QSettings::IniFormat);
 
     // Init Trad engine
     QString locale = QLocale::system().name().section('_', 0, 0);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     //Setup actual window
     qApp->setStyle(QStyleFactory::create("Fusion")); //base theme fusion
 
-    if(a_settings.value("skin", 1).toInt() == 1)
+    if(settings.value("skin", 1).toInt() == 1)
     {
         Skin HoloFusion(1, nullptr);
         HoloFusion.load();
@@ -53,15 +53,15 @@ int main(int argc, char *argv[])
     QFile fileHandler(".configdone"); //So you config before anything else
     if(!fileHandler.exists()) //If there is the config to do, the config will launch the app when done
     {
-        InitialConfig *config = new InitialConfig();
+        QPointer <InitialConfig> config = new InitialConfig();
         config->show();
     }
     else
     {
         Player *neuPlayer = new Player(nullptr);
-        if(a_settings.value("Additional_Features/framelessWindow", false).toBool())
+        if(settings.value("Additional_Features/framelessWindow", false).toBool())
         {
-            if(a_settings.value("visibilite").toBool())
+            if(settings.value("visibilite").toBool())
                 helper.activateOn(neuPlayer, true);
             else
                 helper.activateOn(neuPlayer);
