@@ -27,6 +27,7 @@
 #define NC_FRAMELESS_HELPER_H
 
 #include <QObject>
+#include <QPointer>
 #include <QSettings>
 #include "fadewindow.h"
 
