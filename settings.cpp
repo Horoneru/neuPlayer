@@ -9,7 +9,7 @@ Settings::Settings(Player *Player, QWidget *parent) :
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     //Make the Player received as an attribute so we can use it
-    passerelle = Player;
+    a_passerelle = Player;
     //Restore current config from QSettings
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_settings->beginGroup("Additional_Features");
@@ -66,8 +66,8 @@ void Settings::setupConnections()
 {
     /* Connexions */
     connect(ui->a_libraryAtStartupActivate, SIGNAL(clicked()), this, SLOT(enableLibraryAtStartup()));
-    connect(ui->a_staticLibraryActivate, SIGNAL(clicked()), this, SLOT(popupStaticlib()));
-    connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()), this, SLOT(popupRNlib()));
+    connect(ui->a_staticLibraryActivate, SIGNAL(clicked()), this, SLOT(on_staticLibActivated()));
+    connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()), this, SLOT(on_RNlibActivated()));
     connect(ui->a_skinPick, SIGNAL(currentIndexChanged(int)), this, SLOT(setSkin(int)));
     connect(ui->a_changeDbpush, SIGNAL(clicked()), this, SLOT(changeMusicPath()));
     connect(ui->a_close, SIGNAL(clicked()), this, SLOT(close()));
@@ -118,29 +118,24 @@ void Settings::enableLibraryAtStartup()
     }
 }
 
-void Settings::popupRNlib()
+void Settings::on_RNlibActivated()
 {
     if(ui->a_refreshWhenNeededActivate->isChecked())
     {
         ui->a_staticLibraryActivate->setChecked(false);
         a_isStaticLibChecked = false;
-        QMessageBox msgbox(QMessageBox::NoIcon, tr("Information sur ce mode"), tr("Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu dans le dossier où réside les données musicales, mais il permet d'être tenu au courant lorsque le dossier a été modifié, pour rafraîchir les médias présents"));
-        msgbox.exec();
         a_isDynamicLibChecked = true;
-        qDebug() << a_isDynamicLibChecked;
     }
     else
         a_isDynamicLibChecked = false;
 }
 
-void Settings::popupStaticlib()
+void Settings::on_staticLibActivated()
 {
     if(ui->a_staticLibraryActivate->isChecked())
     {
         ui->a_refreshWhenNeededActivate->setChecked(false);
         a_isDynamicLibChecked = false;
-        QMessageBox msgbox(QMessageBox::NoIcon, tr("Information sur ce mode"), tr("Ce mode est plus léger car il ne fait que charger les données musicales. En revanche, lors d'une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist"));
-        msgbox.exec();
         a_isStaticLibChecked = true;
     }
     else
@@ -263,7 +258,7 @@ void Settings::updateOpacity(int value)
 {
     a_opacityValue = value / 100.0;
     ui->a_valueSlide->setText(QString::number(value) + "%");
-    passerelle->setOpacity(a_opacityValue);
+    a_passerelle->setOpacity(a_opacityValue);
 }
 
 void Settings::confirm()
@@ -325,8 +320,8 @@ void Settings::confirm()
         a_settings->setValue("customimage", a_bgPath);
         Skin skin(ui->a_skinPick->currentIndex(), this);
         skin.load();
-        passerelle->loadSkin();
-        passerelle->update();
+        a_passerelle->loadSkin();
+        a_passerelle->update();
     }
     a_settings->setValue("opacity", a_opacityValue);
     this->close();
@@ -340,7 +335,7 @@ void Settings::setLibrary()
         neuPlaylist playlist(this);
         QList <QUrl> medias = playlist.setLibrary(ui->a_pathView->text());
         if(!medias.isEmpty())
-            passerelle->updatePlaylistOfThePlayer(medias);
+            a_passerelle->updatePlaylistOfThePlayer(medias);
         ui->a_confirm->setText ("OK");
         a_settings->setValue("trackPosition", 0);
         //The Qt playlist loader will be fooled and will load the playlist smoothly as if it was saved by save();
@@ -361,7 +356,7 @@ void Settings::checkUpdates()
 {
     if(!a_isUpdateHandlerAlreadyCalled)
     {
-        a_handler = new UpdaterHandler(this);
+        a_handler = new UpdaterHandler(nullptr);
         a_isUpdateHandlerAlreadyCalled = true;
     }
     a_handler->start("neuPlayer", QApplication::applicationVersion(), "http://sd-2.archive-host.com/membres/up/16630996856616518/version.txt", "http://sd-2.archive-host.com/membres/up/16630996856616518/neuPlayer.exe", "show");
@@ -369,7 +364,9 @@ void Settings::checkUpdates()
 
 Settings::~Settings()
 {
-    passerelle->setSettingsOpen(false);
+    a_passerelle->setSettingsOpen(false);
+    a_passerelle = nullptr;
     delete ui;
     delete a_settings;
+    a_settings = nullptr;
 }

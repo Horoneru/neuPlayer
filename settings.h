@@ -16,8 +16,8 @@ class Settings : public QDialog
 private slots:
     void enableLibraryAtStartup();
     void changeMusicPath();
-    void popupRNlib();
-    void popupStaticlib();
+    void on_RNlibActivated();
+    void on_staticLibActivated();
     void popupFramelessWindow();
     void setLibrary();
     void setSkin(int index);
@@ -38,7 +38,7 @@ private:
     //Attributes
     Ui::Settings *ui;
     QSettings *a_settings;
-    Player *passerelle;
+    Player *a_passerelle;
     QString a_bgPath;
     UpdaterHandler *a_handler;
     bool a_isUpdateHandlerAlreadyCalled;
