@@ -25,6 +25,9 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
     a_playlist = liste;
     a_previousIndex = 99999; //Pretty sure nobody would reach that value
     a_queueIndex = 0; //used to determine where to place the song you want to queue
+    //Prepare fade manager animations
+    a_fadeManager.addTarget(ui->a_cover, fadeAnimManager::FadeIn, 500, fadeAnimManager::Parallel);
+    a_fadeManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 350, fadeAnimManager::Parallel);
     setupActions();
 
     //Setup list
@@ -197,12 +200,7 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
     ui->a_titleHeader->setText(title);
     ui->a_titleHeader->setToolTip(title);
     if(!a_player->deleteTriggered())
-    {
-        fadeAnimManager animManager(this);
-        animManager.addTarget(ui->a_cover, fadeAnimManager::FadeIn, 500, fadeAnimManager::Parallel);
-        animManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 350, fadeAnimManager::Parallel);
-        animManager.startGroup(fadeAnimManager::Parallel, true);
-    }
+        a_fadeManager.startGroup(fadeAnimManager::Parallel, false);
 }
 
         /* Playlist functionality */
@@ -367,9 +365,8 @@ void Playlist::sendNewInfos()
     //Load it now !
     QPixmap coverArt = QPixmap::fromImage(QImage(a_tempPlayer->metaData("ThumbnailImage").value<QImage>()));
     QPointer<TagViewer> TagWindow = new TagViewer(metaDatas, &coverArt, this);
-    a_tempPlayer->deleteLater();
-    a_tempPlayer = nullptr;
     TagWindow->show();
+    a_tempPlayer->deleteLater();
 }
 
 void Playlist::findItemVisibilityHandler()
@@ -442,4 +439,6 @@ void Playlist::closeEvent(QCloseEvent *)
 Playlist::~Playlist()
 {
     delete ui;
+    a_player = nullptr;
+    a_playlist = nullptr;
 }

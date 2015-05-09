@@ -77,6 +77,7 @@ private:
     bool a_isPlaying;
     bool a_isReload;
     QPixmap a_defaultCover;
+    fadeAnimManager a_fadeManager;
     int a_previousIndex;
     int a_currentIndex;
     int a_queueIndex;
@@ -95,7 +96,7 @@ private:
     QAction *a_deleteItemFromQueue;
     QAction *a_addToFav;
     QSettings *a_settings;
-    QMediaPlayer *a_tempPlayer;
+    QPointer <QMediaPlayer> a_tempPlayer;
 };
 
 #endif // PLAYLIST_H
