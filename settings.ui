@@ -65,6 +65,9 @@
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTipDuration">
+         <number>1</number>
+        </property>
         <property name="text">
          <string>Activer le chargement de la bibilothèque au démarrage du player</string>
         </property>
@@ -90,6 +93,10 @@
           <width>13</width>
           <height>13</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Ce mode est plus léger car il ne fait que charger les données musicales.
+En revanche, lors d'une modification du dossier de données, vous ne serez pas notifié et devrez recharger la playlist</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_9">
@@ -123,6 +130,11 @@ En revanche, lors d'une modification du dossier de données, vous ne serez pas n
           <width>13</width>
           <height>13</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Ce mode est plus lourd car il nécessite de vérifier à chaque fois si une modification a eu lieu
+dans le dossier où réside les données musicales, mais il permet d'être tenu au courant lorsque le dossier a été modifié,
+pour rafraîchir les médias présents</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_8">
@@ -199,6 +211,9 @@ pour rafraîchir les médias présents</string>
         </property>
         <property name="toolTip">
          <string/>
+        </property>
+        <property name="toolTipDuration">
+         <number>1</number>
         </property>
         <property name="text">
          <string>Sauvegarder la musique en lecture avant de fermer</string>
@@ -657,7 +672,7 @@ build 250415</string>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v1.4.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v1.4.3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
