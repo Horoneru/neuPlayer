@@ -324,9 +324,10 @@ void fadeAnimManager::editTarget(QWidget *targetToModify, fadeAnimManager::FadeM
 
 void fadeAnimManager::start(bool deleteWhenFinished)
 {
+    //TODO : Clean up ressources when finished and add similiar logic to groups
     QPropertyAnimation *anim;
-    a_effectContainer = new QGraphicsOpacityEffect(nullptr);
-    anim = new QPropertyAnimation(a_effectContainer, "opacity", nullptr);
+    a_effectContainer = new QGraphicsOpacityEffect(this);
+    anim = new QPropertyAnimation(a_effectContainer, "opacity", this);
     a_target->setGraphicsEffect(a_effectContainer);
     anim->setDuration(a_duration);
     setMode(anim, a_mode, a_effectContainer);
