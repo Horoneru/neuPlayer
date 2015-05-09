@@ -18,6 +18,7 @@ class FadeWindow : public QObject
 public:
     enum FadeMode { FadeOut, FadeIn };
     explicit FadeWindow(QObject *parent = 0);
+    ~FadeWindow();
     //We're sure to only have windows.
     FadeWindow(QDialog *dialogWidget, const int msecs, FadeMode = FadeMode::FadeIn, QObject *parent = nullptr);
     FadeWindow(QMainWindow *mainWindowWidget, const int msecs, FadeMode = FadeMode::FadeIn, QObject *parent = nullptr);

@@ -54,7 +54,7 @@ void FadeWindow::setMode(QPropertyAnimation *anim, FadeWindow::FadeMode mode, qr
     else //Fade out
     {
         anim->setStartValue(1.0);
-        if(endValue != 1.0)
+        if(endValue != 0.0)
             anim->setEndValue(endValue);
         else
             anim->setEndValue(0.0);
@@ -66,14 +66,18 @@ void FadeWindow::setMode(QPropertyAnimation *anim, FadeWindow::FadeMode mode, qr
 void FadeWindow::start(qreal endValue)
 {
     QPropertyAnimation *animation;
-    animation = new QPropertyAnimation(nullptr);
+    animation = new QPropertyAnimation(this);
     animation->setTargetObject(a_target);
     animation->setDuration(a_duration);
     setMode(animation, a_mode, endValue);
     animation->setPropertyName("windowOpacity");
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
     //If the timer is enabled, the user will be able to be notified by checking via getter if the animation is finished.
     if(a_timerEnabled)
         connect(animation, SIGNAL(finished()), this, SLOT(setFinished()));
 }
 
+FadeWindow::~FadeWindow()
+{
+    a_target = nullptr;
+}
