@@ -158,6 +158,7 @@ public:
         return a_deleteTriggered;
     }
     void updatePlaylistOfThePlayer(const QList <QUrl> &medias, bool play = false);
+    void saveBeforeClosing();
     ~Player();
 
 
