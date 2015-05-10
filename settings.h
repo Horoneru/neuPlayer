@@ -2,7 +2,6 @@
 #define SETTINGS_H
 
 #include <QDialog>
-#include <QDirIterator>
 #include "player.h"
 #include "skin.h"
 #include "updaterhandler.h"
@@ -25,6 +24,7 @@ private slots:
     void reloadDefaultBg();
     void updateOpacity(int value);
     void confirm(); //Master method : apply everything and close when pressing OK
+    void cancel();
     void gotoWorkingDir();
     void checkUpdates();
 public:
