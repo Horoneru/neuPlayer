@@ -70,7 +70,8 @@ void Settings::setupConnections()
     connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()), this, SLOT(on_RNlibActivated()));
     connect(ui->a_skinPick, SIGNAL(currentIndexChanged(int)), this, SLOT(setSkin(int)));
     connect(ui->a_changeDbpush, SIGNAL(clicked()), this, SLOT(changeMusicPath()));
-    connect(ui->a_close, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->a_close_2, SIGNAL(clicked()), this, SLOT(cancel()));
+    connect(ui->a_close, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(ui->a_refreshNeededpush, SIGNAL(clicked()), this, SLOT(setLibrary()));
     connect(ui->a_changeBackgroundPush, SIGNAL(clicked()), this, SLOT(changeBg()));
     connect(ui->a_reloadDefaultSkinPush, SIGNAL(clicked()), this, SLOT(reloadDefaultBg()));
@@ -147,12 +148,35 @@ void Settings::popupFramelessWindow()
     if(ui->a_framelessCheck->isChecked())
     {
         QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"), tr("Vous devez redémarrer pour utiliser le player sans bordures"));
-        msgbox.exec();
+        msgbox.setWindowFlags(Qt::WindowStaysOnTopHint);
+        msgbox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ignore);
+        msgbox.setButtonText(QMessageBox::Yes, tr("Redémarrer"));
+        msgbox.setButtonText(QMessageBox::Ignore, tr("Plus tard"));
+        int result = msgbox.exec();
+        if(result == QMessageBox::Yes)
+        {
+            confirm();
+            a_passerelle->saveBeforeClosing();
+            qApp->quit();
+            QProcess::startDetached("neuPlayer.exe");
+        }
     }
     else
     {
         QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"), tr("Vous devez redémarrer pour utiliser le player avec ses bordures"));
-        msgbox.exec();
+        msgbox.setWindowFlags(Qt::WindowStaysOnTopHint);
+        msgbox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ignore);
+        msgbox.setButtonText(QMessageBox::Yes, tr("Redémarrer"));
+        msgbox.setButtonText(QMessageBox::Ignore, tr("Plus tard"));
+        msgbox.raise();
+        int result = msgbox.exec();
+        if(result == QMessageBox::Yes)
+        {
+            confirm();
+            a_passerelle->saveBeforeClosing();
+            qApp->quit();
+            QProcess::startDetached("neuPlayer.exe");
+        }
     }
 }
 
@@ -324,7 +348,13 @@ void Settings::confirm()
         a_passerelle->update();
     }
     a_settings->setValue("opacity", a_opacityValue);
-    this->close();
+    this->cancel();
+}
+
+void Settings::cancel()
+{
+    a_passerelle->setOpacity(a_settings->value("opacity").toReal());
+    close();
 }
 
 void Settings::setLibrary()
