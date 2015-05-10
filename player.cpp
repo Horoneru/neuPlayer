@@ -23,7 +23,7 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.4.3 stable 090515 active
+                                            2015 Horoneru                                   1.4.4 stable 090515 active
       TODO
       à faire : (/ ordre d'importance)
       > add to fav au niveau playlist (started)
@@ -35,7 +35,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.4.3");
+    QApplication::setApplicationVersion("1.4.4");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -1059,6 +1059,9 @@ void Player::windowFlagsHandler()
         this->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     else
         this->setWindowFlags(Qt::Window);
+    QPointer <FadeWindow> fadeIn = new FadeWindow(this, 200, FadeWindow::FadeIn, this);
+    fadeIn->start(a_settings.value("opacity").toReal());
+
     this->show();
 }
 
@@ -1165,22 +1168,7 @@ void Player::closeEvent(QCloseEvent *event)
 {
     if(a_canClose)
     {
-        if(a_hasToSavePlaylistLater && a_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
-        {
-            saveCurrentPlaylist();
-        }
-        if(a_settings.value("Additional_Features/framelessWindow").toBool())
-            a_settings.setValue("pos", QPoint(this->x() - 8, this->y() - 31)); //Little hack to set the value correctly
-        else
-            a_settings.setValue("pos", pos());
-        a_settings.setValue("size", size());
-        a_settings.setValue("volume", a_volumeSlider->value());
-        a_settings.setValue("visibilite", a_alwaysOnTopHandler.isChecked());
-        a_settings.setValue("playbackrate", a_playbackState);
-        a_settings.setValue("random", a_isRandomMode);
-        a_settings.setValue("loop", a_isLoopPlaylistMode);
-        if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
-            a_settings.setValue("trackPosition", neu->position());
+        saveBeforeClosing();
         qApp->closeAllWindows();
     }
     else
@@ -1193,6 +1181,24 @@ void Player::closeEvent(QCloseEvent *event)
         QPointer <FadeWindow> fadeOut = new FadeWindow(this, 200, FadeWindow::FadeOut, this);
         fadeOut->start();
     }
+}
+
+void Player::saveBeforeClosing()
+{
+    if(a_hasToSavePlaylistLater && a_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
+        saveCurrentPlaylist();
+    if(a_settings.value("Additional_Features/framelessWindow").toBool())
+        a_settings.setValue("pos", QPoint(this->x() - 8, this->y() - 31)); //Little hack to set the value correctly
+    else
+        a_settings.setValue("pos", pos());
+    a_settings.setValue("size", size());
+    a_settings.setValue("volume", a_volumeSlider->value());
+    a_settings.setValue("visibilite", a_alwaysOnTopHandler.isChecked());
+    a_settings.setValue("playbackrate", a_playbackState);
+    a_settings.setValue("random", a_isRandomMode);
+    a_settings.setValue("loop", a_isLoopPlaylistMode);
+    if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
+        a_settings.setValue("trackPosition", neu->position());
 }
 
 void Player::delayedClose()
