@@ -3,7 +3,6 @@
 
 #include <QSlider>
 #include <QMouseEvent>
-
 #include <QRect>
 #include <QStyleOptionSlider>
 
