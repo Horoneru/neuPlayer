@@ -37,6 +37,7 @@ class Player;
 }
 class Playlist;
 class ScrollingInfoLabel;
+class Settings;
 class Player : public QMainWindow
 {
     Q_OBJECT
@@ -189,7 +190,8 @@ private:
     QMediaPlayer *neu; //Dat media player
     Slider *a_progressSlider;
     Slider *a_volumeSlider;
-    Playlist *a_playlist;
+    QPointer <Playlist> a_playlist;
+    QPointer <Settings> a_settingsForm;
     QSettings a_settings; //Contient les settings de l'application
     neuPlaylist a_mediaPlaylist;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
