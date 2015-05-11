@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>47</height>
+    <height>45</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>285</width>
-    <height>47</height>
+    <height>45</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>400</width>
-    <height>47</height>
+    <height>45</height>
    </size>
   </property>
   <property name="acceptDrops">
@@ -39,6 +39,18 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="minimumSize">
+    <size>
+     <width>400</width>
+     <height>45</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>400</width>
+     <height>45</height>
+    </size>
+   </property>
    <property name="font">
     <font>
      <family>Segoe UI</family>
@@ -82,7 +94,7 @@ QSlider::handle:horizontal {
      <rect>
       <x>100</x>
       <y>0</y>
-      <width>181</width>
+      <width>171</width>
       <height>31</height>
      </rect>
     </property>
@@ -173,7 +185,7 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>26</y>
+      <y>25</y>
       <width>31</width>
       <height>20</height>
      </rect>
@@ -202,9 +214,9 @@ QSlider::handle:horizontal {
     <property name="geometry">
      <rect>
       <x>372</x>
-      <y>23</y>
+      <y>22</y>
       <width>24</width>
-      <height>22</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -222,76 +234,6 @@ QSlider::handle:horizontal {
     <property name="flat">
      <bool>true</bool>
     </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>20</y>
-      <width>51</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="a_previous">
-       <property name="toolTip">
-        <string>Précédent (Ctrl + Gauche)</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="assets.qrc">
-         <normaloff>:/Ressources/previousbtn.png</normaloff>:/Ressources/previousbtn.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>38</width>
-         <height>38</height>
-        </size>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Left</string>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="a_forward">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Suivant (Ctrl + Droite)</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="assets.qrc">
-         <normaloff>:/Ressources/forwardbtn.png</normaloff>:/Ressources/forwardbtn.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>38</width>
-         <height>38</height>
-        </size>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Right</string>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
    <widget class="QLabel" name="a_image">
     <property name="geometry">
@@ -391,17 +333,88 @@ QSlider::handle:horizontal {
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="a_forward">
+    <property name="geometry">
+     <rect>
+      <x>65</x>
+      <y>24</y>
+      <width>22</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="toolTip">
+     <string>Suivant (Ctrl + Droite)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="assets.qrc">
+      <normaloff>:/Ressources/forwardbtn.png</normaloff>:/Ressources/forwardbtn.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>38</width>
+      <height>38</height>
+     </size>
+    </property>
+    <property name="shortcut">
+     <string>Ctrl+Right</string>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="a_previous">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>23</y>
+      <width>22</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Précédent (Ctrl + Gauche)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="assets.qrc">
+      <normaloff>:/Ressources/previousbtn.png</normaloff>:/Ressources/previousbtn.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>38</width>
+      <height>38</height>
+     </size>
+    </property>
+    <property name="shortcut">
+     <string>Ctrl+Left</string>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>a_image</zorder>
    <zorder>a_label</zorder>
    <zorder>a_playbtn</zorder>
    <zorder>a_pausebtn</zorder>
    <zorder>a_volumebtn</zorder>
    <zorder>a_menubtn</zorder>
-   <zorder>horizontalLayoutWidget_2</zorder>
    <zorder>a_currenttime</zorder>
    <zorder>a_duration</zorder>
    <zorder>a_closeButton</zorder>
    <zorder>a_hideButton</zorder>
+   <zorder>a_forward</zorder>
+   <zorder>a_previous</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
