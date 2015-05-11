@@ -325,7 +325,8 @@ void Player::setOpacity(qreal opacityFromSettings)
         if(opacityFromSettings != 1.0)
             a_canClose = false; //Handle the fade out anim
         else
-            a_canClose = true;
+            if(!a_isFrameless) //Frameless also isn't handled by the system anymore
+                a_canClose = true;
         return;
     }
 
@@ -380,8 +381,9 @@ void Player::loadSkin()
     }
     if(!a_isStarting)
     {
-        fadeAnimManager anim(ui->a_image, 1000, this);
-        anim.start();
+        if(!a_animManager) //If the pointer is null
+            a_animManager = new fadeAnimManager(ui->a_image, 1000, this, fadeAnimManager::FadeIn);
+        a_animManager->start();
     }
 }
 
