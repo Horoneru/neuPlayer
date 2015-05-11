@@ -23,19 +23,21 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.4.4 stable 090515 active
+                                            2015 Horoneru                                   1.4.5 stable 110515 active
       TODO
       à faire : (/ ordre d'importance)
-      > add to fav au niveau playlist (started)
-      > Fade-in/Fade-out when starting/pausing/between songs
+      > tweak Settings' popup so they look like normal popups, and remove what's this from current windows.
+      > Also fix some windows size
+      - add to fav au niveau playlist (started)
+      - Fade-in/Fade-out when starting/pausing/between songs
       - Further skinning options !
-      > UPDATE TRANSLATIONS
+      - UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
       - Re-design et occuper l'espace alloué par le borderless (DONE)
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.4.4");
+    QApplication::setApplicationVersion("1.4.5");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -605,8 +607,11 @@ void Player::errorHandling(QMediaPlayer::Error error)
         a_mediaPlaylist.removeMedia(current);
         if(a_isPlaylistOpen)
             a_playlist->updateList(&a_mediaPlaylist);
-        neu->setPlaylist(&a_mediaPlaylist);
-        a_mediaPlaylist.setCurrentIndex(current - 2);
+        neu->setPlaylist(&a_mediaPlaylist); // I do this to ensure stability, because we're in a panic case
+        if(!a_wasPrevious)
+            a_mediaPlaylist.setCurrentIndex(current - 2);
+        else
+            a_mediaPlaylist.setCurrentIndex(current - 1);
         a_isPlaying = stateBefore;
         if(a_isPlaying)
             playMedia();
@@ -614,9 +619,9 @@ void Player::errorHandling(QMediaPlayer::Error error)
         break;
     case QMediaPlayer::FormatError :
         ui->a_label->setText(tr("erreur : Format non supporté"));
-        pauseMedia();
+        pauseMedia(); // Total panic
         neu->stop();
-        a_mediaPlaylist.clear();
+        a_mediaPlaylist.clear();// so we have to discard the content
         break;
     case QMediaPlayer::NetworkError :
         ui->a_label->setText(tr("erreur : Network error"));
@@ -1116,9 +1121,17 @@ void Player::showPlaylist()
 
 void Player::showSettings()
 {
-    a_isSettingsOpen = true;
-    QPointer <Settings> settings = new Settings(this, this);
-    settings->show();
+    if(!a_isSettingsOpen)
+    {
+        a_isSettingsOpen = true;
+        a_settingsForm = new Settings(this, this);
+        a_settingsForm->show();
+    }
+    else
+    {
+        a_settingsForm->show();
+        a_settingsForm->activateWindow();
+    }
 }
 
 void Player::showTagViewer()
