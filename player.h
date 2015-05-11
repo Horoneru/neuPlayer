@@ -194,6 +194,7 @@ private:
     QPointer <Settings> a_settingsForm;
     QSettings a_settings; //Contient les settings de l'application
     neuPlaylist a_mediaPlaylist;
+    QPointer<fadeAnimManager> a_animManager;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
     bool a_isFrameless;
     bool a_hasToSavePlaylistLater;
