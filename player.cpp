@@ -143,7 +143,7 @@ void Player::setupObjects()
 
     //Prepare custom Sliders
     a_progressSlider = new Slider(ui->centralWidget);
-    a_progressSlider->setGeometry(QRect(130, 26, 121, 20));
+    a_progressSlider->setGeometry(QRect(132, 26, 110, 20));
     a_progressSlider->setOrientation(Qt::Horizontal);
     a_progressSlider->setInvertedAppearance(false);
     a_progressSlider->setInvertedControls(false);
@@ -153,7 +153,7 @@ void Player::setupObjects()
 
 
     a_volumeSlider = new Slider(ui->centralWidget);
-    a_volumeSlider->setGeometry(QRect(310, 30, 61, 16));
+    a_volumeSlider->setGeometry(QRect(310, 28, 60, 16));
     a_volumeSlider->setMaximum(99);
     a_volumeSlider->setValue(50);
     a_volumeSlider->setOrientation(Qt::Horizontal);
@@ -173,7 +173,7 @@ void Player::setupObjects()
     font.setPointSize(10);
     a_scrollingLabel = new ScrollingInfoLabel(this);
     a_scrollingLabel->setFont(font);
-    a_scrollingLabel->setGeometry(QRect(100, 0, 181, 31));
+    a_scrollingLabel->setGeometry(QRect(100, 0, 175, 31));
     a_scrollingLabel->setMinimumSize(QSize(170, 30));
 
     //Raccourcis clavier pour parcourir les éléments du player
