@@ -6,7 +6,6 @@
 #include <QStyleFactory>
 #include <QTranslator>
 #include <QLocale>
-#include <QLibraryInfo>
 #include <QFile>
 #include <QSettings>
 #include <QSharedMemory>
