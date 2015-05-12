@@ -44,7 +44,7 @@ void ScrollingInfoLabel::updateText()
         staticText.setText(_text + _separator);
         timer.start();
     }
-    else //else it's a staticText
+    else //else it's a staticText that doesn't scroll
     {
         staticText.setText(_text);
     }
