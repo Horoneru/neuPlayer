@@ -656,7 +656,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 250415</string>
+build 110515</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -665,14 +665,14 @@ build 250415</string>
       <widget class="QLabel" name="label_11">
        <property name="geometry">
         <rect>
-         <x>355</x>
+         <x>345</x>
          <y>0</y>
-         <width>51</width>
+         <width>61</width>
          <height>20</height>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v1.4.4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v1.5.0 dev&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
