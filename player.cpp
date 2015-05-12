@@ -23,7 +23,7 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.4.5 stable 110515 active
+                                            2015 Horoneru                                   1.5.0 dev 110515 active
       TODO
       à faire : (/ ordre d'importance)
       > tweak Settings' popup so they look like normal popups, and remove what's this from current windows.
@@ -37,7 +37,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.4.5");
+    QApplication::setApplicationVersion("1.5.0 dev");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -784,7 +784,7 @@ void Player::setType()
 //Update and set type of label
 void Player::updateLabel(QString &text)
 {
-    if(text.size() < 28)
+    if(text.size() < 25)
     {
         a_isScrollingText = false;
         if(!ui->a_label->isVisible())
