@@ -26,8 +26,8 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
     a_previousIndex = 99999; //Pretty sure nobody would reach that value
     a_queueIndex = 0; //used to determine where to place the song you want to queue
     //Prepare fade manager animations
-    a_fadeManager.addTarget(ui->a_cover, fadeAnimManager::FadeIn, 500, fadeAnimManager::Parallel);
-    a_fadeManager.addTarget(ui->a_titleHeader, fadeAnimManager::FadeIn, 350, fadeAnimManager::Parallel);
+    a_fadeManager.addTarget(ui->a_cover, FadeManager::FadeIn, 500, FadeManager::Parallel);
+    a_fadeManager.addTarget(ui->a_titleHeader, FadeManager::FadeIn, 350, FadeManager::Parallel);
     setupActions();
 
     //Setup list
@@ -200,7 +200,7 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
     ui->a_titleHeader->setText(title);
     ui->a_titleHeader->setToolTip(title);
     if(!a_player->deleteTriggered())
-        a_fadeManager.startGroup(fadeAnimManager::Parallel, false);
+        a_fadeManager.startGroup(FadeManager::Parallel, false);
 }
 
         /* Playlist functionality */
@@ -343,7 +343,7 @@ void Playlist::viewInfo()
         a_player->showTagViewer();
     else //Let's find a workaround to give you info Qt shouldn't let me get !
     {
-        a_tempPlayer = new QMediaPlayer(nullptr);
+        a_tempPlayer = new QMediaPlayer(this);
         connect(a_tempPlayer, SIGNAL(metaDataChanged()), this, SLOT(sendNewInfos()));
         a_tempPlayer->setMuted(true); //Don't let the user know that this ugly code is happening
         a_tempPlayer->setMedia(QMediaContent(ui->a_playlistWidget->currentItem()->toolTip()));
