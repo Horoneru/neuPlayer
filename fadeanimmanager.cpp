@@ -331,7 +331,10 @@ void fadeAnimManager::start(bool deleteWhenFinished)
     a_target->setGraphicsEffect(a_effectContainer);
     anim->setDuration(a_duration);
     setMode(anim, a_mode, a_effectContainer);
-    anim->start();
+    if(deleteWhenFinished)
+        anim->start(QAbstractAnimation::DeleteWhenStopped);
+    else
+        anim->start();
 }
 
 void fadeAnimManager::setMode(QPropertyAnimation *anim, FadeMode mode, QGraphicsOpacityEffect *container)
@@ -391,4 +394,8 @@ fadeAnimManager::~fadeAnimManager()
         clearGroup(Parallel);
     if(a_sequentialAnimations.animationCount())
         clearGroup(Sequential);
+    if(!a_effectContainer) //if pointer not null
+        delete a_effectContainer;
+    else
+        a_effectContainer = nullptr;
 }

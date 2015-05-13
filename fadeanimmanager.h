@@ -12,7 +12,7 @@
 /*   Convenience class to fade in or out any QWidget,
  *   The class manages internally groups for you, making code cleaner.
  *   Created by Horoneru the 31/03/15
- *   V1.1 (updated 09/05/15), implemented throughout the player.
+ *   V1.1.2 (updated 13/05/15)
 */
 
 
@@ -42,6 +42,12 @@ public:
 
     void addToParallel(QAbstractAnimation *animation);
     void addToSequential(QAbstractAnimation *animation);
+
+    void setSingleTarget(QWidget *target)
+    {
+        a_target = target;
+    }
+
     void addTarget(QWidget *target);
     void addTarget(QWidget *target, FadeMode mode);
     void addTarget(QWidget *target, FadeMode mode,
