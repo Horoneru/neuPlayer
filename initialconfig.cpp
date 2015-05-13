@@ -45,7 +45,7 @@ void InitialConfig::entranceAnimations()
     a_animManager.addTarget(ui->a_description);
     a_animManager.addTarget(ui->a_recommendedBtn);
     a_animManager.addTarget(ui->a_configureBtn);
-    a_animManager.startGroup(fadeAnimManager::Parallel, false);
+    a_animManager.startGroup(FadeManager::Parallel, false);
 }
 
 void InitialConfig::customWizard()
@@ -100,11 +100,11 @@ void InitialConfig::advanceWizard()
         ui->a_nextBtn->setVisible(true);
 
         a_animManager.setDefaultDuration(300);
-        a_animManager.clearGroup(fadeAnimManager::Parallel);
+        a_animManager.clearGroup(FadeManager::Parallel);
         a_animManager.addTarget(ui->a_description);
         a_animManager.addTarget(ui->a_playlistAtStartupCheck);
         a_animManager.addTarget(ui->a_nextBtn);
-        a_animManager.startGroup(fadeAnimManager::Parallel, false);
+        a_animManager.startGroup(FadeManager::Parallel, false);
     }
     if(a_page == 3)
     {
@@ -117,12 +117,12 @@ void InitialConfig::advanceWizard()
         ui->a_opacitySlide->setVisible(true);
         updateSlideValue(100);
 
-        a_animManager.clearGroup(fadeAnimManager::Parallel);
+        a_animManager.clearGroup(FadeManager::Parallel);
         a_animManager.addTarget(ui->a_description);
         a_animManager.addTarget(ui->a_label);
         a_animManager.addTarget(ui->a_opacityLabel);
         a_animManager.addTarget(ui->a_opacitySlide);
-        a_animManager.startGroup(fadeAnimManager::Parallel, false);
+        a_animManager.startGroup(FadeManager::Parallel, false);
 
         connect(ui->a_opacitySlide, SIGNAL(valueChanged(int)), this, SLOT(updateSlideValue(int)));
     }
@@ -138,11 +138,11 @@ void InitialConfig::advanceWizard()
         ui->a_label->setVisible(false);
         ui->a_description->setText(tr("Démarrage avec librairie"));
 
-        a_animManager.clearGroup(fadeAnimManager::Parallel);
+        a_animManager.clearGroup(FadeManager::Parallel);
         a_animManager.addTarget(ui->a_libraryAtStartupCheck);
         a_animManager.addTarget(ui->a_libraryAtStartupCheck_2);
         a_animManager.addTarget(ui->a_description);
-        a_animManager.startGroup(fadeAnimManager::Parallel, false);
+        a_animManager.startGroup(FadeManager::Parallel, false);
 
         connect(ui->a_libraryAtStartupCheck, SIGNAL(clicked(bool)), this, SLOT(setLibrary(bool)));
         connect(ui->a_libraryAtStartupCheck_2, SIGNAL(clicked(bool)), this, SLOT(setDefault(bool)));
@@ -211,12 +211,12 @@ void InitialConfig::finalPage()
     ui->a_label->setText(tr("Si le lecteur n'affiche pas vos musiques\nconfigurez-le manuellement dans les paramètres"));
     ui->a_finishButton->setVisible(true);
     ui->a_finishButton->setFocus(); //So the user can hit enter and finish right away
-    a_animManager.clearGroup(fadeAnimManager::Parallel);
+    a_animManager.clearGroup(FadeManager::Parallel);
     a_animManager.addTarget(ui->a_welcome);
     a_animManager.addTarget(ui->a_label);
     a_animManager.addTarget(ui->a_description);
     a_animManager.addTarget(ui->a_finishButton);
-    a_animManager.startGroup(fadeAnimManager::Parallel); //Will delete the animation. We're done with it !
+    a_animManager.startGroup(FadeManager::Parallel); //Will delete the animation. We're done with it !
     this->setCursor(Qt::ArrowCursor);
 }
 

@@ -11,7 +11,7 @@
 
 #include "player.h"
 #include "fadewindow.h"
-#include "fadeanimmanager.h"
+#include "fademanager.h"
 namespace Ui {
 class InitialConfig;
 }
@@ -47,7 +47,7 @@ private:
     QSettings a_settings;
     Player *neuPlayer;
     //We only need this manager now !
-    fadeAnimManager a_animManager;
+    FadeManager a_animManager;
 
     //Others
     bool a_canClose; //To setup an anim before closing

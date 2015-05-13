@@ -382,7 +382,7 @@ void Player::loadSkin()
     if(!a_isStarting)
     {
         if(!a_animManager) //If the pointer is null
-            a_animManager = new fadeAnimManager(ui->a_image, 1000, this, fadeAnimManager::FadeIn);
+            a_animManager = new FadeManager(ui->a_image, 1000, this, FadeManager::FadeIn);
         a_animManager->start();
     }
 }

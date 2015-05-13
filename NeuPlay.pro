@@ -18,28 +18,28 @@ SOURCES += main.cpp\
     settings.cpp \
     tagviewer.cpp \
     initialconfig.cpp \
-    scrollinginfolabel.cpp \
     neuplaylist.cpp \
     skin.cpp \
-    fadeanimmanager.cpp \
     slider.cpp \
     framelesshelper.cpp \
     fadewindow.cpp \
-    updaterhandler.cpp
+    updaterhandler.cpp \
+    fademanager.cpp \
+    scrollinglabel.cpp
 
 HEADERS  += player.h \
     playlist.h \
     settings.h \
     tagviewer.h \
     initialconfig.h \
-    scrollinginfolabel.h \
     neuplaylist.h \
     skin.h \
-    fadeanimmanager.h \
     slider.h \
     framelesshelper.h \
     fadewindow.h \
-    updaterhandler.h
+    updaterhandler.h \
+    fademanager.h \
+    scrollinglabel.h
 
 FORMS    += player.ui \
     playlist.ui \

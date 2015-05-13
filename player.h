@@ -29,14 +29,14 @@
 #include "slider.h"
 #include "settings.h"
 #include "neuplaylist.h"
-#include "fadeanimmanager.h"
+#include "fademanager.h"
 #include "fadewindow.h"
-#include "scrollinginfolabel.h"
+#include "scrollinglabel.h"
 namespace Ui {
 class Player;
 }
 class Playlist;
-class ScrollingInfoLabel;
+class ScrollingLabel;
 class Settings;
 class Player : public QMainWindow
 {
@@ -194,7 +194,7 @@ private:
     QPointer <Settings> a_settingsForm;
     QSettings a_settings; //Contient les settings de l'application
     neuPlaylist a_mediaPlaylist;
-    QPointer<fadeAnimManager> a_animManager;
+    QPointer<FadeManager> a_animManager;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
     bool a_isFrameless;
     bool a_hasToSavePlaylistLater;
@@ -231,7 +231,7 @@ private:
     const QIcon a_volumeMutedIcon, a_volumeMutedDarkIcon;
     const QPixmap a_neuDarkBg, a_neuLightBg, a_neuLightCustombg;
 
-    ScrollingInfoLabel a_scrollingLabel; //Custom label
+    ScrollingLabel a_scrollingLabel; //Custom label
     QPixmap a_coverArt;
     QPropertyAnimation *a_titleAnimate;
     QGraphicsOpacityEffect *a_infoFadein;

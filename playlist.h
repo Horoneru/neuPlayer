@@ -8,7 +8,7 @@
 #include <QPointer>
 
 #include "neuplaylist.h"
-#include "fadeanimmanager.h"
+#include "fademanager.h"
 #include "player.h"
 namespace Ui {
 class Playlist;
@@ -77,7 +77,7 @@ private:
     bool a_isPlaying;
     bool a_isReload;
     QPixmap a_defaultCover;
-    fadeAnimManager a_fadeManager;
+    FadeManager a_fadeManager;
     int a_previousIndex;
     int a_currentIndex;
     int a_queueIndex;
