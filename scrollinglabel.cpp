@@ -1,8 +1,8 @@
-#include "scrollinginfolabel.h"
+#include "scrollinglabel.h"
 #include <QPainter>
 #include <QDebug>
 
-ScrollingInfoLabel::ScrollingInfoLabel(QWidget *parent) :
+ScrollingLabel::ScrollingLabel(QWidget *parent) :
     QLabel(parent), scrollPos(0)
 {
     staticText.setTextFormat(Qt::PlainText);
@@ -16,22 +16,22 @@ ScrollingInfoLabel::ScrollingInfoLabel(QWidget *parent) :
     timer.setInterval(40);
 }
 
-QString ScrollingInfoLabel::text() const
+QString ScrollingLabel::text() const
 {
     return _text;
 }
 
-QString ScrollingInfoLabel::separator() const
+QString ScrollingLabel::separator() const
 {
     return _separator;
 }
 
-void ScrollingInfoLabel::setSeparator(QString separator)
+void ScrollingLabel::setSeparator(QString separator)
 {
     _separator = separator;
 }
 
-void ScrollingInfoLabel::updateText()
+void ScrollingLabel::updateText()
 {
     timer.stop();
 
@@ -53,7 +53,7 @@ void ScrollingInfoLabel::updateText()
     wholeTextSize = QSize(fontMetrics().width(staticText.text()), fontMetrics().height());
 }
 
-void ScrollingInfoLabel::paintEvent(QPaintEvent*)
+void ScrollingLabel::paintEvent(QPaintEvent*)
 {
     QPainter p(this);
 
@@ -90,7 +90,7 @@ void ScrollingInfoLabel::paintEvent(QPaintEvent*)
     }
 }
 
-void ScrollingInfoLabel::resizeEvent(QResizeEvent*)
+void ScrollingLabel::resizeEvent(QResizeEvent*)
 {
     //When the widget is resized, we need to update the alpha channel.
 
@@ -120,7 +120,7 @@ void ScrollingInfoLabel::resizeEvent(QResizeEvent*)
         updateText();
 }
 
-void ScrollingInfoLabel::timer_timeout()
+void ScrollingLabel::timer_timeout()
 {
     scrollPos = (scrollPos + 2)
                 % wholeTextSize.width();

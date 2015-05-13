@@ -13,14 +13,14 @@
  *
  * */
 
-class ScrollingInfoLabel : public QLabel
+class ScrollingLabel : public QLabel
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText)
     Q_PROPERTY(QString separator READ separator WRITE setSeparator)
 
 public:
-    explicit ScrollingInfoLabel(QWidget *parent = 0);
+    explicit ScrollingLabel(QWidget *parent = 0);
 
 public slots:
     QString text() const;

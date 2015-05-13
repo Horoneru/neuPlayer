@@ -1,5 +1,5 @@
-#ifndef FADEANIMMANAGER_H
-#define FADEANIMMANAGER_H
+#ifndef FADEMANAGER_H
+#define FADEMANAGER_H
 
 #include <QObject>
 #include <QWidget>
@@ -12,23 +12,23 @@
 /*   Convenience class to fade in or out any QWidget,
  *   The class manages internally groups for you, making code cleaner.
  *   Created by Horoneru the 31/03/15
- *   V1.1.2 (updated 13/05/15)
+ *   V1.1.3 (updated 13/05/15)
 */
 
 
-class fadeAnimManager : public QObject
+class FadeManager : public QObject
 {
     Q_OBJECT
 public:
     enum FadeMode { FadeOut, FadeIn };
     enum AnimationSequenceType { Parallel, Sequential };
     //Constructors
-    explicit fadeAnimManager(QObject *parent = 0);
-    fadeAnimManager(QWidget *target, FadeMode mode , int msecs, AnimationSequenceType sequence, QObject *parent);
-    fadeAnimManager(QWidget *target, int msecs, QObject *parent, FadeMode mode = FadeMode::FadeIn);
-    fadeAnimManager(QWidget *target, QObject *parent);
-    fadeAnimManager(FadeMode mode, QObject *parent);
-    ~fadeAnimManager();
+    explicit FadeManager(QObject *parent = 0);
+    FadeManager(QWidget *target, FadeMode mode , int msecs, AnimationSequenceType sequence, QObject *parent);
+    FadeManager(QWidget *target, int msecs, QObject *parent, FadeMode mode = FadeMode::FadeIn);
+    FadeManager(QWidget *target, QObject *parent);
+    FadeManager(FadeMode mode, QObject *parent);
+    ~FadeManager();
 
     inline void setDefaultDuration(int msecs)
     {
@@ -73,7 +73,7 @@ public:
     void fadeInGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Sets the entire group to FadeIn
 
 signals:
-    void finished(fadeAnimManager::AnimationSequenceType); //When finished, you will be notified, and know which group finished.
+    void finished(FadeManager::AnimationSequenceType); //When finished, you will be notified, and know which group finished.
 
 public slots:
 
@@ -84,7 +84,7 @@ public slots:
             a_parallelAnimations.clear();
             a_deleteWhenFinished = false;
         }
-        emit finished(fadeAnimManager::Parallel);
+        emit finished(FadeManager::Parallel);
     }
 
     inline void sequentialFinished()
@@ -94,7 +94,7 @@ public slots:
             a_sequentialAnimations.clear();
             a_deleteWhenFinished = false;
         }
-        emit finished(fadeAnimManager::Sequential);
+        emit finished(FadeManager::Sequential);
     }
 
 private:
@@ -114,4 +114,4 @@ private:
     AnimationSequenceType a_sequenceType; //Parallel or Sequential
 };
 
-#endif // FADEANIMMANAGER_H
+#endif // FADEMANAGER
