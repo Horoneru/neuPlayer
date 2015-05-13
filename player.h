@@ -231,7 +231,7 @@ private:
     const QIcon a_volumeMutedIcon, a_volumeMutedDarkIcon;
     const QPixmap a_neuDarkBg, a_neuLightBg, a_neuLightCustombg;
 
-    ScrollingInfoLabel *a_scrollingLabel; //Custom label
+    ScrollingInfoLabel a_scrollingLabel; //Custom label
     QPixmap a_coverArt;
     QPropertyAnimation *a_titleAnimate;
     QGraphicsOpacityEffect *a_infoFadein;

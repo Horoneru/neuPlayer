@@ -171,10 +171,10 @@ void Player::setupObjects()
     QFont font;
     font.setFamily(QStringLiteral("Segoe UI"));
     font.setPointSize(10);
-    a_scrollingLabel = new ScrollingInfoLabel(this);
-    a_scrollingLabel->setFont(font);
-    a_scrollingLabel->setGeometry(QRect(100, 0, 175, 31));
-    a_scrollingLabel->setMinimumSize(QSize(170, 30));
+    a_scrollingLabel.setParent(this);
+    a_scrollingLabel.setFont(font);
+    a_scrollingLabel.setGeometry(QRect(100, 0, 175, 31));
+    a_scrollingLabel.setMinimumSize(QSize(170, 30));
 
     //Raccourcis clavier pour parcourir les éléments du player
     a_advance.setShortcut(Qt::ALT + Qt::Key_Right);
@@ -742,7 +742,7 @@ void Player::setMeta()
 
     if(!ui->a_label->isVisible())
     {
-        a_scrollingLabel->hide();
+        a_scrollingLabel.hide();
         ui->a_label->setVisible(true);
     }
     a_hasToSetLabelType = true;
@@ -789,8 +789,8 @@ void Player::updateLabel(QString &text)
         a_isScrollingText = false;
         if(!ui->a_label->isVisible())
             ui->a_label->show();
-        if(a_scrollingLabel->isVisible())
-            a_scrollingLabel->hide();
+        if(a_scrollingLabel.isVisible())
+            a_scrollingLabel.hide();
 
         if(!a_hasToSetLabelType) //Doesn't need to set them if that's the case
         {
@@ -803,9 +803,9 @@ void Player::updateLabel(QString &text)
         a_isScrollingText = true;
         if(ui->a_label->isVisible())
             ui->a_label->hide();
-        a_scrollingLabel->setText(text);
-        a_scrollingLabel->setToolTip(text);
-        a_scrollingLabel->show();
+        a_scrollingLabel.setText(text);
+        a_scrollingLabel.setToolTip(text);
+        a_scrollingLabel.show();
     }
 }
 
@@ -838,7 +838,7 @@ void Player::fadeInLabel()
 {
     //This changes the target if we're using the scrolling label
     if(a_isScrollingText)
-        a_scrollingLabel->setGraphicsEffect(a_infoFadein);
+        a_scrollingLabel.setGraphicsEffect(a_infoFadein);
     else
         ui->a_label->setGraphicsEffect(a_infoFadein);
 
