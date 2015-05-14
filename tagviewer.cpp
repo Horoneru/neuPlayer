@@ -7,6 +7,7 @@ TagViewer::TagViewer(QList<QString> currentMediaInfo, QPixmap *cover, QWidget *p
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     a_metas = currentMediaInfo;
     setupInfos(cover); //send the only thing missing
 }

@@ -7,6 +7,7 @@ Settings::Settings(Player *Player, QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     //Make the Player received as an attribute so we can use it
     a_passerelle = Player;

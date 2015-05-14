@@ -8,7 +8,7 @@ InitialConfig::InitialConfig(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
-    this->setWindowOpacity(100);
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     setupWidgetsInitialVisibility();
 
