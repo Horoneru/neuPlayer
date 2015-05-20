@@ -78,7 +78,6 @@ void InitialConfig::presetConfig()
     a_settings.endGroup();
     a_settings.setValue("playlistAtStartup", false);
     a_settings.setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
-    qDebug() << QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
     QFileInfo info (a_settings.value("mediapath").toString());
     a_settings.setValue("libModified", info.lastModified().toMSecsSinceEpoch());
     neuPlayer = new Player(); //The player will update itself, and write that the config has been done after that
