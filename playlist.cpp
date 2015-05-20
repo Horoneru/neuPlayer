@@ -242,7 +242,6 @@ void Playlist::setToPaused(int index)
     a_isPlaying = false;
 }
 
-
 void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool playing)
 {
     if(a_previousIndex != 99999) //Default value of a_previousIndex
@@ -475,7 +474,6 @@ void Playlist::deleteItem()
             if(a_currentIndex == ui->a_playlistFavWidget->currentRow())
                 return;
         }
-    qDebug() << a_currentIndex << ui->a_playlistFavWidget->currentRow();
     int index;
     if(!a_player->isUsingFav())
         index = ui->a_playlistWidget->currentRow();
@@ -491,6 +489,15 @@ void Playlist::deleteItem()
         ui->a_playlistFavWidget->takeItem(index);
         a_player->setFavsToBeSaved(true);
     }
+}
+
+void Playlist::deleteItem(int index) //For use when the player is in panic mode.
+{
+    if(a_player->isUsingFav())
+        ui->a_playlistFavWidget->takeItem(index);
+    else
+        ui->a_playlistWidget->takeItem(index);
+    //The rest is handled by the errorhandling in player
 }
 
 void Playlist::viewInfo()

@@ -621,21 +621,24 @@ void Player::errorHandling(QMediaPlayer::Error error)
         break;
     case QMediaPlayer::ResourceError:
         ui->a_label->setText(tr("erreur : Unresolved Resource"));
-        a_mediaPlaylist.previous();
-        current = a_mediaPlaylist.currentIndex();
-        qDebug() << a_mediaPlaylist.media(current).canonicalUrl();
-        a_mediaPlaylist.removeMedia(current);
+        neu->playlist()->previous();
+        current = neu->playlist()->currentIndex();
+        qDebug() << neu->playlist()->media(current).canonicalUrl();
+        neu->playlist()->removeMedia(current);
         if(a_isPlaylistOpen)
-            a_playlist->updateList(&a_mediaPlaylist);
-        neu->setPlaylist(&a_mediaPlaylist); // I do this to ensure stability, because we're in a panic case
+            a_playlist->deleteItem(current);
+        neu->setPlaylist(neu->playlist()); // I do this to ensure stability, because we're in a panic case
         if(!a_wasPrevious)
-            a_mediaPlaylist.setCurrentIndex(current - 2);
+            neu->playlist()->setCurrentIndex(current - 2);
         else
-            a_mediaPlaylist.setCurrentIndex(current - 1);
+            neu->playlist()->setCurrentIndex(current - 1);
         a_isPlaying = stateBefore;
         if(a_isPlaying)
             playMedia();
-        a_hasToSavePlaylistLater = true; //Prevent error from coming back.
+        if(!a_isUsingFavPlaylist)
+            a_hasToSavePlaylistLater = true; //Prevent error from coming back.
+        else
+            a_hasToSaveFavsLater = true;
         break;
     case QMediaPlayer::FormatError :
         ui->a_label->setText(tr("erreur : Format non supporté"));
