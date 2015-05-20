@@ -15,14 +15,14 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     //Check if another instance has been started already
-    QSharedMemory sharedMemory;
-    sharedMemory.setKey("neu");
+//    QSharedMemory sharedMemory;
+//    sharedMemory.setKey("neu");
 
-    if (!sharedMemory.create(1))
-    {
-        QMessageBox::warning(nullptr, QObject::tr("Warning!"), QObject::tr("An instance of this application is running!"));
-        exit(0); // Exit process immediately
-    }
+//    if (!sharedMemory.create(1))
+//    {
+//        QMessageBox::warning(nullptr, QObject::tr("Warning!"), QObject::tr("An instance of this application is running!"));
+//        exit(0); // Exit process immediately
+//    }
 
     QSettings settings("neuPlayer.ini", QSettings::IniFormat);
 
