@@ -3,26 +3,24 @@
 #include <QFileDialog>
 #include <QDirIterator>
 
-Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent) :
+Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Playlist), a_isReload (false) //That bool can result in unexpected behaviour if it's not initialized
+    ui(new Ui::Playlist), a_isReload (false), a_favsNotLoadedYet(true) //These bool can result in unexpected behaviour if it's not initialized
 {
     ui->setupUi(this);
     ui->a_searchLine->setHidden(true);
-    /*!
-      TODO :
-       #Ajouter un addtoFav au contextmenu et implanter des onglets différents playlist/favoris << Soon after some internal optimizations overall
-    */
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     ui->a_playlistWidget->setDragEnabled(false); //I can't handle it well as of now :/
+    ui->a_playlistFavWidget->setDragEnabled(false);
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_defaultCover.load(":/Ressources/noCoverHeader.png");
     //On reçoit le player, il faut maintenant le mettre en tant qu'attribut pour l'utiliser partout
     a_player = player;
     //De même, on met la playlist en tant qu'attribut pour l'utiliser plus tard.
-    a_playlist = liste;
+    a_playlist = &liste;
+    a_favPlaylist = &favs; //Et l'autre
     a_previousIndex = 99999; //Pretty sure nobody would reach that value
     a_queueIndex = 0; //used to determine where to place the song you want to queue
     //Prepare fade manager animations
@@ -31,25 +29,44 @@ Playlist::Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover
     setupActions();
 
     //Setup list
-
-    updateList(liste);
-
-
-    if(!liste->isEmpty()) //If it's okay
+    updateList(&liste);
+    if(!player->isUsingFav())
     {
-        if(index == -1) //If it's stopped or something weird is going on
-            ui->a_titleHeader->setText(tr("Séléctionnez une musique à lire"));
-        else //Okay, gogo
+        if(!liste.isEmpty()) //If it's okay
         {
-            ui->a_playlistWidget->scrollToItem(ui->a_playlistWidget->item(index));
-            setCurrentItem(index, cover, title, playingState);
-            //Update the icon if the player is paused or stopped
+            if(liste.currentIndex() == -1) //If it's stopped or something weird is going on
+                ui->a_titleHeader->setText(tr("Séléctionnez une musique à lire"));
+            else //Okay, gogo
+            {
+                ui->a_playlistWidget->scrollToItem(ui->a_playlistWidget->item(liste.currentIndex()),  QAbstractItemView::PositionAtTop);
+                setCurrentItem(liste.currentIndex(), cover, title, playingState);
+                //Update the icon if the player is paused or stopped
+            }
+        }
+        else //If not, shows there's nothing
+        {
+            ui->a_playlistWidget->addItem(tr("Aucune musique"));
+            ui->a_playlistWidget->item(0)->setTextAlignment(Qt::AlignCenter);
         }
     }
-    else //If not, shows there's nothing
+    else
     {
-        ui->a_playlistWidget->addItem("Aucune musique");
-        ui->a_playlistWidget->item(0)->setTextAlignment(Qt::AlignCenter);
+        updateFavs(&favs);
+        if(!favs.isEmpty()) //If it's okay
+        {
+            if(favs.currentIndex() != -1) //Okay, gogo
+            {
+                ui->a_playlistFavWidget->scrollToItem(ui->a_playlistFavWidget->item(favs.currentIndex()), QAbstractItemView::PositionAtTop);
+                setCurrentItem(favs.currentIndex(), cover, title, playingState);
+                //Update the icon if the player is paused or stopped
+            }
+        }
+        else //If not, shows there's nothing
+        {
+            ui->a_playlistFavWidget->addItem(tr("Aucun favoris"));
+            ui->a_playlistFavWidget->item(0)->setTextAlignment(Qt::AlignCenter);
+        }
+        setTab(1);
     }
 
     setupConnections();
@@ -70,6 +87,7 @@ void Playlist::setupActions()
     ui->a_tools->setMenu(a_playlistMenu);
     //Actions & Context menu
     ui->a_playlistWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->a_playlistFavWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     a_findItemTrigger = new QAction(this);
     a_findItemTrigger->setShortcut(Qt::CTRL + Qt::Key_F);
     a_findItemTrigger->setCheckable(true);
@@ -77,6 +95,8 @@ void Playlist::setupActions()
     a_deleteItemFromQueue->setShortcut(Qt::Key_Delete);
     a_addToQueue = new QAction(tr("Ajouter à la file d'attente"), this);
     a_addToQueue->setShortcut(Qt::CTRL + Qt::Key_Plus);
+    a_addToFav = new QAction(tr("Ajouter aux favoris"), this);
+    a_addToFav->setShortcut(QKeySequence("CTRL + *"));
     a_viewInfo = new QAction(tr("Voir les informations"), this);
     a_viewInfo->setShortcut(Qt::ALT + Qt::Key_Return);
     a_easyHideFind = new QAction(this);
@@ -93,6 +113,7 @@ void Playlist::setupActions()
     a_playlistContextMenu->addAction(a_addToQueue);
     a_playlistContextMenu->addAction(a_deleteItemFromQueue);
     a_playlistContextMenu->addAction(a_viewInfo);
+    a_playlistContextMenu->addAction(a_addToFav);
 }
 
 
@@ -104,14 +125,18 @@ void Playlist::setupConnections()
     connect(ui->a_switchRandomPlay, SIGNAL(clicked()), this, SLOT(randomModeChanger()));
     connect(ui->a_switchLoopPlay, SIGNAL(clicked()), this, SLOT(loopModeChanger()));
     connect(ui->a_playlistWidget, SIGNAL(activated(QModelIndex)), this, SLOT(playItem(QModelIndex)));
+    connect(ui->a_playlistFavWidget, SIGNAL(activated(QModelIndex)), this, SLOT(playItem(QModelIndex)));
     //This one below is commented out because it doesn't work yet. Need help as to why it crashes
 //    connect(a_findItemTrigger, SIGNAL(triggered()), this, SLOT(findItemVisibilityHandler()));
     connect(ui->a_playlistWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu()));
+    connect(ui->a_playlistFavWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu()));
     connect(a_playlistContextMenu, SIGNAL(aboutToShow()), this, SLOT(prepareContextMenu()));
     connect(a_deleteItemFromQueue, SIGNAL(triggered()), this, SLOT(deleteItem()));
     connect(a_addToQueue, SIGNAL(triggered()), this, SLOT(addItemToQueue()));
     connect(a_viewInfo, SIGNAL(triggered()), this, SLOT(viewInfo()));
+    connect(a_addToFav, SIGNAL(triggered()), this, SLOT(addToFav()));
     connect(ui->a_titleHeader, SIGNAL(clicked()), this, SLOT(scrollToPlaying()));
+    connect(ui->a_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(setTab(int)));
     connect(a_validateFind, SIGNAL(triggered()), this, SLOT(validateSearch()));
 }
 
@@ -134,13 +159,15 @@ void Playlist::setupMode()
 
         /* Update section */
 
-void Playlist::updateList(neuPlaylist*listeFichiers, bool setZeroIndex)
+void Playlist::updateList(neuPlaylist *listeFichiers, bool setZeroIndex)
 {
     if(a_currentIndex != 0 && setZeroIndex) //Helps not to crash. Each index is reset to 0 so there isn't any out of bound, but only when we're not starting up
     {
         a_player->setIndexOfThePlayer(0, false);
         ui->a_playlistWidget->setCurrentRow(0);
     }
+    if(ui->a_tabWidget->currentIndex() != 0)
+        ui->a_tabWidget->setCurrentIndex(0);
     ui->a_playlistWidget->clear();
     int const mediaCount = listeFichiers->mediaCount();
     for(int i(0); i < mediaCount; i++)
@@ -152,14 +179,45 @@ void Playlist::updateList(neuPlaylist*listeFichiers, bool setZeroIndex)
     }
 }
 
-void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne)
+void Playlist::updateFavs(neuPlaylist *favPlaylist) //Called when the tab is set to favs, and it wasn't initially called
+{
+    ui->a_playlistFavWidget->clear();
+    int const mediaCount = favPlaylist->mediaCount();
+    for(int i(0); i < mediaCount; i++)
+    {
+        QString filepath = favPlaylist->media(i).canonicalUrl().toString();
+        ui->a_playlistFavWidget->addItem(QFileInfo(filepath).fileName());
+        ui->a_playlistFavWidget->item(i)->setData(Qt::ToolTipRole, filepath);
+        ui->a_playlistFavWidget->item(i)->setData(Qt::WhatsThisRole, i);
+    }
+    a_favsNotLoadedYet = false;
+}
+
+void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne) //Updates the list very fast. Used when adding an element
 {
     unsigned int const numberItems = items->size();
-    for(int i(0); i < numberItems; i++, currentItemPlusOne++)
+    if(!a_player->isUsingFav())
     {
-        ui->a_playlistWidget->insertItem(currentItemPlusOne, items->at(i).fileName());
-        ui->a_playlistWidget->item(currentItemPlusOne)->setData(Qt::ToolTipRole, QUrl(items->at(i)));
-        ui->a_playlistWidget->item(currentItemPlusOne)->setData(Qt::WhatsThisRole, currentItemPlusOne);
+        for(unsigned int i(0); i < numberItems; i++, currentItemPlusOne++)
+        {
+            ui->a_playlistWidget->insertItem(currentItemPlusOne, items->at(i).fileName());
+            ui->a_playlistWidget->item(currentItemPlusOne)->setData(Qt::ToolTipRole, QUrl(items->at(i)));
+            ui->a_playlistWidget->item(currentItemPlusOne)->setData(Qt::WhatsThisRole, currentItemPlusOne);
+        }
+    }
+    else
+    {
+        if(a_favsNotLoadedYet)
+            updateFavs(a_favPlaylist); //Load everything
+        else //Load only what's necessary, the rest is already there
+        {
+            for(unsigned int i(0); i < numberItems; i++, currentItemPlusOne++)
+            {
+                ui->a_playlistFavWidget->insertItem(currentItemPlusOne, items->at(i).fileName());
+                ui->a_playlistFavWidget->item(currentItemPlusOne)->setData(Qt::ToolTipRole, QUrl(items->at(i)));
+                ui->a_playlistFavWidget->item(currentItemPlusOne)->setData(Qt::WhatsThisRole, currentItemPlusOne);
+            }
+        }
     }
 }
         /* State section */
@@ -167,15 +225,21 @@ void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne)
 
 void::Playlist::setToPlaying(int index)
 {
-    ui->a_playlistWidget->item(index)->setIcon(QIcon(":/Ressources/playingState_icon.png"));
+    if(!a_player->isUsingFav())
+        ui->a_playlistWidget->item(index)->setIcon(QIcon(":/Ressources/playingState_icon.png"));
+    else
+        ui->a_playlistFavWidget->item(index)->setIcon(QIcon(":/Ressources/playingState_icon.png"));
     a_isPlaying = true;
 }
 
 
 void Playlist::setToPaused(int index)
 {
-   ui->a_playlistWidget->item(index)->setIcon(QIcon(":/Ressources/pausedState-icon2.png"));
-   a_isPlaying = false;
+    if(!a_player->isUsingFav())
+        ui->a_playlistWidget->item(index)->setIcon(QIcon(":/Ressources/pausedState-icon2.png"));
+    else
+        ui->a_playlistFavWidget->item(index)->setIcon(QIcon(":/Ressources/pausedState-icon2.png"));
+    a_isPlaying = false;
 }
 
 
@@ -183,7 +247,10 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
 {
     if(a_previousIndex != 99999) //Default value of a_previousIndex
     {
-        ui->a_playlistWidget->item(a_previousIndex)->setIcon(QIcon());
+        if(ui->a_playlistWidget->count() > a_previousIndex) //Then it obviously exists within the list
+            ui->a_playlistWidget->item(a_previousIndex)->setIcon(QIcon());
+        if(ui->a_playlistFavWidget->count() > a_previousIndex)
+            ui->a_playlistFavWidget->item(a_previousIndex)->setIcon(QIcon());
     }
     a_queueIndex = 0;
     a_previousIndex = index;
@@ -192,14 +259,23 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
     else
         setToPaused(index);
     a_currentIndex = index;
-    ui->a_playlistWidget->setCurrentRow(index);
+    if(!a_player->isUsingFav())
+        ui->a_playlistWidget->setCurrentRow(index);
+    else
+        ui->a_playlistFavWidget->setCurrentRow(index);
     //Use data received
-    ui->a_cover->setPixmap(*cover);
+    updateInfoHeader(title, *cover);
+}
+
+
+void Playlist::updateInfoHeader(QString &title, QPixmap &cover)
+{
+    ui->a_cover->setPixmap(cover);
     if(ui->a_cover->pixmap()->isNull())
         ui->a_cover->setPixmap(a_defaultCover);
     ui->a_titleHeader->setText(title);
     ui->a_titleHeader->setToolTip(title);
-    if(!a_player->deleteTriggered())
+    if(!a_player->deleteTriggered()) //Won't start the animation if we're actually not changing the item played
         a_fadeManager.startGroup(FadeManager::Parallel, false);
 }
 
@@ -216,8 +292,9 @@ void Playlist::setFolder()
 
     if(!selectDir.isEmpty())
     {
+        setTab(0); //Back to normal playlist
         setCursor(Qt::BusyCursor);
-        if(a_currentIndex != 0) //Helps not to crash. Each index is reset to 0 so there isn't any out of bound.
+        if(a_currentIndex != 0) //Helps not to crash. the index is reset to 0 so there isn't any out of bound.
         {
             a_player->setIndexOfThePlayer(0, false);
             ui->a_playlistWidget->setCurrentRow(0);
@@ -270,50 +347,105 @@ void Playlist::playItem(QModelIndex itemIndex)
 {
     if(!a_player->canChangeMusic())
         return;
-    if(a_previousIndex != 99999)
-    {
-        ui->a_playlistWidget->item(a_previousIndex)->setIcon(QIcon(":/Ressources/blank.png)"));
-    }
-    a_previousIndex = itemIndex.row();
-    if(ui->a_playlistWidget->currentItem()->textAlignment() == Qt::AlignCenter)
+    if(ui->a_tabWidget->currentIndex() == 0 && ui->a_playlistWidget->currentItem()->textAlignment() == Qt::AlignCenter)
     {
         setFolder();
         return;
     }
-    setToPlaying(itemIndex.row());
-    a_currentIndex = itemIndex.row();
+
+    if(ui->a_tabWidget->currentIndex() == 1 && ui->a_playlistFavWidget->currentItem()->textAlignment() == Qt::AlignCenter)
+    {
+        return;
+    }
+    if(!a_player->isUsingFav() && ui->a_tabWidget->currentIndex() == 1)
+    {
+        a_player->changeToFavPlaylist();
+    }
+    else if(ui->a_tabWidget->currentIndex() == 0 && a_player->isUsingFav())
+    {
+        a_player->changeToDefaultPlaylist();
+    }
     a_player->setIndexOfThePlayer(itemIndex.row(), true);
+    a_currentIndex = itemIndex.row();
 }
 
 void Playlist::prepareContextMenu()
 {
-    if(a_currentIndex != ui->a_playlistWidget->currentRow())
+    // 0 : add to queue
+    // 1 : delete from queue
+    // 2 : view info
+    // 3 : add to fav
+    if(ui->a_tabWidget->currentIndex() == 0 && a_currentIndex != ui->a_playlistWidget->currentRow())
     {
+        a_deleteItemFromQueue->setText(tr("Supprimer de la file d'attente"));
+        a_playlistContextMenu->actions().at(3)->setVisible(true);
         a_playlistContextMenu->actions().at(2)->setVisible(true);
         a_playlistContextMenu->actions().at(1)->setVisible(true);
         a_playlistContextMenu->actions().at(0)->setVisible(true);
     }
-    else
+    else if(ui->a_tabWidget->currentIndex() == 0 && a_currentIndex == ui->a_playlistWidget->currentRow())
     {
+        a_playlistContextMenu->actions().at(3)->setVisible(true);
         a_playlistContextMenu->actions().at(2)->setVisible(true);
         a_playlistContextMenu->actions().at(1)->setVisible(false);
         a_playlistContextMenu->actions().at(0)->setVisible(false);
     }
-    if(ui->a_playlistWidget->currentItem()->textAlignment() == Qt::AlignCenter) //if no music...
+    if(ui->a_tabWidget->currentIndex() == 0 && ui->a_playlistWidget->currentItem()->textAlignment() == Qt::AlignCenter) //if no music on playlist
     {
+        a_playlistContextMenu->actions().at(3)->setVisible(false);
         a_playlistContextMenu->actions().at(2)->setVisible(false);
         a_playlistContextMenu->actions().at(1)->setVisible(false);
         a_playlistContextMenu->actions().at(0)->setVisible(false);
     }
-
+    if(a_player->isUsingFav() && a_currentIndex == ui->a_playlistFavWidget->currentRow() && ui->a_tabWidget->currentIndex() == 1)
+    {
+        a_playlistContextMenu->actions().at(3)->setVisible(false);
+        a_playlistContextMenu->actions().at(2)->setVisible(true);
+        a_playlistContextMenu->actions().at(1)->setVisible(false);
+        a_playlistContextMenu->actions().at(0)->setVisible(false);
+    }
+    else if (ui->a_tabWidget->currentIndex() == 1 && a_currentIndex != ui->a_playlistFavWidget->currentRow())
+    {
+        a_deleteItemFromQueue->setText(tr("Supprimer des favoris"));
+        a_playlistContextMenu->actions().at(3)->setVisible(false);
+        a_playlistContextMenu->actions().at(2)->setVisible(true);
+        a_playlistContextMenu->actions().at(1)->setVisible(true);
+        a_playlistContextMenu->actions().at(0)->setVisible(false);
+    }
 }
 
 //Activated by the clicked() signal of the a_titleHeader UI component
 void Playlist::scrollToPlaying()
 {
-    ui->a_playlistWidget->setCurrentRow(a_currentIndex);
-    ui->a_playlistWidget->scrollTo(ui->a_playlistWidget->currentIndex());
+    if(!a_player->isUsingFav())
+    {
+        if(ui->a_tabWidget->currentIndex() != 0)
+            ui->a_tabWidget->setCurrentIndex(0);
+        ui->a_playlistWidget->setCurrentRow(a_currentIndex);
+        ui->a_playlistWidget->scrollTo(ui->a_playlistWidget->currentIndex(), QAbstractItemView::PositionAtTop);
+    }
+    else
+    {
+        if(ui->a_tabWidget->currentIndex() != 1)
+            ui->a_tabWidget->setCurrentIndex(1);
+        ui->a_playlistFavWidget->setCurrentRow(a_currentIndex);
+        ui->a_playlistFavWidget->scrollTo(ui->a_playlistFavWidget->currentIndex(), QAbstractItemView::PositionAtTop);
+    }
+
 }
+
+void Playlist::setTab(int tabId)
+{
+    if(tabId == 1) //Favorites
+    {
+        if(a_favsNotLoadedYet)
+            updateFavs(a_favPlaylist);
+    }
+    a_previousTab = tabId;
+    if(ui->a_tabWidget->currentIndex() != tabId) //If called
+        ui->a_tabWidget->setCurrentIndex(tabId);
+}
+
 
 void Playlist::showContextMenu() const
 {
@@ -325,28 +457,57 @@ void Playlist::addItemToQueue()
     a_player->addToQueue(ui->a_playlistWidget->currentRow(), a_currentIndex);
 }
 
+void Playlist::addToFav()
+{
+    a_player->addFav(ui->a_playlistWidget->currentIndex());
+}
+
 void Playlist::deleteItem()
 {
-    if(a_currentIndex != ui->a_playlistWidget->currentRow()) //Who knows, might be called by shortcut and BAM
+    /* Protections against the shortcut */
+    if(!a_player->isUsingFav())
     {
-        int index = ui->a_playlistWidget->currentRow();
-        a_player->deleteMedia(index);
-        if(index <= a_queueIndex + a_currentIndex) //So if we're deleting something that was added, we update the queue index
-            a_queueIndex--;
+        if(a_currentIndex == ui->a_playlistWidget->currentRow())
+            return;
+    }
+    else if(a_player->isUsingFav())
+        {
+            if(a_currentIndex == ui->a_playlistFavWidget->currentRow())
+                return;
+        }
+    qDebug() << a_currentIndex << ui->a_playlistFavWidget->currentRow();
+    int index;
+    if(!a_player->isUsingFav())
+        index = ui->a_playlistWidget->currentRow();
+    else
+        index = ui->a_playlistFavWidget->currentRow();
+    a_player->deleteMedia(index);
+    if(index <= a_queueIndex + a_currentIndex) //So if we're deleting something that was added, we update the queue index
+        a_queueIndex--;
+    if(!a_player->isUsingFav())
         ui->a_playlistWidget->takeItem(index);
+    else
+    {
+        ui->a_playlistFavWidget->takeItem(index);
+        a_player->setFavsToBeSaved(true);
     }
 }
 
 void Playlist::viewInfo()
 {
-    if(a_currentIndex == ui->a_playlistWidget->currentRow()) //If you're selecting the currently playing music
+    if(ui->a_tabWidget->currentIndex() == 0 && ui->a_playlistWidget->currentRow() == a_currentIndex) //If you're selecting the currently playing music
+        a_player->showTagViewer();
+    else if (ui->a_tabWidget->currentIndex() == 1 && ui->a_playlistFavWidget->currentRow() == a_currentIndex)
         a_player->showTagViewer();
     else //Let's find a workaround to give you info Qt shouldn't let me get !
     {
         a_tempPlayer = new QMediaPlayer(this);
         connect(a_tempPlayer, SIGNAL(metaDataChanged()), this, SLOT(sendNewInfos()));
         a_tempPlayer->setMuted(true); //Don't let the user know that this ugly code is happening
-        a_tempPlayer->setMedia(QMediaContent(ui->a_playlistWidget->currentItem()->toolTip()));
+        if(ui->a_tabWidget->currentIndex() == 0)
+            a_tempPlayer->setMedia(QMediaContent(ui->a_playlistWidget->currentItem()->toolTip()));
+        else
+            a_tempPlayer->setMedia(QMediaContent(ui->a_playlistFavWidget->currentItem()->toolTip()));
         a_tempPlayer->stop();
     }
 
@@ -416,6 +577,11 @@ void Playlist::validateSearch()
     qDebug() << itemsReturned.size() << a_backupItems.size();
 }
 
+void Playlist::closeEvent(QCloseEvent *)
+{
+    a_player->setPlaylistOpen(false);
+}
+
 void Playlist::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasUrls())
@@ -428,17 +594,15 @@ void Playlist::dropEvent(QDropEvent *event)
     a_player->addMediasToThePlayer(event->mimeData()->urls());
     //Should be finished then
     this->setCursor(Qt::ArrowCursor);
-    a_player->setPlaylistToBeSavedOrNot(true);
 }
 
-void Playlist::closeEvent(QCloseEvent *)
-{
-    a_player->setPlaylistOpen(false);
-}
 
 Playlist::~Playlist()
 {
     delete ui;
+
+    /* Stop the dangling pointers */
     a_player = nullptr;
     a_playlist = nullptr;
+    a_favPlaylist = nullptr;
 }

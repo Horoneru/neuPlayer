@@ -23,11 +23,9 @@ Player::Player(QWidget *parent) :
 
 {
     /*!
-                                            2015 Horoneru                                   1.5.0 dev 110515 active
+                                            2015 Horoneru                                   2.0.0 dev 170515 active
       TODO
       à faire : (/ ordre d'importance)
-      > tweak Settings' popup so they look like normal popups, and remove what's this from current windows.
-      > Also fix some windows size
       - add to fav au niveau playlist (started)
       - Fade-in/Fade-out when starting/pausing/between songs
       - Further skinning options !
@@ -37,7 +35,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("1.5.0 dev");
+    QApplication::setApplicationVersion("2.0.0 dev");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -104,8 +102,11 @@ Player::Player(QWidget *parent) :
 
     setupConnections();
 
+
     //Paramètres loadés après car les connexions se chargent de traiter les nouvelles données
     setupPlugins();
+
+    setupPlayMode();
 
     a_volumeSlider->setValue(a_settings.value("volume", 50).toInt());
 
@@ -113,14 +114,6 @@ Player::Player(QWidget *parent) :
 
     if(a_settings.value("playlistAtStartup").toBool() == true)
         a_hasToStartupPlaylist = true; //Will trigger the playlist startup
-
-    if(a_isRandomMode)
-    {
-        a_mediaPlaylist.setPlaybackMode(neuPlaylist::Random);
-        a_hasToDoInitialShuffle = true;
-    }
-    else
-        a_mediaPlaylist.setPlaybackMode(neuPlaylist::Sequential);
 
     setOpacity();
 
@@ -241,6 +234,23 @@ void Player::setupMenus()
 
 }
 
+void Player::setupPlayMode()
+{
+    if(a_isRandomMode)
+    {
+
+        a_mediaPlaylist.setPlaybackMode(QMediaPlaylist::Random);
+        a_favPlaylist.setPlaybackMode(QMediaPlaylist::Random);
+        a_hasToDoInitialShuffle = true;
+    }
+    else
+    {
+        a_mediaPlaylist.setPlaybackMode(QMediaPlaylist::Sequential);
+        a_favPlaylist.setPlaybackMode(QMediaPlaylist::Sequential);
+    }
+}
+
+
 void Player::setupConnections()
 {
     /*///////Connexions///////*/
@@ -299,10 +309,9 @@ void Player::setupPlugins()
             }
             else
                 checkForNewMedias();
-            loadPlaylist();
         }
-        if(a_settings.value("Additional_Features/staticLibrary", false).toBool() == true)
-            loadPlaylist();
+
+        loadPlaylist(); // We will load the library even if it isn't in refreshWhenNeeded
     }
     QFile fileHandler(".configdone");
     fileHandler.open(QFile::ReadWrite); //Create it and I'm done
@@ -312,9 +321,16 @@ void Player::setupPlugins()
 void Player::loadPlaylist()
 {
     if(a_settings.value("usingFavorites", false).toBool() == true) //Are we on the favorites playlist ?
-        a_mediaPlaylist.load(QUrl::fromLocalFile("favorites.m3u8"), "m3u8");
+    {
+        a_isUsingFavPlaylist = true;
+        disconnect(&a_mediaPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
+        connect(&a_favPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
+
+    }
     else
-        a_mediaPlaylist.load(QUrl::fromLocalFile("neuLibrary.m3u8"), "m3u8"); //Defaults to normal library
+        setUsingFav(false);
+    a_mediaPlaylist.load(QUrl::fromLocalFile("neuLibrary.m3u8"), "m3u8");  //We load both anyways
+    a_favPlaylist.load(QUrl::fromLocalFile("favorites.m3u8"), "m3u8");
 }
 
 void Player::setOpacity(qreal opacityFromSettings)
@@ -476,19 +492,22 @@ void Player::finishingUp()
 
 void Player::saveCurrentPlaylist()
 {
-    if(a_settings.value("usingFavorites").toBool() == true)
-        a_mediaPlaylist.saveFromPlaylist("favorites.m3u8");
-    else
+    if(a_hasToSaveFavsLater)
+        a_favPlaylist.saveFromPlaylist("favorites.m3u8");
+    if(a_hasToSavePlaylistLater)
         a_mediaPlaylist.saveFromPlaylist(); //Defaults to normal library
 }
 
 void Player::setupNewLibrary()
 {
-    neu->setPlaylist(&a_mediaPlaylist);
+    if(!a_isUsingFavPlaylist)
+        neu->setPlaylist(&a_mediaPlaylist); //The a_isUsingFavPlaylist was already updated before in the loadPlaylist() method
+    else
+        neu->setPlaylist(&a_favPlaylist); // ^^^^^^^^^
     if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
     {
         a_recoveredProgress = false;
-        a_mediaPlaylist.setCurrentIndex(a_settings.value("currentTrack").toInt());
+        neu->playlist()->setCurrentIndex(a_settings.value("currentTrack").toInt());
     }
 }
 
@@ -504,9 +523,7 @@ void Player::playMedia()
 
     disconnect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     if ((neu->media().isNull()))
-    {
         openMedia();
-    }
     else //On peut play quelque chose
     {
         neu->play();
@@ -514,7 +531,9 @@ void Player::playMedia()
         ui->a_pausebtn->setVisible(true);
         connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
         if(a_isPlaylistOpen)
-            a_playlist->setToPlaying(a_mediaPlaylist.currentIndex());
+        {
+            a_playlist->setToPlaying(neu->playlist()->currentIndex());
+        }
         return; //We don't want to go to that last line
     }
     connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
@@ -528,20 +547,21 @@ void Player::pauseMedia()
     ui->a_pausebtn->setVisible(false);
     connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     if(a_isPlaylistOpen)
-        a_playlist->setToPaused(a_mediaPlaylist.currentIndex());
+    {
+        a_playlist->setToPaused(neu->playlist()->currentIndex());
+    }
 }
 
 void Player::forwardMedia()
 {
     if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0 )
         return;
-    a_lastIndex = a_mediaPlaylist.currentIndex();
-    a_mediaPlaylist.next();
-    if(a_mediaPlaylist.currentMedia().isNull())
+    neu->playlist()->next();
+    if(neu->playlist()->currentMedia().isNull())
     {
         if(a_isLoopPlaylistMode)
         {
-            a_mediaPlaylist.setCurrentIndex(0);
+            neu->playlist()->setCurrentIndex(0);
             playMedia();
         }
         else
@@ -553,7 +573,7 @@ void Player::forwardMedia()
     if(a_hasToDoInitialShuffle) //For true randomness
     {
         qsrand(QTime::currentTime().msec());
-        a_mediaPlaylist.setCurrentIndex(qrand() % a_mediaPlaylist.mediaCount());
+        neu->playlist()->setCurrentIndex(qrand() % neu->playlist()->mediaCount());
         a_hasToDoInitialShuffle = false;
     }
     a_wasPrevious = false;
@@ -570,9 +590,8 @@ void Player::previousMedia()
 {
     if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0)
         return;
-    a_lastIndex = a_mediaPlaylist.currentIndex();
-    a_mediaPlaylist.previous();
-    if(a_mediaPlaylist.currentMedia().isNull())
+    neu->playlist()->previous();
+    if(neu->playlist()->currentMedia().isNull())
     {
         emit EndOfMedia();
         return;
@@ -580,7 +599,7 @@ void Player::previousMedia()
     if(a_hasToDoInitialShuffle)
     {
         qsrand(QTime::currentTime().msec());
-        a_mediaPlaylist.setCurrentIndex(qrand() % a_mediaPlaylist.mediaCount());
+        neu->playlist()->setCurrentIndex(qrand() % neu->playlist()->mediaCount());
         a_hasToDoInitialShuffle = false;
     }
     a_wasPrevious = true;
@@ -589,7 +608,6 @@ void Player::previousMedia()
 
 void Player::previousAnim()
 {
-    a_titleAnimate->setStartValue(ui->a_label->pos().operator +=(QPoint(ui->a_label->width() - 200, 0)));
     a_titleAnimate->setEndValue(QPoint(110, 0));
     a_titleAnimate->start();
 }
@@ -623,7 +641,7 @@ void Player::errorHandling(QMediaPlayer::Error error)
         ui->a_label->setText(tr("erreur : Format non supporté"));
         pauseMedia(); // Total panic
         neu->stop();
-        a_mediaPlaylist.clear();// so we have to discard the content
+        neu->playlist()->clear();// so we have to discard the content
         break;
     case QMediaPlayer::NetworkError :
         ui->a_label->setText(tr("erreur : Network error"));
@@ -701,12 +719,11 @@ void Player::openMedia()
     }
     if(!a_mediaPlaylist.isEmpty())
     {
-        neu->setPlaylist(&a_mediaPlaylist);
+        changeToDefaultPlaylist();
         playMedia();
         if(a_isPlaylistOpen)
         {
             a_mediaPlaylist.setCurrentIndex(0);
-            a_playlist->setCurrentItem(0, &a_coverArt, a_titre, true);
             a_playlist->updateList(&a_mediaPlaylist, true);
         }
     }
@@ -739,6 +756,9 @@ void Player::setMeta()
         a_titre = neu->currentMedia().canonicalUrl().fileName();
         a_album = neu->currentMedia().canonicalUrl().fileName();
     }
+    a_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
+    if(a_coverArt.isNull())
+        a_coverArt = QPixmap::fromImage(QImage(neu->metaData("CoverArtImage").value<QImage>()));
 
     if(!ui->a_label->isVisible())
     {
@@ -760,16 +780,14 @@ void Player::setMeta()
     setTypeTimer.start(300); //Set the type 300 ms later
     grantChangeTimer.start(200);
 
-    a_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
-    if(a_coverArt.isNull())
-        a_coverArt = QPixmap::fromImage(QImage(neu->metaData("CoverArtImage").value<QImage>()));
 
-    if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true){
-        a_lastIndex = a_mediaPlaylist.currentIndex();
-        a_settings.setValue("currentTrack", a_lastIndex);
-         }
+    a_previousIndex = neu->playlist()->currentIndex();
+
+    if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
+        a_settings.setValue("currentTrack", a_previousIndex);
     if(a_isPlaylistOpen)
-        a_playlist->setCurrentItem(a_mediaPlaylist.currentIndex(), &a_coverArt, a_titre, a_isPlaying);
+        a_playlist->setCurrentItem(neu->playlist()->currentIndex(), &a_coverArt, a_titre, a_isPlaying);
+
     updateFadeinSpeed();
     Timer.start();
 }
@@ -885,8 +903,11 @@ void Player::update_info()
     /*///////SliderBar Section///////*/
 void Player::UpdateProgress(qint64 pos)
 {
+    if(pos < 0)
+        pos = 0; //Will bring back bizarre values to saner levels
     a_progressSlider->setValue(pos);
     updateProgressDisplay(pos, true);
+
 }
 
 //This method updates the seconds and minutes displayed when playing and if isProgress is false it will update the duration (on_durationChanged event)
@@ -941,7 +962,7 @@ void Player::seekProgress(int pos)
 
     }
     if(a_isPlaylistOpen && !a_playlist->isPlayingState())
-        a_playlist->setToPlaying(a_mediaPlaylist.currentIndex());
+        a_playlist->setToPlaying(neu->playlist()->currentIndex());
     if(pos > neu->duration())
         forwardMedia();
 }
@@ -1042,21 +1063,26 @@ void Player::setShuffle()
         /* On seed un générateur de nombres pour avoir un vrai rand
                     généré au moment de l'activation              */
         qsrand(QTime::currentTime().msec());
-        int index = qrand() % a_mediaPlaylist.mediaCount();
-        a_mediaPlaylist.setCurrentIndex(index);
-        //Plus le shuffle, qui crée un rand en prenant comme valeur le média actuel
-        a_mediaPlaylist.shuffle();
-        a_mediaPlaylist.setCurrentIndex(0); //So it looks better this way
-        if(!a_isRandomMode)
-            a_mediaPlaylist.setPlaybackMode(neuPlaylist::Sequential); //Default : random. We want it back to Sequential if we were on sequential before
-        //On a maintenant un double rand : un rand purement aléatoire, et un rand basé sur le media actuel
+        QMediaPlaylist *playlist (neu->playlist()); //We retrieve a QMediaPlaylist because we don't want another cast to be done
 
+        int index = qrand() % playlist->mediaCount();
+        playlist->setCurrentIndex(index);
+
+        //Plus le shuffle, qui crée un rand en prenant comme valeur le média actuel
+        playlist->shuffle();
+        playlist->setCurrentIndex(0); //So it looks better this way
+        if(!a_isRandomMode)
+            playlist->setPlaybackMode(QMediaPlaylist::Sequential); //Default : random. We want it back to Sequential if we were on sequential before
+        //On a maintenant un double rand : un rand purement aléatoire, et un rand basé sur le media actuel
         if(a_settings.value("Additional_Features/libraryAtStartup", false).toBool() == true)
             a_hasToSavePlaylistLater = true; // Will update playlist to load the correct one when booting up later on
-        if(a_isPlaylistOpen)
+        if(a_isPlaylistOpen && !a_isUsingFavPlaylist)
             a_playlist->updateList(&a_mediaPlaylist, true);
+        else if(a_isPlaylistOpen)
+            a_playlist->updateFavs(&a_favPlaylist);
         a_canDoShuffleAgain = false;
         grantShuffleAgainTimer.start(500);
+        playlist = nullptr;
     }
 }
 
@@ -1111,7 +1137,7 @@ void Player::showPlaylist()
     {
         a_isPlaylistOpen = true;
         if(a_mediaPlaylist.mediaCount()!= 0)
-            a_playlist = new Playlist(&a_mediaPlaylist, a_mediaPlaylist.currentIndex(), this, &a_coverArt, a_titre, a_isPlaying, this);
+            a_playlist = new Playlist(a_mediaPlaylist, a_favPlaylist, this, &a_coverArt, a_titre, a_isPlaying, this);
         a_playlist->show();
     }
     else
@@ -1200,7 +1226,7 @@ void Player::closeEvent(QCloseEvent *event)
 
 void Player::saveBeforeClosing()
 {
-    if(a_hasToSavePlaylistLater && a_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
+    if(a_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
         saveCurrentPlaylist();
     if(a_settings.value("Additional_Features/framelessWindow").toBool())
         a_settings.setValue("pos", QPoint(this->x() - 8, this->y() - 31)); //Little hack to set the value correctly
@@ -1212,6 +1238,7 @@ void Player::saveBeforeClosing()
     a_settings.setValue("playbackrate", a_playbackState);
     a_settings.setValue("random", a_isRandomMode);
     a_settings.setValue("loop", a_isLoopPlaylistMode);
+    a_settings.setValue("usingFavorites", a_isUsingFavPlaylist); //If this is on, we're currently using the fav playlist. So it shall be set at next run
     if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
         a_settings.setValue("trackPosition", neu->position());
 }
@@ -1232,12 +1259,12 @@ void Player::setRandomMode(bool mode)
         a_isRandomMode = mode;
         if(a_isRandomMode)
         {
-            a_mediaPlaylist.setPlaybackMode(neuPlaylist::Random);
+            neu->playlist()->setPlaybackMode(QMediaPlaylist::Random);
             a_hasToDoInitialShuffle = true;
         }
         else
         {
-            a_mediaPlaylist.setPlaybackMode(neuPlaylist::Sequential);
+            neu->playlist()->setPlaybackMode(QMediaPlaylist::Sequential);
             if(a_hasToDoInitialShuffle)
                 a_hasToDoInitialShuffle = false;
         }
@@ -1256,27 +1283,66 @@ void Player::setLoopMode(bool mode)
 //Called when playlist wants to play something
 void Player::setIndexOfThePlayer(int index, bool play)
 {
-    a_wasPrevious = false;
-    a_mediaPlaylist.setCurrentIndex(index);
+    a_wasPrevious = false; //To launch anim
+    if(!a_isUsingFavPlaylist)
+        a_mediaPlaylist.setCurrentIndex(index);
+    else
+        a_favPlaylist.setCurrentIndex(index);
     if(play)
-    {
         playMedia();
-    }
 }
 
 //Called when dealing with a drag & drop
 void Player::addMediasToThePlayer(QList<QUrl> &medias)
 {
-    int insertTo = a_mediaPlaylist.currentIndex() + 1;
+    int insertTo = neu->playlist()->currentIndex() + 1;
     unsigned int const mediaNumber = medias.size();
     for(unsigned int i(0); i < mediaNumber; i++, insertTo++)
     {
-        a_mediaPlaylist.insertMedia(insertTo, QUrl(medias.at(i)));
+        neu->playlist()->insertMedia(insertTo, QUrl(medias.at(i)));
     }
     if(a_isPlaylistOpen)
-        a_playlist->quickUpdate(&medias, a_mediaPlaylist.currentIndex() + 1);
-    if(a_hasToSavePlaylistLater != true)
-        a_hasToSavePlaylistLater = true;
+        a_playlist->quickUpdate(&medias, insertTo - 1);
+    if(!a_isUsingFavPlaylist)
+        if(a_hasToSavePlaylistLater != true)
+            a_hasToSavePlaylistLater = true;
+    else
+        if(a_hasToSaveFavsLater != true)
+            a_hasToSaveFavsLater = true;
+}
+
+void Player::addFav(QModelIndex index)
+{
+    QString fileAdded = QFileInfo(index.data(Qt::ToolTipRole).toString()).fileName(); //We extract the filename
+    unsigned int mediaCount = a_favPlaylist.mediaCount();
+    for(unsigned int i(0); i < mediaCount; i++)
+    {
+        if(a_favPlaylist.media(i).canonicalUrl().fileName() == fileAdded)
+            return; //It already exists, do not add it
+    }
+    QMediaContent media(a_mediaPlaylist.media(index.row())); //We copy the media
+    a_favPlaylist.addMedia(media);
+    QList <QUrl> temp;
+    temp.append(media.canonicalUrl());
+    a_isUsingFavPlaylist = true;
+    a_playlist->quickUpdate(&temp, mediaCount); //The quick update will place the media atthe end of fav without reloading the whole playlist
+    a_isUsingFavPlaylist = false;
+    if(a_hasToSaveFavsLater != true)
+        a_hasToSaveFavsLater = true;
+}
+
+void Player::changeToFavPlaylist()
+{
+    a_shuffle.setVisible(false); // Keep your favorites clean.
+    neu->setPlaylist(&a_favPlaylist);
+    a_isUsingFavPlaylist = true;
+}
+
+void Player::changeToDefaultPlaylist()
+{
+    a_shuffle.setVisible(true); // We can reload the original from disk anyway
+    neu->setPlaylist(&a_mediaPlaylist);
+    a_isUsingFavPlaylist = false;
 }
 
 //When added to queue
@@ -1287,6 +1353,7 @@ void Player::addToQueue(int index, int currentlyPlaying)
     a_mediaPlaylist.insertMedia(insertTo, media);
     QList <QUrl> temp;
     temp.append(a_mediaPlaylist.media(insertTo).canonicalUrl());
+    deleteMedia(index);
     a_playlist->quickUpdate(&temp, insertTo); //The quick update will place the media at insertTo index without reloading the whole playlist
     if(a_hasToSavePlaylistLater != true)
         a_hasToSavePlaylistLater = true;
@@ -1303,7 +1370,7 @@ void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
         a_mediaPlaylist.addMedia(medias.at(i));
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
-    neu->setPlaylist(&a_mediaPlaylist); //Re-set to update...
+    changeToDefaultPlaylist(); //Re-set to update...
     if(a_isPlaylistOpen)
         a_playlist->updateList(&a_mediaPlaylist);
     if(a_hasToSavePlaylistLater != true)

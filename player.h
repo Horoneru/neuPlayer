@@ -98,6 +98,7 @@ signals:
 public:
     Ui::Player *ui;
     explicit Player(QWidget *parent = 0);
+    void setupPlayMode();
     void loadPlaylist();
     void setLightCSS();
     void setDarkCSS();
@@ -120,23 +121,39 @@ public:
         a_isSettingsOpen = open;
     }
 
+    inline int getIndexOfThePlayer() //Will always return the correct index regardless of the playlist used
+    {
+        return neu->playlist()->currentIndex();
+    }
+
     void setIndexOfThePlayer(int index, bool play);
     void addMediasToThePlayer(QList <QUrl> &medias);
-    void setPlaylistToBeSavedOrNot(bool foo)
+    void setPlaylistToBeSaved(bool foo)
     {
         a_hasToSavePlaylistLater = foo;
     }
+
+    void setFavsToBeSaved(bool foo)
+    {
+        a_hasToSaveFavsLater = foo;
+    }
+
     void deleteMedia(int index)
     {
         a_deleteTriggered = true;
         a_settings.setValue("trackPosition", neu->position());
-        int track = a_mediaPlaylist.currentIndex() - 1;
-        a_mediaPlaylist.removeMedia(index);
+        int track = neu->playlist()->currentIndex() - 1;
+        neu->playlist()->removeMedia(index);
         if(index <= track)
-            a_mediaPlaylist.setCurrentIndex(track);
+            neu->playlist()->setCurrentIndex(track);
         if(a_hasToSavePlaylistLater != true)
             a_hasToSavePlaylistLater = true;
     }
+
+    void addFav(QModelIndex index);
+
+    void changeToFavPlaylist();
+    void changeToDefaultPlaylist();
 
     void addToQueue(int index, int currentlyPlaying);
     void setOpacity(qreal opacityFromSettings = 0.0);
@@ -146,11 +163,20 @@ public:
     {
         return a_isRandomMode;
     }
+    inline void setUsingFav(bool usingFav)
+    {
+        a_isUsingFavPlaylist = usingFav;
+    }
+
+    inline bool isUsingFav() const
+    {
+        return a_isUsingFavPlaylist;
+    }
     bool getLoopState() const
     {
         return a_isLoopPlaylistMode;
     }
-    bool canChangeMusic() const
+    inline bool canChangeMusic() const
     {
         return a_canChangeMusic;
     }
@@ -160,6 +186,7 @@ public:
     }
     void updatePlaylistOfThePlayer(const QList <QUrl> &medias, bool play = false);
     void saveBeforeClosing();
+
     ~Player();
 
 
@@ -194,10 +221,13 @@ private:
     QPointer <Settings> a_settingsForm;
     QSettings a_settings; //Contient les settings de l'application
     neuPlaylist a_mediaPlaylist;
+    neuPlaylist a_favPlaylist;
     QPointer<FadeManager> a_animManager;
     int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
+    int a_previousIndex;
     bool a_isFrameless;
     bool a_hasToSavePlaylistLater;
+    bool a_hasToSaveFavsLater;
     bool a_wasPrevious;
     bool a_hasToStartupPlaylist;
     bool a_deleteTriggered;
@@ -214,7 +244,7 @@ private:
     bool a_canChangeMusic;
     bool a_canDoShuffleAgain;
     bool a_isStarting;
-    int a_lastIndex;
+    bool a_isUsingFavPlaylist;
     int a_secondesPasse;
     int a_volumeBeforeMute;
     //The three int delays at which we switch over
