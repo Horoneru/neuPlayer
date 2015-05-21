@@ -175,6 +175,9 @@
     <attribute name="title">
      <string>Liste de lecture</string>
     </attribute>
+    <attribute name="toolTip">
+     <string>Liste de lecture actuelle</string>
+    </attribute>
     <widget class="QListWidget" name="a_playlistWidget">
      <property name="geometry">
       <rect>
@@ -219,6 +222,11 @@
    <widget class="QWidget" name="favourites">
     <attribute name="title">
      <string>Favoris</string>
+    </attribute>
+    <attribute name="toolTip">
+     <string>Vos favoris
+Il est possible d'en rajouter en appuyant sur le bouton
+d'ajout de favoris, ou par click droit sur la musique</string>
     </attribute>
     <widget class="QListWidget" name="a_playlistFavWidget">
      <property name="geometry">
