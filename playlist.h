@@ -23,31 +23,10 @@ public slots:
     void playItem(QModelIndex itemIndex);
     void quickUpdate(QList <QUrl> *items, int currentItemPlusOne);
     void updateList(neuPlaylist *listeFichiers, bool setZeroIndex = false);
-    //Own actions of the playlist interacting with the player
-    void setFolder();
-    void reloadLibrary();
-    void randomModeChanger();
-    void loopModeChanger();
-    void setShuffle();
-    void setSequential();
-    void validateSearch();
     //Other
-    void saveTheItems();
-
-    void scrollToPlaying();
-    void findItemVisibilityHandler();
-    void prepareContextMenu();
-    void showContextMenu() const;
-    void deleteItem();
-    void addItemToQueue();
-    void viewInfo();
-    void sendNewInfos();
-    //Events
-    void closeEvent(QCloseEvent *);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
+    void setTab(int tabId); //Called by :  user, programmatically, and by player when needed.
 public:
-    explicit Playlist(neuPlaylist *liste, int index, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
+    explicit Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
     explicit Playlist(QWidget *parent = 0);
     void setupConnections();
     void setupActions();
@@ -57,11 +36,13 @@ public:
     //Icon
     void setToPlaying(int index);
     void setToPaused(int index);
+    void deleteItem(int index);
     bool isPlayingState() const
     {
         return a_isPlaying;
     }
 
+    void updateFavs(neuPlaylist *favPlaylist);
     void setHeader(QPixmap *cover, QString title); //Sets the cover art and the title
     int queuedIndex() //getter
     {
@@ -70,15 +51,47 @@ public:
 
     ~Playlist();
 
+private slots:
+    void scrollToPlaying();
+    void findItemVisibilityHandler();
+    void prepareContextMenu();
+    void showContextMenu() const;
+    void deleteItem();
+    void addItemToQueue();
+    void addToFav();
+    void viewInfo();
+    void sendNewInfos();
+    //Own actions of the playlist interacting with the player
+    void setFolder();
+    void reloadLibrary();
+    void randomModeChanger();
+    void loopModeChanger();
+    void setShuffle();
+    void setSequential();
+    void validateSearch();
+    void saveTheItems();
+
 private:
+    void updateInfoHeader(QString &title, QPixmap &cover);
+    //Events
+    void closeEvent(QCloseEvent *);
+    //TODO : depreciate them
+    void dragEnterEvent(QDragEnterEvent *);
+    void dropEvent(QDropEvent *);
+
+    //Attributes
+
     Ui::Playlist *ui;
     Player *a_player;
     neuPlaylist *a_playlist;
+    neuPlaylist *a_favPlaylist;
     bool a_isPlaying;
     bool a_isReload;
+    bool a_favsNotLoadedYet;
     QPixmap a_defaultCover;
     FadeManager a_fadeManager;
     int a_previousIndex;
+    int a_previousTab;
     int a_currentIndex;
     int a_queueIndex;
     QList <QListWidgetItem*> a_backupItems;
