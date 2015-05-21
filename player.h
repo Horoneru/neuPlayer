@@ -138,16 +138,45 @@ public:
         a_hasToSaveFavsLater = foo;
     }
 
-    void deleteMedia(int index)
+    bool deleteMedia(int index, int tab = 0)
     {
+        if(!a_isUsingFavPlaylist)
+        {
+            if(tab == 0)
+            {
+                if(a_mediaPlaylist.currentIndex() == index)
+                    return false;
+            }
+        }
+        else
+        {
+            if(tab == 1)
+            {
+                if(a_favPlaylist.currentIndex() == index)
+                    return false;
+            }
+        }
         a_deleteTriggered = true;
         a_settings.setValue("trackPosition", neu->position());
         int track = neu->playlist()->currentIndex() - 1;
-        neu->playlist()->removeMedia(index);
-        if(index <= track)
-            neu->playlist()->setCurrentIndex(track);
+        if(tab == 0)
+            a_mediaPlaylist.removeMedia(index);
+        else
+            a_favPlaylist.removeMedia(index);
+        if(tab == 0 && !a_isUsingFavPlaylist)
+        {
+            if(index <= track)
+                a_mediaPlaylist.setCurrentIndex(track);
+        }
+        else if (tab == 1 && a_isUsingFavPlaylist)
+        {
+            if(index <= track)
+                a_favPlaylist.setCurrentIndex(track);
+        }
         if(a_hasToSavePlaylistLater != true)
             a_hasToSavePlaylistLater = true;
+        //The update of a_hasToSaveFavsLater is handled by the playlist if needed
+        return true;
     }
 
     void addFav(QModelIndex index);

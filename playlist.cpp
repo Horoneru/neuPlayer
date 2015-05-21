@@ -463,31 +463,24 @@ void Playlist::addToFav()
 
 void Playlist::deleteItem()
 {
-    /* Protections against the shortcut */
-    if(!a_player->isUsingFav())
-    {
-        if(a_currentIndex == ui->a_playlistWidget->currentRow())
-            return;
-    }
-    else if(a_player->isUsingFav())
-        {
-            if(a_currentIndex == ui->a_playlistFavWidget->currentRow())
-                return;
-        }
     int index;
-    if(!a_player->isUsingFav())
+    /* Protections against the shortcut */
+    if(ui->a_tabWidget->currentIndex() == 0)
         index = ui->a_playlistWidget->currentRow();
     else
         index = ui->a_playlistFavWidget->currentRow();
-    a_player->deleteMedia(index);
-    if(index <= a_queueIndex + a_currentIndex) //So if we're deleting something that was added, we update the queue index
-        a_queueIndex--;
-    if(!a_player->isUsingFav())
-        ui->a_playlistWidget->takeItem(index);
-    else
+
+    if(a_player->deleteMedia(index, ui->a_tabWidget->currentIndex()))
     {
-        ui->a_playlistFavWidget->takeItem(index);
-        a_player->setFavsToBeSaved(true);
+        if(index <= a_queueIndex + a_currentIndex) //So if we're deleting something that was added, we update the queue index
+            a_queueIndex--;
+        if(ui->a_tabWidget->currentIndex() == 0)
+            ui->a_playlistWidget->takeItem(index);
+        else
+        {
+            ui->a_playlistFavWidget->takeItem(index);
+            a_player->setFavsToBeSaved(true);
+        }
     }
 }
 
