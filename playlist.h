@@ -75,9 +75,6 @@ private:
     void updateInfoHeader(QString &title, QPixmap &cover);
     //Events
     void closeEvent(QCloseEvent *);
-    //TODO : depreciate them
-    void dragEnterEvent(QDragEnterEvent *);
-    void dropEvent(QDropEvent *);
 
     //Attributes
 

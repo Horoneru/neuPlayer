@@ -582,21 +582,6 @@ void Playlist::closeEvent(QCloseEvent *)
     a_player->setPlaylistOpen(false);
 }
 
-void Playlist::dragEnterEvent(QDragEnterEvent *event)
-{
-    if (event->mimeData()->hasUrls())
-            event->acceptProposedAction();
-}
-
-void Playlist::dropEvent(QDropEvent *event)
-{
-    this->setCursor(Qt::BusyCursor);
-    a_player->addMediasToThePlayer(event->mimeData()->urls());
-    //Should be finished then
-    this->setCursor(Qt::ArrowCursor);
-}
-
-
 Playlist::~Playlist()
 {
     delete ui;
