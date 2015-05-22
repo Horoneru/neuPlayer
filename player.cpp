@@ -1314,9 +1314,9 @@ void Player::addMediasToThePlayer(QList<QUrl> &medias)
             a_hasToSaveFavsLater = true;
 }
 
-void Player::addFav(QModelIndex &index)
+void Player::addFav(int index)
 {
-    QMediaContent media(a_mediaPlaylist.media(index.row())); //We copy the media
+    QMediaContent media(a_mediaPlaylist.media(index)); //We copy the media
     a_favPlaylist.addMedia(media);
     QList <QUrl> temp;
     temp.append(media.canonicalUrl());
