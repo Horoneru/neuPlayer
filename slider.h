@@ -17,6 +17,7 @@ class Slider : public QSlider
     Q_OBJECT
 public:
     explicit Slider(QWidget *parent = 0);
+private:
     void mousePressEvent(QMouseEvent *event);
 };
 

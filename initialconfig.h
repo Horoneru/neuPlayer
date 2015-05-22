@@ -21,7 +21,6 @@ class InitialConfig : public QDialog
     Q_OBJECT
 
 private slots:
-
     void presetWizard();
     void customWizard();
     void advanceWizard();
@@ -30,8 +29,6 @@ private slots:
     void setDefault(bool isActivated);
     void finishWizard();
     void delayedClose();
-
-    void closeEvent(QCloseEvent *event);
 public:
     explicit InitialConfig(QWidget *parent = 0);
 private:
@@ -42,6 +39,9 @@ private:
     void entranceAnimations();
     void finalPage();
     void presetConfig();
+
+    void closeEvent(QCloseEvent *event);
+
     //Attributes
     Ui::InitialConfig *ui;
     QSettings a_settings;

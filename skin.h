@@ -22,7 +22,6 @@ public:
     void load(); //Used when loaded (For both startup and runtime)
     //Use update(); on your objects or a container to apply the changes if loaded at runtime
 
-
 private:
     void initSkinPalettes();
     //Attributes
