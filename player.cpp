@@ -1314,27 +1314,18 @@ void Player::addMediasToThePlayer(QList<QUrl> &medias)
             a_hasToSaveFavsLater = true;
 }
 
-void Player::addFav(QModelIndex index)
+void Player::addFav(QModelIndex &index)
 {
-    QString fileAdded = QFileInfo(index.data(Qt::ToolTipRole).toString()).fileName(); //We extract the filename
-    unsigned int mediaCount = a_favPlaylist.mediaCount();
-    for(unsigned int i(0); i < mediaCount; i++)
-    {
-        if(a_favPlaylist.media(i).canonicalUrl().fileName() == fileAdded)
-        {
-            QToolTip::showText(QPoint(QCursor::pos()), tr("Déjà en favori"));
-            return; //It already exists, do not add it
-        }
-    }
     QMediaContent media(a_mediaPlaylist.media(index.row())); //We copy the media
     a_favPlaylist.addMedia(media);
     QList <QUrl> temp;
     temp.append(media.canonicalUrl());
     a_isUsingFavPlaylist = true; //So the quickUpdate knows what to update
-    a_playlist->quickUpdate(&temp, mediaCount); //The quick update will place the media at the end of fav without reloading the whole playlist
+    a_playlist->quickUpdate(&temp, a_favPlaylist.mediaCount()); //The quick update will place the media at the end of fav without reloading the whole playlist
     a_isUsingFavPlaylist = false; //We're finished
     if(a_hasToSaveFavsLater != true)
         a_hasToSaveFavsLater = true;
+
 }
 
 void Player::changeToFavPlaylist()

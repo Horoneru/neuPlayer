@@ -184,7 +184,7 @@ public:
         return true;
     }
 
-    void addFav(QModelIndex index);
+    void addFav(QModelIndex &index);
 
     void changeToFavPlaylist();
     void changeToDefaultPlaylist();
