@@ -6,6 +6,7 @@
 #include <QModelIndex>
 #include <QListWidgetItem>
 #include <QPointer>
+#include <QToolTip>
 
 #include "neuplaylist.h"
 #include "fademanager.h"

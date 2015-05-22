@@ -27,7 +27,6 @@ Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixma
     a_fadeManager.addTarget(ui->a_cover, FadeManager::FadeIn, 500, FadeManager::Parallel);
     a_fadeManager.addTarget(ui->a_titleHeader, FadeManager::FadeIn, 350, FadeManager::Parallel);
     setupActions();
-
     //Setup list
     updateList(&liste);
     if(!player->isUsingFav())
@@ -262,6 +261,7 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
         ui->a_playlistWidget->setCurrentRow(index);
     else
         ui->a_playlistFavWidget->setCurrentRow(index);
+
     //Use data received
     updateInfoHeader(title, *cover);
 }
@@ -303,7 +303,6 @@ void Playlist::setFolder()
             a_player->updatePlaylistOfThePlayer(urlList, true);
         setCursor(Qt::ArrowCursor);
      }
-
 }
 
 //Proxy method that uses setFolder();
@@ -403,14 +402,6 @@ void Playlist::prepareContextMenu()
         a_playlistContextMenu->actions().at(1)->setVisible(false);
         a_playlistContextMenu->actions().at(0)->setVisible(false);
     }
-    else if (ui->a_tabWidget->currentIndex() == 1 && a_currentIndex != ui->a_playlistFavWidget->currentRow())
-    {
-        a_deleteItemFromQueue->setText(tr("Supprimer des favoris"));
-        a_playlistContextMenu->actions().at(3)->setVisible(false);
-        a_playlistContextMenu->actions().at(2)->setVisible(true);
-        a_playlistContextMenu->actions().at(1)->setVisible(true);
-        a_playlistContextMenu->actions().at(0)->setVisible(false);
-    }
 }
 
 //Activated by the clicked() signal of the a_titleHeader UI component
@@ -437,6 +428,11 @@ void Playlist::setTab(int tabId)
 {
     if(tabId == 1) //Favorites
     {
+        a_deleteItemFromQueue->setText(tr("Supprimer des favoris"));
+        a_playlistContextMenu->actions().at(3)->setVisible(false);
+        a_playlistContextMenu->actions().at(2)->setVisible(true);
+        a_playlistContextMenu->actions().at(1)->setVisible(true);
+        a_playlistContextMenu->actions().at(0)->setVisible(false);
         if(a_favsNotLoadedYet)
             updateFavs(a_favPlaylist);
     }
