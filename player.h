@@ -46,7 +46,7 @@ public slots:
     void setupNewLibrary();
     void checkForNewMedias();
     void updateLibrary();
-    void saveCurrentPlaylist();
+    void savePlaylists();
     //Basic Media Controls
     void playMedia();
     void errorHandling(QMediaPlayer::Error error);
@@ -156,7 +156,6 @@ public:
                     return false;
             }
         }
-        a_deleteTriggered = true;
         a_settings.setValue("trackPosition", neu->position());
         int track = neu->playlist()->currentIndex() - 1;
         if(tab == 0)
@@ -166,12 +165,18 @@ public:
         if(tab == 0 && !a_isUsingFavPlaylist)
         {
             if(index <= track)
+            {
+                a_deleteTriggered = true;
                 a_mediaPlaylist.setCurrentIndex(track);
+            }
         }
         else if (tab == 1 && a_isUsingFavPlaylist)
         {
             if(index <= track)
+            {
+                a_deleteTriggered = true;
                 a_favPlaylist.setCurrentIndex(track);
+            }
         }
         if(a_hasToSavePlaylistLater != true)
             a_hasToSavePlaylistLater = true;

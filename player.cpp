@@ -20,18 +20,16 @@ Player::Player(QWidget *parent) :
     a_playbackMenu (tr("Vitesse de lecture"), this), a_menu (this),
     /* Settings */
     a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
-
 {
     /*!
-                                            2015 Horoneru                                   2.0.0 dev 170515 active
+                                            2015 Horoneru                                   2.0.0 dev 220515 active
       TODO
       à faire : (/ ordre d'importance)
-      - add to fav au niveau playlist (started)
-      - Fade-in/Fade-out when starting/pausing/between songs
-      - Further skinning options !
-      - UPDATE TRANSLATIONS
+      X add to fav au niveau playlist (finished and stable)
+      > Fade-in/Fade-out when starting/pausing/between songs
+      - Further skinning options ! (Coming later maybe)
+      > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
-      - Re-design et occuper l'espace alloué par le borderless (DONE)
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
@@ -490,12 +488,15 @@ void Player::finishingUp()
     }
 }
 
-void Player::saveCurrentPlaylist()
+void Player::savePlaylists()
 {
     if(a_hasToSaveFavsLater)
         a_favPlaylist.saveFromPlaylist("favorites.m3u8");
-    if(a_hasToSavePlaylistLater)
-        a_mediaPlaylist.saveFromPlaylist(); //Defaults to normal library
+    if(a_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
+    {
+        if(a_hasToSavePlaylistLater)
+            a_mediaPlaylist.saveFromPlaylist(); //Defaults to normal library
+    }
 }
 
 void Player::setupNewLibrary()
@@ -1094,7 +1095,7 @@ void Player::windowFlagsHandler()
     if(a_alwaysOnTopHandler.isChecked())
         this->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     else
-        this->setWindowFlags(Qt::Window);
+        this->setWindowFlags(this->windowFlags() & ~Qt::WindowStaysOnTopHint);
     QPointer <FadeWindow> fadeIn = new FadeWindow(this, 200, FadeWindow::FadeIn, this);
     fadeIn->start(a_settings.value("opacity").toReal());
 
@@ -1229,8 +1230,7 @@ void Player::closeEvent(QCloseEvent *event)
 
 void Player::saveBeforeClosing()
 {
-    if(a_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
-        saveCurrentPlaylist();
+    savePlaylists();
     if(a_settings.value("Additional_Features/framelessWindow").toBool())
         a_settings.setValue("pos", QPoint(this->x() - 8, this->y() - 31)); //Little hack to set the value correctly
     else
@@ -1321,15 +1321,18 @@ void Player::addFav(QModelIndex index)
     for(unsigned int i(0); i < mediaCount; i++)
     {
         if(a_favPlaylist.media(i).canonicalUrl().fileName() == fileAdded)
+        {
+            QToolTip::showText(QPoint(QCursor::pos()), tr("Déjà en favori"));
             return; //It already exists, do not add it
+        }
     }
     QMediaContent media(a_mediaPlaylist.media(index.row())); //We copy the media
     a_favPlaylist.addMedia(media);
     QList <QUrl> temp;
     temp.append(media.canonicalUrl());
-    a_isUsingFavPlaylist = true;
-    a_playlist->quickUpdate(&temp, mediaCount); //The quick update will place the media atthe end of fav without reloading the whole playlist
-    a_isUsingFavPlaylist = false;
+    a_isUsingFavPlaylist = true; //So the quickUpdate knows what to update
+    a_playlist->quickUpdate(&temp, mediaCount); //The quick update will place the media at the end of fav without reloading the whole playlist
+    a_isUsingFavPlaylist = false; //We're finished
     if(a_hasToSaveFavsLater != true)
         a_hasToSaveFavsLater = true;
 }
