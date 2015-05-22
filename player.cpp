@@ -1359,7 +1359,6 @@ void Player::addToQueue(int index, int currentlyPlaying)
     a_mediaPlaylist.insertMedia(insertTo, media);
     QList <QUrl> temp;
     temp.append(a_mediaPlaylist.media(insertTo).canonicalUrl());
-    qDebug() << media.canonicalUrl() << index;
     deleteMedia(index);
     a_playlist->deleteItem(index);
     a_playlist->quickUpdate(&temp, insertTo); //The quick update will place the media at insertTo index without reloading the whole playlist
