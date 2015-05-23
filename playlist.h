@@ -59,11 +59,14 @@ private slots:
     void showContextMenu() const;
     void deleteItem();
     void addItemToQueue();
+    void addToFavContext();
     void addToFav();
     void viewInfo();
     void sendNewInfos();
     //Own actions of the playlist interacting with the player
     void setFolder();
+    void on_starClicked();
+
     void reloadLibrary();
     void randomModeChanger();
     void loopModeChanger();
@@ -74,6 +77,10 @@ private slots:
 
 private:
     void updateInfoHeader(QString &title, QPixmap &cover);
+    bool checkIfNotFav(int index);
+    void deleteFav(int index);
+    void makeStarFull();
+    void makeStarEmpty();
     //Events
     void closeEvent(QCloseEvent *);
 

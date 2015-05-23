@@ -133,7 +133,8 @@ void Playlist::setupConnections()
     connect(a_deleteItemFromQueue, SIGNAL(triggered()), this, SLOT(deleteItem()));
     connect(a_addToQueue, SIGNAL(triggered()), this, SLOT(addItemToQueue()));
     connect(a_viewInfo, SIGNAL(triggered()), this, SLOT(viewInfo()));
-    connect(a_addToFav, SIGNAL(triggered()), this, SLOT(addToFav()));
+    connect(a_addToFav, SIGNAL(triggered()), this, SLOT(addToFavContext()));
+    connect(ui->a_addFavStar, SIGNAL(clicked()), this, SLOT(on_starClicked()));
     connect(ui->a_titleHeader, SIGNAL(clicked()), this, SLOT(scrollToPlaying()));
     connect(ui->a_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(setTab(int)));
     connect(a_validateFind, SIGNAL(triggered()), this, SLOT(validateSearch()));
@@ -173,8 +174,6 @@ void Playlist::updateList(neuPlaylist *listeFichiers, bool setZeroIndex)
     {
         QString filepath = listeFichiers->media(i).canonicalUrl().toString();
         ui->a_playlistWidget->addItem(QFileInfo(filepath).fileName());
-        ui->a_playlistWidget->item(i)->setData(Qt::ToolTipRole, filepath);
-        ui->a_playlistWidget->item(i)->setData(Qt::WhatsThisRole, i);
     }
 }
 
@@ -186,8 +185,6 @@ void Playlist::updateFavs(neuPlaylist *favPlaylist) //Called when the tab is set
     {
         QString filepath = favPlaylist->media(i).canonicalUrl().toString();
         ui->a_playlistFavWidget->addItem(QFileInfo(filepath).fileName());
-        ui->a_playlistFavWidget->item(i)->setData(Qt::ToolTipRole, filepath);
-        ui->a_playlistFavWidget->item(i)->setData(Qt::WhatsThisRole, i);
     }
     a_favsNotLoadedYet = false;
 }
@@ -200,8 +197,6 @@ void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne) //Updates
         for(unsigned int i(0); i < numberItems; i++, currentItemPlusOne++)
         {
             ui->a_playlistWidget->insertItem(currentItemPlusOne, items->at(i).fileName());
-            ui->a_playlistWidget->item(currentItemPlusOne)->setData(Qt::ToolTipRole, QUrl(items->at(i)));
-            ui->a_playlistWidget->item(currentItemPlusOne)->setData(Qt::WhatsThisRole, currentItemPlusOne);
         }
     }
     else
@@ -213,8 +208,6 @@ void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne) //Updates
             for(unsigned int i(0); i < numberItems; i++, currentItemPlusOne++)
             {
                 ui->a_playlistFavWidget->insertItem(currentItemPlusOne, items->at(i).fileName());
-                ui->a_playlistFavWidget->item(currentItemPlusOne)->setData(Qt::ToolTipRole, QUrl(items->at(i)));
-                ui->a_playlistFavWidget->item(currentItemPlusOne)->setData(Qt::WhatsThisRole, currentItemPlusOne);
             }
         }
     }
@@ -258,10 +251,18 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
         setToPaused(index);
     a_currentIndex = index;
     if(!a_player->isUsingFav())
+    {
         ui->a_playlistWidget->setCurrentRow(index);
+        if(checkIfNotFav(index))
+            makeStarFull();
+        else
+            makeStarEmpty();
+    }
     else
+    {
         ui->a_playlistFavWidget->setCurrentRow(index);
-
+        makeStarFull();
+    }
     //Use data received
     updateInfoHeader(title, *cover);
 }
@@ -302,7 +303,28 @@ void Playlist::setFolder()
         if(!urlList.empty()) //Don't set anything if there wasn't any content
             a_player->updatePlaylistOfThePlayer(urlList, true);
         setCursor(Qt::ArrowCursor);
-     }
+    }
+}
+
+void Playlist::on_starClicked()
+{
+    if(!a_player->isUsingFav())
+    {
+        if(!checkIfNotFav(a_currentIndex))
+        {
+            addToFav();
+        }
+        else
+        {
+            deleteFav(a_currentIndex);
+            makeStarEmpty();
+        }
+    }
+    else //It's already in favorite, so...
+    {
+        deleteFav(a_currentIndex);
+        makeStarEmpty();
+    }
 }
 
 //Proxy method that uses setFolder();
@@ -452,9 +474,66 @@ void Playlist::addItemToQueue()
     a_player->addToQueue(ui->a_playlistWidget->currentRow(), a_currentIndex);
 }
 
+void Playlist::addToFavContext()
+{
+    if(!checkIfNotFav(ui->a_playlistWidget->currentRow()))
+        a_player->addFav(ui->a_playlistWidget->currentRow());
+    if(ui->a_tabWidget->currentIndex() == 0 && a_currentIndex == ui->a_playlistWidget->currentRow())
+        makeStarFull();
+}
+
 void Playlist::addToFav()
 {
-    a_player->addFav(ui->a_playlistWidget->currentIndex());
+    if(!checkIfNotFav(a_currentIndex)) //If not there already
+    {
+        a_player->addFav(a_currentIndex);
+        makeStarFull();
+    }
+}
+
+bool Playlist::checkIfNotFav(int index)
+{
+    QString fileAdded;
+    fileAdded = a_playlist->media(index).canonicalUrl().fileName(); //We extract the filename
+    unsigned int mediaCount = a_favPlaylist->mediaCount();
+    for(unsigned int i(0); i < mediaCount; i++)
+    {
+        if(a_favPlaylist->media(i).canonicalUrl().fileName() == fileAdded)
+            return true; //It already exists, do not add it
+    }
+    return false;
+}
+
+void Playlist::deleteFav(int index)
+{
+    QString fileAdded;
+    if(!a_player->isUsingFav())
+        fileAdded = a_playlist->media(index).canonicalUrl().fileName();
+    else
+        fileAdded = a_favPlaylist->media(index).canonicalUrl().fileName();
+    unsigned int mediaCount = a_favPlaylist->mediaCount();
+    for(unsigned int i(0); i < mediaCount; i++)
+    {
+        if(a_favPlaylist->media(i).canonicalUrl().fileName() == fileAdded)
+        {
+            if(a_player->isUsingFav())
+                a_favPlaylist->setCurrentIndex(i - 1);
+            a_favPlaylist->removeMedia(i); //Remove media in fav list, index i
+            ui->a_playlistFavWidget->takeItem(i);
+        }
+    }
+}
+
+void Playlist::makeStarFull()
+{
+    ui->a_addFavStar->setIcon(QIcon(":/Ressources/star_full.png"));
+    ui->a_addFavStar->setToolTip(tr("Cliquez pour enlever des favoris"));
+}
+
+void Playlist::makeStarEmpty()
+{
+    ui->a_addFavStar->setIcon(QIcon(":/Ressources/star.png"));
+    ui->a_addFavStar->setToolTip(tr("Cliquez pour ajouter aux favoris"));
 }
 
 void Playlist::deleteItem()
@@ -501,9 +580,9 @@ void Playlist::viewInfo()
         connect(a_tempPlayer, SIGNAL(metaDataChanged()), this, SLOT(sendNewInfos()));
         a_tempPlayer->setMuted(true); //Don't let the user know that this ugly code is happening
         if(ui->a_tabWidget->currentIndex() == 0)
-            a_tempPlayer->setMedia(QMediaContent(ui->a_playlistWidget->currentItem()->toolTip()));
+            a_tempPlayer->setMedia(a_playlist->media(ui->a_playlistWidget->currentRow()));
         else
-            a_tempPlayer->setMedia(QMediaContent(ui->a_playlistFavWidget->currentItem()->toolTip()));
+            a_tempPlayer->setMedia(a_favPlaylist->media(ui->a_playlistFavWidget->currentRow()));
         a_tempPlayer->stop();
     }
 
