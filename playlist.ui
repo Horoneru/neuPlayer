@@ -10,6 +10,12 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>265</width>
+    <height>142</height>
+   </size>
+  </property>
   <property name="maximumSize">
    <size>
     <width>300</width>
@@ -270,6 +276,32 @@ d'ajout de favoris, ou par click droit sur la musique</string>
     </widget>
    </widget>
   </widget>
+  <widget class="QPushButton" name="a_addFavStar">
+   <property name="geometry">
+    <rect>
+     <x>234</x>
+     <y>22</y>
+     <width>18</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/Ressources/star.png</normaloff>:/Ressources/star.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>18</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
   <zorder>a_cover</zorder>
   <zorder>a_searchLine</zorder>
   <zorder>a_titleHeader</zorder>
@@ -277,6 +309,7 @@ d'ajout de favoris, ou par click droit sur la musique</string>
   <zorder>a_switchLoopPlay</zorder>
   <zorder>a_tabWidget</zorder>
   <zorder>a_tools</zorder>
+  <zorder>a_addFavStar</zorder>
  </widget>
  <resources>
   <include location="assets.qrc"/>
