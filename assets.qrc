@@ -55,5 +55,7 @@
         <file>Ressources/roundedmenubtn.png</file>
         <file>Ressources/previousbtn.png</file>
         <file>Ressources/forwardbtn.png</file>
+        <file>Ressources/star.png</file>
+        <file>Ressources/star_full.png</file>
     </qresource>
 </RCC>
