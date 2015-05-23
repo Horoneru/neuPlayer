@@ -24,8 +24,8 @@ Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixma
     a_previousIndex = 99999; //Pretty sure nobody would reach that value
     a_queueIndex = 0; //used to determine where to place the song you want to queue
     //Prepare fade manager animations
-    a_fadeManager.addTarget(ui->a_cover, FadeManager::FadeIn, 500, FadeManager::Parallel);
-    a_fadeManager.addTarget(ui->a_titleHeader, FadeManager::FadeIn, 350, FadeManager::Parallel);
+    a_fadeManager.addTarget(ui->a_cover, FadeManager::FadeIn, 400, FadeManager::Parallel);
+    a_fadeManager.addTarget(ui->a_titleHeader, FadeManager::FadeIn, 300, FadeManager::Parallel);
     //Prepare tab animations
     a_moveAnim.setDuration(MoveAnimation::Fast);
     setupActions();
