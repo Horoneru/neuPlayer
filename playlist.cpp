@@ -5,16 +5,18 @@
 
 Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Playlist), a_isReload (false), a_favsNotLoadedYet(true) //These bool can result in unexpected behaviour if it's not initialized
+    ui(new Ui::Playlist), a_isReload (false), a_favsNotLoadedYet(true), //These bool can result in unexpected behaviour if it's not initialized
+    a_settings("neuPlayer.ini", QSettings::IniFormat, this)
 {
     ui->setupUi(this);
     ui->a_searchLine->setHidden(true);
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
+    a_settings.beginGroup("Playlist");
+    resize(a_settings.value("size", QSize(265, 300)).toSize());
     ui->a_playlistWidget->setDragEnabled(false); //I can't handle it well as of now :/
     ui->a_playlistFavWidget->setDragEnabled(false);
-    a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_defaultCover.load(":/Ressources/noCoverHeader.png");
     //On reçoit le player, il faut maintenant le mettre en tant qu'attribut pour l'utiliser partout
     a_player = player;
@@ -73,6 +75,8 @@ Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixma
     setupConnections();
 
     setupMode();
+    if(player->y() > 600)
+        this->move(player->x() + 60, player->y() - 200);
 }
 
 void Playlist::setupActions()
@@ -290,8 +294,8 @@ void Playlist::setFolder()
     // On sélectionne le répertoire à partir duquel on va rechercher les fichiers que le player peut lire
     if(!a_isReload)
         selectDir = (QFileDialog::getExistingDirectory (this,tr("Ouvrir un répertoire"), "", QFileDialog::DontResolveSymlinks));
-    else if(!a_settings->value("mediapath").toString().isEmpty())
-        selectDir =  a_settings->value("mediapath", "").toString();
+    else if(!a_settings.value("mediapath").toString().isEmpty())
+        selectDir =  a_settings.value("mediapath", "").toString();
 
     if(!selectDir.isEmpty())
     {
@@ -657,6 +661,7 @@ void Playlist::validateSearch()
 void Playlist::closeEvent(QCloseEvent *)
 {
     a_player->setPlaylistOpen(false);
+    a_settings.setValue("size", this->size());
 }
 
 Playlist::~Playlist()

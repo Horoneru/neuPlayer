@@ -115,7 +115,7 @@ private:
     QAction *a_viewInfo;
     QAction *a_deleteItemFromQueue;
     QAction *a_addToFav;
-    QSettings *a_settings;
+    QSettings a_settings;
     QPointer <QMediaPlayer> a_tempPlayer;
 };
 
