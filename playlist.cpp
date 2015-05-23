@@ -263,6 +263,7 @@ void Playlist::setCurrentItem(int index, QPixmap *cover, QString title, bool pla
         ui->a_playlistFavWidget->setCurrentRow(index);
         makeStarFull();
     }
+    scrollToPlaying();
     //Use data received
     updateInfoHeader(title, *cover);
 }
@@ -311,9 +312,7 @@ void Playlist::on_starClicked()
     if(!a_player->isUsingFav())
     {
         if(!checkIfNotFav(a_currentIndex))
-        {
             addToFav();
-        }
         else
         {
             deleteFav(a_currentIndex);
@@ -372,19 +371,12 @@ void Playlist::playItem(QModelIndex itemIndex)
         setFolder();
         return;
     }
-
     if(ui->a_tabWidget->currentIndex() == 1 && ui->a_playlistFavWidget->currentItem()->textAlignment() == Qt::AlignCenter)
-    {
         return;
-    }
     if(!a_player->isUsingFav() && ui->a_tabWidget->currentIndex() == 1)
-    {
         a_player->changeToFavPlaylist();
-    }
     else if(ui->a_tabWidget->currentIndex() == 0 && a_player->isUsingFav())
-    {
         a_player->changeToDefaultPlaylist();
-    }
     a_player->setIndexOfThePlayer(itemIndex.row(), true);
     a_currentIndex = itemIndex.row();
 }
@@ -443,7 +435,6 @@ void Playlist::scrollToPlaying()
         ui->a_playlistFavWidget->setCurrentRow(a_currentIndex);
         ui->a_playlistFavWidget->scrollTo(ui->a_playlistFavWidget->currentIndex(), QAbstractItemView::PositionAtTop);
     }
-
 }
 
 void Playlist::setTab(int tabId)
