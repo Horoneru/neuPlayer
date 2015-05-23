@@ -6,7 +6,7 @@
 #include <QPropertyAnimation>
 
 
-/*   Convenience class to have a swipe/move animation or out any QWidget,
+/*   Convenience class to have a swipe/move animation on any QWidget.
  *   Created by Horoneru the 20/05/15
  *   V1.0
 */
@@ -46,7 +46,7 @@ public:
         a_anim.setStartValue(pos);
     }
 
-    void start(bool deleteWhenFinished);
+    void start(bool deleteWhenFinished = true);
 
 private:
     void setupDirection();
