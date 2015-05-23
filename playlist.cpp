@@ -26,6 +26,8 @@ Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixma
     //Prepare fade manager animations
     a_fadeManager.addTarget(ui->a_cover, FadeManager::FadeIn, 500, FadeManager::Parallel);
     a_fadeManager.addTarget(ui->a_titleHeader, FadeManager::FadeIn, 350, FadeManager::Parallel);
+    //Prepare tab animations
+    a_moveAnim.setDuration(MoveAnimation::Fast);
     setupActions();
     //Setup list
     updateList(&liste);
@@ -446,8 +448,17 @@ void Playlist::setTab(int tabId)
         a_playlistContextMenu->actions().at(2)->setVisible(true);
         a_playlistContextMenu->actions().at(1)->setVisible(true);
         a_playlistContextMenu->actions().at(0)->setVisible(false);
+        a_moveAnim.setTarget(ui->a_playlistFavWidget);
+        a_moveAnim.setDirection(MoveAnimation::LeftToRight);
+        a_moveAnim.start(false);
         if(a_favsNotLoadedYet)
             updateFavs(a_favPlaylist);
+    }
+    else
+    {
+        a_moveAnim.setTarget(ui->a_playlistWidget);
+        a_moveAnim.setDirection(MoveAnimation::RightToLeft);
+        a_moveAnim.start(false);
     }
     a_previousTab = tabId;
     if(ui->a_tabWidget->currentIndex() != tabId) //If called

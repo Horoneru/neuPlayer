@@ -5,6 +5,7 @@
 #include "player.h"
 #include "skin.h"
 #include "updaterhandler.h"
+#include "moveanimation.h"
 namespace Ui {
 class Settings;
 }
@@ -18,6 +19,7 @@ private slots:
     void on_RNlibActivated();
     void on_staticLibActivated();
     void popupFramelessWindow();
+    void on_changeTab(int tabId);
     void setLibrary();
     void setSkin(int index);
     void changeBg();
@@ -39,6 +41,7 @@ private:
     Ui::Settings *ui;
     QSettings *a_settings;
     Player *a_passerelle;
+    MoveAnimation a_moveAnim;
     QString a_bgPath;
     UpdaterHandler *a_handler;
     bool a_isUpdateHandlerAlreadyCalled;
@@ -46,6 +49,7 @@ private:
     bool a_isDynamicLibChecked;
     bool a_isStaticLibChecked;
     bool a_isNewPath;
+    int a_previousTabId;
     double a_opacityValue;
 };
 

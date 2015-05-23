@@ -10,6 +10,7 @@
 
 #include "neuplaylist.h"
 #include "fademanager.h"
+#include "moveanimation.h"
 #include "player.h"
 namespace Ui {
 class Playlist;
@@ -95,6 +96,7 @@ private:
     bool a_favsNotLoadedYet;
     QPixmap a_defaultCover;
     FadeManager a_fadeManager;
+    MoveAnimation a_moveAnim;
     int a_previousIndex;
     int a_previousTab;
     int a_currentIndex;

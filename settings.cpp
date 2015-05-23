@@ -2,15 +2,17 @@
 #include "ui_settings.h"
 
 Settings::Settings(Player *Player, QWidget *parent) :
-    QDialog(parent), a_isNewPath(false), a_isUpdateHandlerAlreadyCalled(false),
+    QDialog(parent), a_isNewPath(false), a_isUpdateHandlerAlreadyCalled(false), a_previousTabId(0),
     ui(new Ui::Settings)
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+
     //Make the Player received as an attribute so we can use it
     a_passerelle = Player;
+    a_moveAnim.setDuration(MoveAnimation::Fast); //Prepare animation
     //Restore current config from QSettings
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_settings->beginGroup("Additional_Features");
@@ -70,6 +72,7 @@ void Settings::setupConnections()
     connect(ui->a_staticLibraryActivate, SIGNAL(clicked()), this, SLOT(on_staticLibActivated()));
     connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()), this, SLOT(on_RNlibActivated()));
     connect(ui->a_skinPick, SIGNAL(currentIndexChanged(int)), this, SLOT(setSkin(int)));
+    connect(ui->a_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(on_changeTab(int)));
     connect(ui->a_changeDbpush, SIGNAL(clicked()), this, SLOT(changeMusicPath()));
     connect(ui->a_close_2, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(ui->a_close, SIGNAL(clicked()), this, SLOT(cancel()));
@@ -179,6 +182,17 @@ void Settings::popupFramelessWindow()
             QProcess::startDetached("neuPlayer.exe");
         }
     }
+}
+
+void Settings::on_changeTab(int tabId)
+{
+    a_moveAnim.setTarget(ui->a_tabWidget->currentWidget());
+    if(tabId < a_previousTabId)
+        a_moveAnim.setDirection(MoveAnimation::RightToLeft);
+    else
+        a_moveAnim.setDirection(MoveAnimation::LeftToRight);
+    a_moveAnim.start(false);
+    a_previousTabId = tabId;
 }
 
 void Settings::changeMusicPath()
