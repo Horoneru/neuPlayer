@@ -1320,9 +1320,11 @@ void Player::addFav(int index)
     a_favPlaylist.addMedia(media);
     QList <QUrl> temp;
     temp.append(media.canonicalUrl());
+    bool previousState = a_isUsingFavPlaylist;
     a_isUsingFavPlaylist = true; //So the quickUpdate knows what to update
     a_playlist->quickUpdate(&temp, a_favPlaylist.mediaCount()); //The quick update will place the media at the end of fav without reloading the whole playlist
-    a_isUsingFavPlaylist = false; //We're finished
+    if(previousState == false)
+        a_isUsingFavPlaylist = false; //We're finished
     if(a_hasToSaveFavsLater != true)
         a_hasToSaveFavsLater = true;
 
