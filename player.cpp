@@ -778,6 +778,7 @@ void Player::setMeta()
         a_titre = neu->currentMedia().canonicalUrl().fileName();
         a_album = neu->currentMedia().canonicalUrl().fileName();
     }
+
     a_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
     if(a_coverArt.isNull())
         a_coverArt = QPixmap::fromImage(QImage(neu->metaData("CoverArtImage").value<QImage>()));
@@ -913,18 +914,21 @@ void Player::update_info()
     if(a_secondesPasse == a_titleCase)
     {
         updateLabel(a_artiste);
-        fadeInLabel();
+        if(!a_no_meta)
+            fadeInLabel();
     }
     if(a_secondesPasse == a_artistCase)
     {
         updateLabel(a_album);
-        fadeInLabel();
+        if(!a_no_meta)
+            fadeInLabel();
     }
     if(a_secondesPasse == a_albumCase)
     {
         a_secondesPasse = 0;
         updateLabel(a_titre);
-        fadeInLabel();
+        if(!a_no_meta)
+            fadeInLabel();
     }
     if(!a_menu.isVisible() &&  a_alwaysOnTopHandler.isChecked()) //If we're always on top, this assure that we're always on top, even if on Windows explorer gets on top
         if(!a_isPlaylistOpen && !a_isSettingsOpen) //Raising also raises over the widgets of these windows... Can be weird if you're using it's context menus...
@@ -1205,7 +1209,7 @@ void Player::showTagViewer()
     metaDatas.append(neu->metaData("Year").toString());
     metaDatas.append(neu->metaData("Genre").toString());
     //Load it now !
-    QPointer <TagViewer> TagWindow = new TagViewer(metaDatas, &a_coverArt , this);
+    QPointer <TagViewer> TagWindow = new TagViewer(metaDatas, &a_coverArt, this);
     TagWindow->exec();
 }
 

@@ -291,6 +291,7 @@ private:
     bool a_isStarting;
     bool a_isUsingFavPlaylist;
     bool a_audioFadeActivated;
+    bool a_no_meta;
     int a_secondesPasse;
     int a_volumeBeforeMute;
     //The three int delays at which we switch over
