@@ -57,5 +57,8 @@
         <file>Ressources/forwardbtn.png</file>
         <file>Ressources/star.png</file>
         <file>Ressources/star_full.png</file>
+        <file>Ressources/backgroundpreviewcustomdark.jpg</file>
+        <file>Ressources/neucustombackgroundblack.jpg</file>
+        <file>Ressources/skinpreviewcustomdark.png</file>
     </qresource>
 </RCC>
