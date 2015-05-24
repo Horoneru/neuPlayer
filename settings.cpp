@@ -21,10 +21,14 @@ Settings::Settings(Player *Player, QWidget *parent) :
     ui->a_staticLibraryActivate->setChecked(a_settings->value("staticLibrary", false).toBool());
     ui->a_saveIndexActivate->setChecked(a_settings->value("saveTrackIndex", true).toBool());
     ui->a_framelessCheck->setChecked(a_settings->value("framelessWindow", false).toBool());
+    ui->a_fadeCheck->setChecked(a_settings->value("audioFade", false).toBool());
     a_settings->endGroup();
     a_bgPath = a_settings->value("customimage", "").toString();
     a_opacityValue = a_settings->value("opacity", 100).toReal();
     ui->a_opacitySlide->setValue(a_opacityValue * 100);
+    on_fadeClicked(ui->a_fadeCheck->isChecked());
+    ui->a_fadeSlide->setValue(a_settings->value("fadeValue", 1).toInt() / 1000);
+    updateFadeValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     ui->a_valueSlide->setText(QString::number(ui->a_opacitySlide->value()) + "%");
     //Process config into UI
     setupConfig();
@@ -71,17 +75,21 @@ void Settings::setupConnections()
     connect(ui->a_libraryAtStartupActivate, SIGNAL(clicked()), this, SLOT(enableLibraryAtStartup()));
     connect(ui->a_staticLibraryActivate, SIGNAL(clicked()), this, SLOT(on_staticLibActivated()));
     connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()), this, SLOT(on_RNlibActivated()));
+    connect(ui->a_fadeCheck, SIGNAL(clicked(bool)), this, SLOT(on_fadeClicked(bool)));
     connect(ui->a_skinPick, SIGNAL(currentIndexChanged(int)), this, SLOT(setSkin(int)));
     connect(ui->a_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(on_changeTab(int)));
     connect(ui->a_changeDbpush, SIGNAL(clicked()), this, SLOT(changeMusicPath()));
     connect(ui->a_close_2, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(ui->a_close, SIGNAL(clicked()), this, SLOT(cancel()));
+    connect(ui->a_close_3, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(ui->a_refreshNeededpush, SIGNAL(clicked()), this, SLOT(setLibrary()));
     connect(ui->a_changeBackgroundPush, SIGNAL(clicked()), this, SLOT(changeBg()));
     connect(ui->a_reloadDefaultSkinPush, SIGNAL(clicked()), this, SLOT(reloadDefaultBg()));
     connect(ui->a_opacitySlide, SIGNAL(valueChanged(int)), this, SLOT(updateOpacity(int)));
+    connect(ui->a_fadeSlide, SIGNAL(valueChanged(int)), this, SLOT(updateFadeValue(int)));
     connect(ui->a_confirm, SIGNAL(clicked()), this, SLOT(confirm()));
     connect(ui->a_confirm_2, SIGNAL(clicked()), this, SLOT(confirm()));
+    connect(ui->a_confirm_3, SIGNAL(clicked()), this, SLOT(confirm()));
     connect(ui->a_framelessCheck, SIGNAL(clicked()), this, SLOT(popupFramelessWindow()));
     connect(ui->a_gotoWorkingDir, SIGNAL(clicked()), this, SLOT(gotoWorkingDir()));
     connect(ui->a_checkUpdatesBtn, SIGNAL(clicked()), this, SLOT(checkUpdates()));
@@ -363,6 +371,10 @@ void Settings::confirm()
         a_passerelle->update();
     }
     a_settings->setValue("opacity", a_opacityValue);
+    a_settings->setValue("Additional_Features/audioFade", ui->a_fadeCheck->isChecked());
+    a_settings->setValue("fadeValue", a_fadeValue);
+    a_passerelle->setAudioFade(ui->a_fadeCheck->isChecked());
+    a_passerelle->setAudioFadeValue(a_fadeValue);
     this->cancel();
 }
 
@@ -405,6 +417,20 @@ void Settings::checkUpdates()
         a_isUpdateHandlerAlreadyCalled = true;
     }
     a_handler->start("neuPlayer", QApplication::applicationVersion(), "http://sd-2.archive-host.com/membres/up/16630996856616518/version.txt", "http://sd-2.archive-host.com/membres/up/16630996856616518/neuPlayer.exe", "show");
+}
+
+void Settings::on_fadeClicked(bool enabled)
+{
+    ui->a_fadeSlide->setVisible(enabled); ui->a_valueFadeSlide->setVisible(enabled);
+}
+
+void Settings::updateFadeValue(int value)
+{
+    a_fadeValue = value * 1000;
+    if(value != 1)
+        ui->a_valueFadeSlide->setText(QString::number(value) + " sec");
+    else
+        ui->a_valueFadeSlide->setText(QString::number(value) + " secs");
 }
 
 Settings::~Settings()

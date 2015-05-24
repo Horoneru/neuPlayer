@@ -110,6 +110,17 @@ public:
     void updateFadeinSpeed();
     //Méthodes accesseurs et mutateurs
 
+    void setAudioFadeValue(int value)
+    {
+        a_audioFade->setDuration(value);
+    }
+
+    void setAudioFade(bool enabled)
+    {
+        a_audioFadeActivated = enabled;
+    }
+
+    void runAudioFade();
     void setPlaylistOpen(bool open)
     {
         a_isPlaylistOpen = open;
@@ -279,6 +290,7 @@ private:
     bool a_canDoShuffleAgain;
     bool a_isStarting;
     bool a_isUsingFavPlaylist;
+    bool a_audioFadeActivated;
     int a_secondesPasse;
     int a_volumeBeforeMute;
     //The three int delays at which we switch over
@@ -298,6 +310,7 @@ private:
     ScrollingLabel a_scrollingLabel; //Custom label
     QPixmap a_coverArt;
     QPropertyAnimation *a_titleAnimate;
+    QPropertyAnimation *a_audioFade;
     QGraphicsOpacityEffect *a_infoFadein;
     QPropertyAnimation *a_infoFadeAnim;
     //Regular timer, updated each second

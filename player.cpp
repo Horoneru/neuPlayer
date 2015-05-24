@@ -25,8 +25,6 @@ Player::Player(QWidget *parent) :
                                             2015 Horoneru                                   2.0.0 dev 220515 active
       TODO
       à faire : (/ ordre d'importance)
-      X add to fav au niveau playlist (finished and stable)
-      > Fade-in/Fade-out when starting/pausing/between songs
       - Further skinning options ! (Coming later maybe)
       > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
@@ -95,11 +93,15 @@ Player::Player(QWidget *parent) :
         a_isFrameless = false;
         setFramelessButtonsVisibility(false);
     }
+    a_audioFade = new QPropertyAnimation(neu, "volume", this);
+    a_audioFade->setStartValue(0);
+    a_audioFade->setDuration(a_settings.value("fadeValue").toInt());
+    if(a_settings.value("Additional_Features/audioFade", false).toBool() == true)
+        setAudioFade(true);
 
     setPlaybackRate();
 
     setupConnections();
-
 
     //Paramètres loadés après car les connexions se chargent de traiter les nouvelles données
     setupPlugins();
@@ -516,7 +518,6 @@ void Player::setupNewLibrary()
 
 void Player::playMedia()
 {
-
     if(a_isStarting)
         return; // Not ready yet !
     /* Those silly disconnect-reconnect are made so the openMedia(); method isn't called multiple times.
@@ -527,6 +528,8 @@ void Player::playMedia()
         openMedia();
     else //On peut play quelque chose
     {
+        if(a_audioFadeActivated) //If it was instantiated, it means It's activated
+            runAudioFade();
         neu->play();
         ui->a_playbtn->setVisible(false);
         ui->a_pausebtn->setVisible(true);
@@ -558,6 +561,8 @@ void Player::forwardMedia()
     if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0 )
         return;
     neu->playlist()->next();
+    if(a_audioFadeActivated) //If it was instantiated, it means It's activated
+        runAudioFade();
     if(neu->playlist()->currentMedia().isNull())
     {
         if(a_isLoopPlaylistMode)
@@ -592,6 +597,8 @@ void Player::previousMedia()
     if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0)
         return;
     neu->playlist()->previous();
+    if(a_audioFadeActivated)
+        runAudioFade();
     if(neu->playlist()->currentMedia().isNull())
     {
         emit EndOfMedia();
@@ -855,6 +862,14 @@ void Player::updateFadeinSpeed()
         a_albumCase = a_artistCase + ((a_album.size() / 10) * 3);
 }
 
+void Player::runAudioFade()
+{
+    a_audioFade->setEndValue(a_volumeSlider->value());
+    if(a_audioFade->state() == QPropertyAnimation::Running)
+        a_audioFade->stop();
+    a_audioFade->start();
+}
+
 //Does the animation between each info
 void Player::fadeInLabel()
 {
@@ -963,7 +978,6 @@ void Player::seekProgress(int pos)
         ui->a_playbtn->setVisible(false);
         ui->a_pausebtn->setVisible(true);
         connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
-
     }
     if(a_isPlaylistOpen && !a_playlist->isPlayingState())
         a_playlist->setToPlaying(neu->playlist()->currentIndex());
@@ -1224,6 +1238,14 @@ void Player::closeEvent(QCloseEvent *event)
         Timer.start(400);
         connect(&Timer, SIGNAL(timeout()), this, SLOT(delayedClose()));
         QPointer <FadeWindow> fadeOut = new FadeWindow(this, 200, FadeWindow::FadeOut, this);
+        if(a_isPlaying)
+        {
+            QPointer <QPropertyAnimation> audioFadeOut = new QPropertyAnimation(neu, "volume", this);
+            audioFadeOut->setEndValue(0);
+            audioFadeOut->setStartValue(a_volumeSlider->value());
+            audioFadeOut->setDuration(250);
+            audioFadeOut->start(QAbstractAnimation::DeleteWhenStopped);
+        }
         fadeOut->start();
     }
 }
@@ -1349,10 +1371,12 @@ void Player::addToQueue(int index, int currentlyPlaying)
 {
     int insertTo = currentlyPlaying + a_playlist->queuedIndex(); //if you add one music, it'll place the next one next to it, ect...
     QMediaContent media(a_mediaPlaylist.media(index)); //We copy the media
+    deleteMedia(index);
+    if(index < currentlyPlaying)
+        insertTo--;
     a_mediaPlaylist.insertMedia(insertTo, media);
     QList <QUrl> temp;
     temp.append(a_mediaPlaylist.media(insertTo).canonicalUrl());
-    deleteMedia(index);
     a_playlist->deleteItem(index);
     a_playlist->quickUpdate(&temp, insertTo); //The quick update will place the media at insertTo index without reloading the whole playlist
     if(a_hasToSavePlaylistLater != true)
