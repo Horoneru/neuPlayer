@@ -63,11 +63,6 @@ Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixma
                 //Update the icon if the player is paused or stopped
             }
         }
-        else //If not, shows there's nothing
-        {
-            ui->a_playlistFavWidget->addItem(tr("Aucun favoris"));
-            ui->a_playlistFavWidget->item(0)->setTextAlignment(Qt::AlignCenter);
-        }
         setTab(1);
     }
 
