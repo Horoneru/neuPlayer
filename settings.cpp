@@ -297,8 +297,10 @@ void Settings::reloadDefaultBg()
     }
     if(ui->a_skinPick->currentIndex() == 2) //Sky Fusion
     {
-        ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomlight.jpg"));
+        ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomwhite.jpg"));
     }
+    if(ui->a_skinPick->currentIndex() == 3) //Night Fusion
+        ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomdark.jpg"));
 }
 
 void Settings::updateOpacity(int value)
