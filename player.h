@@ -305,7 +305,7 @@ private:
     const QIcon a_volumeIcon, a_volumeDarkIcon;
     const QIcon a_volumeLowIcon, a_volumeLowDarkIcon;
     const QIcon a_volumeMutedIcon, a_volumeMutedDarkIcon;
-    const QPixmap a_neuDarkBg, a_neuLightBg, a_neuLightCustombg;
+    const QPixmap a_neuDarkBg, a_neuLightBg, a_neuLightCustombg, a_neuDarkCustombg;
 
     ScrollingLabel a_scrollingLabel; //Custom label
     QPixmap a_coverArt;

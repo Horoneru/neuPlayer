@@ -211,9 +211,7 @@ void Settings::changeMusicPath()
     else
     {
         if(path == ui->a_pathView->text())
-        {
             a_isNewPath = false;
-        }
         else
         {
             a_isNewPath = true;
@@ -267,7 +265,17 @@ void Settings::setSkin(int index)
         else
             ui->a_skinImage_2->setPixmap(QPixmap(a_bgPath));
 
-        ui->a_SkinDescription->setText("Skin light custom pour neuPlayer");
+        ui->a_SkinDescription->setText("Skin light 2 pour neuPlayer");
+    }
+    if(index == 3) //Night Fusion
+    {
+        ui->a_skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewcustomdark.png"));
+        if(a_bgPath.isEmpty())
+            ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomdark.jpg"));
+        else
+            ui->a_skinImage_2->setPixmap(QPixmap(a_bgPath));
+
+        ui->a_SkinDescription->setText("Skin dark 2 pour neuPlayer");
     }
 }
 
@@ -287,18 +295,14 @@ void Settings::reloadDefaultBg()
 {
     a_bgPath = "";
     if (ui->a_skinPick->currentIndex() == 0) //Clean Fusion
-    {
         ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewwhite.jpg"));
-    }
 
     if (ui->a_skinPick->currentIndex() == 1) // Holo Fusion
-    {
         ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewdark.png"));
-    }
+
     if(ui->a_skinPick->currentIndex() == 2) //Sky Fusion
-    {
         ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomwhite.jpg"));
-    }
+
     if(ui->a_skinPick->currentIndex() == 3) //Night Fusion
         ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomdark.jpg"));
 }

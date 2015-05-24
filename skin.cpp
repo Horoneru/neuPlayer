@@ -50,12 +50,13 @@ void Skin::initSkinPalettes()
 
 void Skin::load()
 {
+    qDebug("%d", a_idSkin);
     if(a_idSkin == 0 || a_idSkin == 2)
     {
         qApp->setPalette(a_lightPalette);
         qApp->setStyleSheet(a_lightPaletteCSS);
     }
-    else
+    else if(a_idSkin == 1  || a_idSkin == 3)
     {
         qApp->setPalette(a_darkPalette);
         qApp->setStyleSheet(a_darkPaletteCSS);

@@ -6,6 +6,7 @@ Player::Player(QWidget *parent) :
     ui(new Ui::Player),
     /* Background ressources */
     a_neuDarkBg(":/Ressources/neudarkbg.png"), a_neuLightBg(":/Ressources/neubackgroundwhite.jpg"), a_neuLightCustombg(":/Ressources/neucustombackgroundwhite.jpg"),
+    a_neuDarkCustombg(":/Ressources/neucustombackgroundblack.jpg"),
     /* Volume icons ressources */
     a_volumeIcon(":/Ressources/volumebtn.png"), a_volumeDarkIcon(":/Ressources/volumedarkbtn.png"), a_volumeMutedIcon(":/Ressources/volumebtn_onPressed.png"),
     a_volumeMutedDarkIcon(":/Ressources/volumedarkbtn_onPressed.png"), a_volumeLowIcon(":/Ressources/volumebtn2.png"), a_volumeLowDarkIcon(":/Ressources/volumedarkbtn2.png"),
@@ -367,14 +368,26 @@ void Player::setFramelessButtonsVisibility(bool visible)
 void Player::loadSkin()
 {
     a_idSkin = a_settings.value("skin", 1).toInt();
-    if(a_idSkin == 1) //The dark skin is the default, so we don't have to change the initial stylesheet
+    qDebug() << a_idSkin;
+    if(a_idSkin == 1 || a_idSkin == 3) //Dark skin
     {
         if(!a_isStarting)
             setDarkCSS(); //Because the stylesheet is already set as default
-        if(!QFile(a_settings.value("customimage").toString()).exists()) //We won't charge something which doesn't exists
-            ui->a_image->setPixmap(a_neuDarkBg);
-        else
-            ui->a_image->setPixmap(QPixmap(a_settings.value("customimage").toString()));
+        if(a_idSkin == 1)
+        {
+            if(!QFile(a_settings.value("customimage").toString()).exists()) //We won't charge something which doesn't exists
+                ui->a_image->setPixmap(a_neuDarkBg);
+            else
+                ui->a_image->setPixmap(QPixmap(a_settings.value("customimage").toString()));
+        }
+        else //Custom bg
+        {
+            qDebug() << "boyaa";
+            if(!QFile(a_settings.value("customimage").toString()).exists())
+                ui->a_image->setPixmap(a_neuDarkCustombg);
+            else
+                ui->a_image->setPixmap(QPixmap(a_settings.value("customimage").toString()));
+        }
     }
 
     if(a_idSkin == 0 || a_idSkin == 2) //Light skin
@@ -1017,14 +1030,14 @@ void Player::on_volumeChanged(int pos)
     }
     if(pos <= 50)
     {
-        if(a_idSkin == 1)
+        if(a_idSkin == 1 || a_idSkin == 3)
             ui->a_volumebtn->setIcon(a_volumeLowIcon);
         else
             ui->a_volumebtn->setIcon(a_volumeLowDarkIcon);
     }
     else
     {
-        if(a_idSkin == 1)
+        if(a_idSkin == 1 || a_idSkin == 3)
             ui->a_volumebtn->setIcon(a_volumeIcon);
         else
             ui->a_volumebtn->setIcon(a_volumeDarkIcon);
@@ -1042,7 +1055,7 @@ void Player::setVolumeMuted()
         neu->setMuted(true);
         a_volumeSlider->setValue(0);
         connect(a_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
-        if(a_idSkin == 1)
+        if(a_idSkin == 1 || a_idSkin == 3)
             ui->a_volumebtn->setIcon(a_volumeMutedIcon);
         if(a_idSkin == 0 ||  a_idSkin == 2)
             ui->a_volumebtn->setIcon(a_volumeMutedDarkIcon);

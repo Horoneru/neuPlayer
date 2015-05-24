@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     //Setup actual window
     qApp->setStyle(QStyleFactory::create("Fusion")); //base theme fusion
 
-    if(settings.value("skin", 1).toInt() == 1)
+    if(settings.value("skin", 1).toInt() == 1 || settings.value("skin", 1).toInt() == 3)
     {
         Skin HoloFusion(1, nullptr);
         HoloFusion.load();
