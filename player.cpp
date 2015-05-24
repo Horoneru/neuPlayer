@@ -368,7 +368,6 @@ void Player::setFramelessButtonsVisibility(bool visible)
 void Player::loadSkin()
 {
     a_idSkin = a_settings.value("skin", 1).toInt();
-    qDebug() << a_idSkin;
     if(a_idSkin == 1 || a_idSkin == 3) //Dark skin
     {
         if(!a_isStarting)
@@ -382,7 +381,6 @@ void Player::loadSkin()
         }
         else //Custom bg
         {
-            qDebug() << "boyaa";
             if(!QFile(a_settings.value("customimage").toString()).exists())
                 ui->a_image->setPixmap(a_neuDarkCustombg);
             else

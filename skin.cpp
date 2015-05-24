@@ -50,7 +50,6 @@ void Skin::initSkinPalettes()
 
 void Skin::load()
 {
-    qDebug("%d", a_idSkin);
     if(a_idSkin == 0 || a_idSkin == 2)
     {
         qApp->setPalette(a_lightPalette);
