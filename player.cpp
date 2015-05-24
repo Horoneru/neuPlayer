@@ -23,7 +23,7 @@ Player::Player(QWidget *parent) :
     a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
 {
     /*!
-                                            2015 Horoneru                                   2.0.0 dev 220515 active
+                                            2015 Horoneru                                   2.0.0 240515 active
       TODO
       à faire : (/ ordre d'importance)
       - Further skinning options ! (Coming later maybe)
@@ -777,7 +777,10 @@ void Player::setMeta()
         a_artiste = neu->currentMedia().canonicalUrl().fileName();
         a_titre = neu->currentMedia().canonicalUrl().fileName();
         a_album = neu->currentMedia().canonicalUrl().fileName();
+        a_no_meta = true;
     }
+    else
+        a_no_meta = false;
 
     a_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
     if(a_coverArt.isNull())
