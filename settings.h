@@ -31,6 +31,7 @@ private slots:
     void checkUpdates();
     void on_fadeClicked(bool enabled);
     void updateFadeValue(int value);
+    void gotoIssues();
 public:
     explicit Settings(Player *Player, QWidget *parent = 0);
     ~Settings();

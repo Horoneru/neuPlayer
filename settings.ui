@@ -23,7 +23,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -797,7 +797,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 190515</string>
+build 240515</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -813,7 +813,7 @@ build 190515</string>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.0 dev&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -858,12 +858,12 @@ build 190515</string>
         <string>Répertoire du programme</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="a_issueLink">
        <property name="geometry">
         <rect>
-         <x>323</x>
+         <x>313</x>
          <y>275</y>
-         <width>81</width>
+         <width>91</width>
          <height>23</height>
         </rect>
        </property>

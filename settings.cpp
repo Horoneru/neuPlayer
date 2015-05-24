@@ -93,6 +93,7 @@ void Settings::setupConnections()
     connect(ui->a_framelessCheck, SIGNAL(clicked()), this, SLOT(popupFramelessWindow()));
     connect(ui->a_gotoWorkingDir, SIGNAL(clicked()), this, SLOT(gotoWorkingDir()));
     connect(ui->a_checkUpdatesBtn, SIGNAL(clicked()), this, SLOT(checkUpdates()));
+    connect(ui->a_issueLink, SIGNAL(clicked()), this, SLOT(gotoIssues()));
 }
 
 
@@ -437,6 +438,11 @@ void Settings::updateFadeValue(int value)
         ui->a_valueFadeSlide->setText(QString::number(value) + " sec");
     else
         ui->a_valueFadeSlide->setText(QString::number(value) + " secs");
+}
+
+void Settings::gotoIssues()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/Horoneru/neuPlayer/issues"));
 }
 
 Settings::~Settings()
