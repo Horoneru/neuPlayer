@@ -13,8 +13,7 @@ Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixma
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    a_settings.beginGroup("Playlist");
-    resize(a_settings.value("size", QSize(265, 300)).toSize());
+    resize(a_settings.value("Playlist/size", QSize(265, 300)).toSize());
     ui->a_playlistWidget->setDragEnabled(false); //I can't handle it well as of now :/
     ui->a_playlistFavWidget->setDragEnabled(false);
     a_defaultCover.load(":/Ressources/noCoverHeader.png");
@@ -661,7 +660,7 @@ void Playlist::validateSearch()
 void Playlist::closeEvent(QCloseEvent *)
 {
     a_player->setPlaylistOpen(false);
-    a_settings.setValue("size", this->size());
+    a_settings.setValue("Playlist/size", this->size());
 }
 
 Playlist::~Playlist()
