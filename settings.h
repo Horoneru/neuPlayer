@@ -29,6 +29,8 @@ private slots:
     void cancel();
     void gotoWorkingDir();
     void checkUpdates();
+    void on_fadeClicked(bool enabled);
+    void updateFadeValue(int value);
 public:
     explicit Settings(Player *Player, QWidget *parent = 0);
     ~Settings();
@@ -50,6 +52,7 @@ private:
     bool a_isStaticLibChecked;
     bool a_isNewPath;
     int a_previousTabId;
+    int a_fadeValue;
     double a_opacityValue;
 };
 
