@@ -32,17 +32,17 @@ void MoveAnimation::setupDirection()
         break;
     case BottomToTop:
         startPosition[0] = a_target->x();
-        startPosition[1] = a_target->y() - 50;
+        startPosition[1] = a_target->y() + 50;
         break;
     case TopToBottom:
         startPosition[0] = a_target->x();
-        startPosition[1] = a_target->y() + 50;
+        startPosition[1] = a_target->y() - 50;
         break;
     }
     a_anim.setStartValue(QPoint(startPosition[0], startPosition[1]));
 }
 
-void MoveAnimation::start(bool deleteWhenFinished)
+void MoveAnimation::start()
 {
     a_anim.setDuration(a_duration);
     if(a_anim.endValue().isNull()) //If it hasn't been set yet
@@ -50,30 +50,12 @@ void MoveAnimation::start(bool deleteWhenFinished)
     a_anim.setTargetObject(a_target);
     a_anim.setPropertyName("pos");
     a_anim.setEndValue(QPoint(a_target->x(), a_target->y()));
-    if(deleteWhenFinished)
-        a_anim.start(QAbstractAnimation::DeleteWhenStopped);
-    else
-        a_anim.start();
+    if(a_anim.state() == QPropertyAnimation::Running)
+        a_anim.stop();
+    a_anim.start();
     connect(&a_anim, SIGNAL(finished()), this, SLOT(hasFinished()));
 }
 
-
-
-/*! TODO : have the same result than those*/
-
-//ui->a_playlistWidget->move(ui->a_playlistWidget->x() - 30, ui->a_playlistWidget->y());
-//QPropertyAnimation *test = new QPropertyAnimation(ui->a_playlistWidget, "pos", this);
-//test->setDuration(100);
-//test->setEndValue(QPoint(0, ui->a_playlistWidget->y()));
-//test->start();
-
-
-
-//ui->a_playlistFavWidget->move(ui->a_playlistFavWidget->x() + 30, ui->a_playlistFavWidget->y());
-//QPropertyAnimation *test = new QPropertyAnimation(ui->a_playlistFavWidget, "pos", this);
-//test->setDuration(100);
-//test->setEndValue(QPoint(0, ui->a_playlistFavWidget->y()));
-//test->start();
 MoveAnimation::~MoveAnimation()
 {
     a_target = nullptr;

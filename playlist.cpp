@@ -293,7 +293,6 @@ void Playlist::setFolder()
 
     if(!selectDir.isEmpty())
     {
-        setTab(0); //Back to normal playlist
         setCursor(Qt::BusyCursor);
         if(a_currentIndex != 0) //Helps not to crash. the index is reset to 0 so there isn't any out of bound.
         {
@@ -448,7 +447,7 @@ void Playlist::setTab(int tabId)
         a_playlistContextMenu->actions().at(0)->setVisible(false);
         a_moveAnim.setTarget(ui->a_playlistFavWidget);
         a_moveAnim.setDirection(MoveAnimation::LeftToRight);
-        a_moveAnim.start(false);
+        a_moveAnim.start();
         if(a_favsNotLoadedYet)
             updateFavs(a_favPlaylist);
     }
@@ -456,7 +455,7 @@ void Playlist::setTab(int tabId)
     {
         a_moveAnim.setTarget(ui->a_playlistWidget);
         a_moveAnim.setDirection(MoveAnimation::RightToLeft);
-        a_moveAnim.start(false);
+        a_moveAnim.start();
     }
     a_previousTab = tabId;
     if(ui->a_tabWidget->currentIndex() != tabId) //If called

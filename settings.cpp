@@ -30,6 +30,7 @@ Settings::Settings(Player *Player, QWidget *parent) :
     ui->a_fadeSlide->setValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     updateFadeValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     ui->a_valueSlide->setText(QString::number(ui->a_opacitySlide->value()) + "%");
+    ui->groupBox_5->setVisible(false); //Not ready for prime time yet
     //Process config into UI
     setupConfig();
 
@@ -200,7 +201,7 @@ void Settings::on_changeTab(int tabId)
         a_moveAnim.setDirection(MoveAnimation::RightToLeft);
     else
         a_moveAnim.setDirection(MoveAnimation::LeftToRight);
-    a_moveAnim.start(false);
+    a_moveAnim.start();
     a_previousTabId = tabId;
 }
 
@@ -434,7 +435,7 @@ void Settings::on_fadeClicked(bool enabled)
 void Settings::updateFadeValue(int value)
 {
     a_fadeValue = value * 1000;
-    if(value != 1)
+    if(value == 1)
         ui->a_valueFadeSlide->setText(QString::number(value) + " sec");
     else
         ui->a_valueFadeSlide->setText(QString::number(value) + " secs");
