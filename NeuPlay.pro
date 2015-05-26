@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+QMAKE_CXXFLAGS += -std=c++11 #This reinforces c++11 on GCC/MinGW compilers
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 RC_FILE = win-icon.rc
 TARGET = neuPlayer
@@ -25,7 +27,8 @@ SOURCES += main.cpp\
     fadewindow.cpp \
     updaterhandler.cpp \
     fademanager.cpp \
-    scrollinglabel.cpp
+    scrollinglabel.cpp \
+    moveanimation.cpp
 
 HEADERS  += player.h \
     playlist.h \
@@ -39,7 +42,8 @@ HEADERS  += player.h \
     fadewindow.h \
     updaterhandler.h \
     fademanager.h \
-    scrollinglabel.h
+    scrollinglabel.h \
+    moveanimation.h
 
 FORMS    += player.ui \
     playlist.ui \
