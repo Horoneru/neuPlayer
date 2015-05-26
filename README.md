@@ -3,7 +3,7 @@
  
 ##Downloads
 
-A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 220415)
+A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 260515)
 
 There will be more links available for other OS soon.
 
