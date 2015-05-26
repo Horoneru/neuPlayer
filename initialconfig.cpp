@@ -3,7 +3,7 @@
 #include <QDebug>
 
 InitialConfig::InitialConfig(QWidget *parent) :
-    QDialog(parent), a_page(1),
+    QDialog(parent), a_page(1), a_willRestart(false),
     a_canClose(false), ui(new Ui::InitialConfig), a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
 {
     ui->setupUi(this);
@@ -39,6 +39,10 @@ void InitialConfig::setupConnections()
 
 void InitialConfig::entranceAnimations()
 {
+    QPointer<MoveAnimation> welcomeMove = new MoveAnimation(ui->a_welcome, MoveAnimation::TopToBottom, MoveAnimation::Normal, this);
+    QPointer<MoveAnimation> button1move = new MoveAnimation(ui->a_recommendedBtn, MoveAnimation::TopToBottom, MoveAnimation::Normal, this);
+    QPointer<MoveAnimation> button2move = new MoveAnimation(ui->a_configureBtn, MoveAnimation::TopToBottom, MoveAnimation::Normal, this);
+    QPointer<MoveAnimation> descriptionMove = new MoveAnimation(ui->a_description, MoveAnimation::TopToBottom, MoveAnimation::Normal, this);
     /* By default this class will make make the target fade in for 300 ms and add it to a parallel animation group */
     a_animManager.setDefaultDuration(400); //The animation will be more visible that way
     a_animManager.addTarget(ui->a_welcome);
@@ -46,6 +50,10 @@ void InitialConfig::entranceAnimations()
     a_animManager.addTarget(ui->a_recommendedBtn);
     a_animManager.addTarget(ui->a_configureBtn);
     a_animManager.startGroup(FadeManager::Parallel, false);
+    welcomeMove->start();
+    descriptionMove->start();
+    button1move->start();
+    button2move->start();
 }
 
 void InitialConfig::customWizard()
@@ -63,6 +71,7 @@ void InitialConfig::presetWizard()
     this->setCursor(Qt::BusyCursor);
     ui->a_configureBtn->setVisible(false);
     ui->a_recommendedBtn->setText(tr("Chargement..."));
+    a_willRestart = true;
     presetConfig();
     ui->a_recommendedBtn->setVisible(false);
     finalPage();
@@ -75,8 +84,11 @@ void InitialConfig::presetConfig()
     a_settings.setValue("libraryAtStartup", true);
     a_settings.setValue("refreshWhenNeeded", true);
     a_settings.setValue("saveTrackIndex", true);
+    a_settings.setValue("framelessWindow", true);
     a_settings.endGroup();
     a_settings.setValue("playlistAtStartup", false);
+    a_settings.setValue("opacity", 1.0);
+    a_settings.setValue("volume", 50);
     a_settings.setValue("mediapath", QStandardPaths::standardLocations(QStandardPaths::MusicLocation));
     QFileInfo info (a_settings.value("mediapath").toString());
     a_settings.setValue("libModified", info.lastModified().toMSecsSinceEpoch());
@@ -224,7 +236,8 @@ void InitialConfig::finishWizard()
     a_page = 10;
     if(a_settings.value("playlistAtStartup").toBool() == true)
         neuPlayer = new Player();
-    neuPlayer->show();
+    if(!a_willRestart)
+        neuPlayer->show();
     neuPlayer->setIndexOfThePlayer(0, false);
     close(); //Will call closeEvent
 }
@@ -245,8 +258,12 @@ void InitialConfig::closeEvent(QCloseEvent *event = 0)
         {
             neuPlayer = new Player();
         }
+        if(a_settings.value("Additional_Features/framelessWindow").toBool() == true)
+            neuPlayer->restart(); //Didn't find any solution, so we'll go with that. The main will always setup the frameless window nicely
+
         //else, simply use the object created
-        neuPlayer->show();
+        else
+            neuPlayer->show();
         event->accept();
     }
     else

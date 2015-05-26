@@ -9,6 +9,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 
+#include "moveanimation.h"
+#include "framelesshelper.h"
 #include "player.h"
 #include "fadewindow.h"
 #include "fademanager.h"
@@ -51,6 +53,7 @@ private:
 
     //Others
     bool a_canClose; //To setup an anim before closing
+    bool a_willRestart;
     QString a_mediaPath;
     QTimer a_timer;
     int a_page; //"Where are we ?"
