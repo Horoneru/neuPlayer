@@ -622,11 +622,11 @@ Vous avez besoin de redémarrer le player pour appliquer </source>
         <source>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 240515</source>
+build 260515</source>
         <oldsource>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 190515</oldsource>
+build 240515</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

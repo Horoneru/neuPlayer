@@ -665,15 +665,15 @@ Vous avez besoin de redémarrer le player pour appliquer </source>
         <source>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 240515</source>
+build 260515</source>
         <oldsource>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 190515</oldsource>
+build 240515</oldsource>
         <translation>Created with Qt 5.3.2
 Licensed on GNU GPL V3
 Copyright Horoneru 2015
-build 240515</translation>
+build 260515</translation>
     </message>
     <message>
         <location filename="settings.ui" line="816"/>
