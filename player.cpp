@@ -32,7 +32,7 @@ Player::Player(QWidget *parent) :
       - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("2.0.0 dev");
+    QApplication::setApplicationVersion("2.0.0");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
