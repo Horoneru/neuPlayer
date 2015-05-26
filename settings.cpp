@@ -27,8 +27,8 @@ Settings::Settings(Player *Player, QWidget *parent) :
     a_opacityValue = a_settings->value("opacity", 100).toReal();
     ui->a_opacitySlide->setValue(a_opacityValue * 100);
     on_fadeClicked(ui->a_fadeCheck->isChecked());
-    ui->a_fadeSlide->setValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     updateFadeValue(a_settings->value("fadeValue", 1).toInt() / 1000);
+    ui->a_fadeSlide->setValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     ui->a_valueSlide->setText(QString::number(ui->a_opacitySlide->value()) + "%");
     ui->groupBox_5->setVisible(false); //Not ready for prime time yet
     //Process config into UI
@@ -187,9 +187,7 @@ void Settings::popupFramelessWindow()
         if(result == QMessageBox::Yes)
         {
             confirm();
-            a_passerelle->saveBeforeClosing();
-            qApp->quit();
-            QProcess::startDetached("neuPlayer.exe");
+            a_passerelle->restart();
         }
     }
 }

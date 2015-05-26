@@ -15,8 +15,6 @@ MoveAnimation::MoveAnimation(QWidget *target, QObject *parent) :
 {
 }
 
-
-
 void MoveAnimation::setupDirection()
 {
     int startPosition[2];

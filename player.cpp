@@ -23,7 +23,7 @@ Player::Player(QWidget *parent) :
     a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
 {
     /*!
-                                            2015 Horoneru                                   2.0.0 240515 active
+                                            2015 Horoneru                                   2.0.0 stable 260515 active
       TODO
       à faire : (/ ordre d'importance)
       - Further skinning options ! (Coming later maybe)
@@ -1074,12 +1074,12 @@ void Player::setVolumeMuted()
 
 void Player::volumeUp()
 {
-    a_volumeSlider->setSliderPosition(neu->volume() + 10);
+    a_volumeSlider->setSliderPosition(a_volumeSlider->value() + 10);
 }
 
 void Player::volumeDown()
 {
-    a_volumeSlider->setSliderPosition(neu->volume() - 10);
+    a_volumeSlider->setSliderPosition(a_volumeSlider->value() - 10);
 }
 
     /*///////Menu Actions Section///////*/
@@ -1429,6 +1429,12 @@ void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
     setCursor(Qt::ArrowCursor);
 }
 
+void Player::restart()
+{
+    saveBeforeClosing();
+    qApp->quit();
+    QProcess::startDetached("neuPlayer.exe");
+}
 //Destructor
 Player::~Player()
 {

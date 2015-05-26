@@ -98,6 +98,7 @@ signals:
 public:
     Ui::Player *ui;
     explicit Player(QWidget *parent = 0);
+    void restart();
     void setupPlayMode();
     void loadPlaylist();
     void setLightCSS();
