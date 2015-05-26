@@ -45,7 +45,7 @@
     </message>
     <message>
         <location filename="initialconfig.ui" line="219"/>
-        <location filename="initialconfig.cpp" line="210"/>
+        <location filename="initialconfig.cpp" line="222"/>
         <source>Si le lecteur n&apos;affiche pas vos musiques
 configurez-le manuellement dans les paramètres</source>
         <translation type="unfinished"></translation>
@@ -61,48 +61,48 @@ configurez-le manuellement dans les paramètres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="65"/>
+        <location filename="initialconfig.cpp" line="73"/>
         <source>Chargement...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="97"/>
+        <location filename="initialconfig.cpp" line="109"/>
         <source>Playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="112"/>
+        <location filename="initialconfig.cpp" line="124"/>
         <source>Opacité</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="113"/>
+        <location filename="initialconfig.cpp" line="125"/>
         <source>Laissez à 100% si vous ne souhaitez
 pas de transparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="138"/>
+        <location filename="initialconfig.cpp" line="150"/>
         <source>Démarrage avec librairie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="188"/>
+        <location filename="initialconfig.cpp" line="200"/>
         <source>Selectionnez votre répertoire de musique</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="193"/>
+        <location filename="initialconfig.cpp" line="205"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="207"/>
+        <location filename="initialconfig.cpp" line="219"/>
         <source>Vous êtes prêt à utiliser le lecteur !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="initialconfig.cpp" line="208"/>
+        <location filename="initialconfig.cpp" line="220"/>
         <source>Terminé !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -229,7 +229,7 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="player.cpp" line="984"/>
+        <location filename="player.cpp" line="987"/>
         <source>Stoppé</source>
         <translation type="unfinished"></translation>
     </message>
@@ -377,7 +377,7 @@ d&apos;ajout de favoris, ou par click droit sur la musique</source>
     </message>
     <message>
         <location filename="playlist.cpp" line="93"/>
-        <location filename="playlist.cpp" line="392"/>
+        <location filename="playlist.cpp" line="391"/>
         <source>Supprimer de la file d&apos;attente</source>
         <translation type="unfinished"></translation>
     </message>
@@ -402,17 +402,17 @@ d&apos;ajout de favoris, ou par click droit sur la musique</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="444"/>
+        <location filename="playlist.cpp" line="443"/>
         <source>Supprimer des favoris</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="530"/>
+        <location filename="playlist.cpp" line="529"/>
         <source>Cliquez pour enlever des favoris</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="536"/>
+        <location filename="playlist.cpp" line="535"/>
         <source>Cliquez pour ajouter aux favoris</source>
         <translation type="unfinished"></translation>
     </message>
@@ -663,8 +663,8 @@ build 190515</oldsource>
     </message>
     <message>
         <location filename="settings.ui" line="752"/>
-        <location filename="settings.cpp" line="163"/>
-        <location filename="settings.cpp" line="179"/>
+        <location filename="settings.cpp" line="164"/>
+        <location filename="settings.cpp" line="180"/>
         <source>neuPlayer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -677,44 +677,44 @@ petit mais puissant sans consommer énormément de ressources.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="163"/>
+        <location filename="settings.cpp" line="164"/>
         <source>Vous devez redémarrer pour utiliser le player sans bordures</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="settings.cpp" line="166"/>
-        <location filename="settings.cpp" line="182"/>
-        <source>Redémarrer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="settings.cpp" line="167"/>
         <location filename="settings.cpp" line="183"/>
+        <source>Redémarrer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="settings.cpp" line="168"/>
+        <location filename="settings.cpp" line="184"/>
         <source>Plus tard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="179"/>
+        <location filename="settings.cpp" line="180"/>
         <source>Vous devez redémarrer pour utiliser le player avec ses bordures</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="209"/>
+        <location filename="settings.cpp" line="208"/>
         <source>Selectionnez votre répertoire de musique</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="286"/>
+        <location filename="settings.cpp" line="285"/>
         <source>Sélectionnez un fond pour le player</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="286"/>
+        <location filename="settings.cpp" line="285"/>
         <source>Images (*.jpg *.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settings.cpp" line="398"/>
+        <location filename="settings.cpp" line="397"/>
         <source>Sauvegarde...</source>
         <translation type="unfinished"></translation>
     </message>
