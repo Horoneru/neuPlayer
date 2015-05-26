@@ -533,7 +533,7 @@ void NcFramelessHelper::activateOn(QWidget* topLevelWidget, bool alwaysOnTop , b
   if(animatedEntrance)
   {
       QSettings settings("neuPlayer.ini", QSettings::IniFormat);
-      QPointer <FadeWindow> fadeIn = new FadeWindow((QMainWindow*)topLevelWidget, 450, FadeWindow::FadeIn, this);
+      QPointer <FadeWindow> fadeIn = new FadeWindow((QMainWindow*)topLevelWidget, 400, FadeWindow::FadeIn, this);
       fadeIn->start(settings.value("opacity", 1.0).toReal());
   }
 
