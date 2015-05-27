@@ -24,6 +24,10 @@
 #include <QPainter>
 #include <QRegion>
 
+#ifdef Q_OS_WIN
+#include <QtWinExtras/QWinThumbnailToolButton>
+#endif
+
 #include "tagviewer.h"
 #include "playlist.h"
 #include "slider.h"
@@ -265,6 +269,15 @@ private:
     Slider *a_volumeSlider;
     QPointer <Playlist> a_playlist;
     QPointer <Settings> a_settingsForm;
+
+    /* Extras for win */
+    #ifdef Q_OS_WIN
+    QWinThumbnailToolButton a_thumbPlayButton;
+    QWinThumbnailToolButton a_thumbPauseButton;
+    QWinThumbnailToolButton a_thumbPreviousButton;
+    QWinThumbnailToolButton a_thumbForwardButton;
+    #endif
+
     QSettings a_settings; //Contient les settings de l'application
     neuPlaylist a_mediaPlaylist;
     neuPlaylist a_favPlaylist;

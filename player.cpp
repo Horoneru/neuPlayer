@@ -26,10 +26,10 @@ Player::Player(QWidget *parent) :
                                             2015 Horoneru                                   2.0.0 stable 260515 active
       TODO
       à faire : (/ ordre d'importance)
+      > Windows extras(taskbar thumbnail button)
       - Further skinning options ! (Coming later maybe)
       > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
-      - (long-terme) s'occuper de quelques extras win-specific... (sûrement à la fin)
       */
     ui->setupUi(this);
     QApplication::setApplicationVersion("2.0.0");
@@ -201,6 +201,10 @@ void Player::setupObjects()
     grantChangeTimer.setSingleShot(true);
     //Timer that delays the time when the user can shuffle again
     grantShuffleAgainTimer.setSingleShot(true);
+
+    #ifdef Q_OS_WIN
+    //TODO : Create icons, set them, and link buttons to play/pause/forward/previous slots.
+
 }
 
 void Player::setupMenus()
