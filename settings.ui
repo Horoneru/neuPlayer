@@ -797,7 +797,7 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 260515</string>
+build 290515</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -813,7 +813,7 @@ build 260515</string>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
