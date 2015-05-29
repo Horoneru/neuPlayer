@@ -23,7 +23,7 @@ Player::Player(QWidget *parent) :
     a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
 {
     /*!
-                                            2015 Horoneru                                   2.0.0 stable 260515 active
+                                            2015 Horoneru                                   2.0.1 stable 290515 active
       TODO
       à faire : (/ ordre d'importance)
       > Windows extras(taskbar thumbnail button)
@@ -32,7 +32,7 @@ Player::Player(QWidget *parent) :
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("2.0.0");
+    QApplication::setApplicationVersion("2.0.1");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -202,8 +202,9 @@ void Player::setupObjects()
     //Timer that delays the time when the user can shuffle again
     grantShuffleAgainTimer.setSingleShot(true);
 
-    #ifdef Q_OS_WIN
-    //TODO : Create icons, set them, and link buttons to play/pause/forward/previous slots.
+//    #ifdef Q_OS_WIN
+//    //TODO : Create icons, set them, and link buttons to play/pause/forward/previous slots.
+//    #endif
 
 }
 
