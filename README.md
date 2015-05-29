@@ -3,7 +3,7 @@
  
 ##Downloads
 
-A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 260515)
+A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 290515)
 
 There will be more links available for other OS soon.
 
@@ -30,7 +30,7 @@ With those in mind, I'm trying to do a player which can possibly be the daily-dr
  As of 10/03/15, I decided to make this project public on GitHub. Right now it features : 
  - <b>Fast-loading from a base music folder</b>
  
- - Playlist basic functions (Random play, shuffle playlist, loop...)
+ - Playlist basic functions (<b>Random play</b>, shuffle playlist, loop, <b>favorites</b>...)
  
  - <b>Always on top toggle </b>
  
@@ -42,9 +42,13 @@ With those in mind, I'm trying to do a player which can possibly be the daily-dr
  
  - <b>Skinning !</b>
  
- - Frameless Window capabilities !
+ - Frameless Window capabilities
 
  - Smooth animations
+ 
+ - Low memory footprint
+ 
+ - Updater build-in to keep the player updated
 
 
 ## How to compile
