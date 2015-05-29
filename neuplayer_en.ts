@@ -221,7 +221,7 @@ pas de transparence</source>
         <translation>View tags</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="472"/>
+        <location filename="player.cpp" line="477"/>
         <source>Des changements ont été detectés dans votre base depuis la dernière mise à jour de celle-ci.
 Voulez-vous l&apos;actualiser ?</source>
         <translation>Changes were detected in your music base since the last time you updated it.\nDo you want to refresh it ?</translation>
@@ -231,7 +231,7 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="vanished">The playlist file couldn&apos;t be opened</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="642"/>
+        <location filename="player.cpp" line="647"/>
         <source>erreur : Unresolved Resource</source>
         <translation>error : unresolved ressource</translation>
     </message>
@@ -240,17 +240,17 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="vanished">error : codec not supported</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="669"/>
+        <location filename="player.cpp" line="674"/>
         <source>erreur : Network error</source>
         <translation>error : Network error</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="987"/>
+        <location filename="player.cpp" line="992"/>
         <source>Stoppé</source>
         <translation>Stopped</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="672"/>
+        <location filename="player.cpp" line="677"/>
         <source>Erreur ! </source>
         <oldsource>(Erreur ! </oldsource>
         <translation>Error ! </translation>
@@ -266,37 +266,37 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation>Shuffle playlist</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="486"/>
+        <location filename="player.cpp" line="491"/>
         <source>Mise à jour librairie...</source>
         <translation>Updating library...</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="489"/>
+        <location filename="player.cpp" line="494"/>
         <source>Aucun média trouvé</source>
         <translation>No media found</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="663"/>
+        <location filename="player.cpp" line="668"/>
         <source>erreur : Format non supporté</source>
         <translation>error : Codec not supported</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="672"/>
+        <location filename="player.cpp" line="677"/>
         <source>Vous n&apos;avez pas les droits pour accéder à ce fichier</source>
         <translation>You don&apos;t have the rights to access this file</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="675"/>
+        <location filename="player.cpp" line="680"/>
         <source>Erreur Critique !</source>
         <translation>Critical error !</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="675"/>
+        <location filename="player.cpp" line="680"/>
         <source>Le service du player est indisponible. Impossible de lire le fichier !</source>
         <translation>The player&apos;s service is unavailable. Can&apos;t play file ! </translation>
     </message>
     <message>
-        <location filename="player.cpp" line="732"/>
+        <location filename="player.cpp" line="737"/>
         <source>Sélectionnez des médias à lire</source>
         <translation>Select the medias to play</translation>
     </message>
@@ -305,17 +305,17 @@ Voulez-vous l&apos;actualiser ?</source>
         <translation type="vanished">Audio streams (*.mp3 *.mp4 *.m4a *.wav)</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="732"/>
+        <location filename="player.cpp" line="737"/>
         <source>Flux audios (*.mp3 *.mp4 *.m4a *.wav)</source>
         <translation>Audio streams (*.mp3 *.mp4 *.m4a *.wav)</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="766"/>
+        <location filename="player.cpp" line="771"/>
         <source>Artiste Inconnu</source>
         <translation>Unknown Artist</translation>
     </message>
     <message>
-        <location filename="player.cpp" line="770"/>
+        <location filename="player.cpp" line="775"/>
         <source>Album Inconnu</source>
         <translation>Unknown Album</translation>
     </message>
@@ -448,12 +448,14 @@ d&apos;ajout de favoris, ou par click droit sur la musique</source>
 <context>
     <name>QObject</name>
     <message>
+        <location filename="main.cpp" line="23"/>
         <source>Warning!</source>
-        <translation type="vanished">Attention ! </translation>
+        <translation>Attention ! </translation>
     </message>
     <message>
+        <location filename="main.cpp" line="23"/>
         <source>An instance of this application is running!</source>
-        <translation type="vanished">Une instance de l&apos;application est déjà en cours ! </translation>
+        <translation>Une instance de l&apos;application est déjà en cours ! </translation>
     </message>
 </context>
 <context>
@@ -665,20 +667,20 @@ Vous avez besoin de redémarrer le player pour appliquer </source>
         <source>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 260515</source>
+build 290515</source>
         <oldsource>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 240515</oldsource>
+build 260515</oldsource>
         <translation>Created with Qt 5.3.2
 Licensed on GNU GPL V3
 Copyright Horoneru 2015
-build 260515</translation>
+build 290515</translation>
     </message>
     <message>
         <location filename="settings.ui" line="816"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.0 dev&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation></translation>
     </message>
     <message>
