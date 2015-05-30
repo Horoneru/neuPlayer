@@ -60,5 +60,9 @@
         <file>Ressources/backgroundpreviewcustomdark.jpg</file>
         <file>Ressources/neucustombackgroundblack.jpg</file>
         <file>Ressources/skinpreviewcustomdark.png</file>
+        <file>Ressources/forward_thumbnailButton.png</file>
+        <file>Ressources/pause_thumbnailButton.png</file>
+        <file>Ressources/play_thumbnailButton.png</file>
+        <file>Ressources/previous_thumbnailButton.png</file>
     </qresource>
 </RCC>
