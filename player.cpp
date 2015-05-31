@@ -23,16 +23,16 @@ Player::Player(QWidget *parent) :
     a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
 {
     /*!
-                                            2015 Horoneru                                   2.0.1 stable 290515 active
+                                            2015 Horoneru                                   2.0.1 stable 310515 active
       TODO
       à faire : (/ ordre d'importance)
-      > Windows extras(taskbar thumbnail button)
+      > Indexing music infos somehow or another
       - Further skinning options ! (Coming later maybe)
       > UPDATE TRANSLATIONS
       - (Optional) plugin manager musiques osu! << gérer par delete des filenames
       */
     ui->setupUi(this);
-    QApplication::setApplicationVersion("2.0.1");
+    QApplication::setApplicationVersion("2.1.0");
     this->setAcceptDrops(true);
     this->setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -202,10 +202,6 @@ void Player::setupObjects()
     //Timer that delays the time when the user can shuffle again
     grantShuffleAgainTimer.setSingleShot(true);
 
-//    #ifdef Q_OS_WIN
-//    //TODO : Create icons, set them, and link buttons to play/pause/forward/previous slots.
-//    #endif
-
 }
 
 void Player::setupMenus()
@@ -294,6 +290,12 @@ void Player::setupConnections()
     connect(&a_mediaPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
     connect(ui->a_closeButton, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->a_hideButton, SIGNAL(clicked()), this, SLOT(showMinimized()));
+
+#ifdef Q_OS_WIN
+    connect(&a_thumbActionButton, SIGNAL(clicked()), this, SLOT(playMedia())); //Base connect
+    connect(&a_thumbForwardButton, SIGNAL(clicked()), this, SLOT(forwardMedia()));
+    connect(&a_thumbPreviousButton, SIGNAL(clicked()), this, SLOT(previousMedia()));
+#endif
 }
 
 void Player::setupPlugins()
@@ -504,6 +506,22 @@ void Player::finishingUp()
         a_hasToStartupPlaylist = false; //No more
         showPlaylist();
     }
+#ifdef Q_OS_WIN
+    //TODO : Create icons, set them, and link buttons to play/pause/forward/previous slots.
+    //prepare buttons
+//    a_thumbPlayButton.setDismissOnClick(true);
+//    a_thumbPauseButton.setDismissOnClick(true);
+    a_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
+    a_thumbForwardButton.setIcon(QIcon(":/Ressources/forward_thumbnailButton.png"));
+    a_thumbPreviousButton.setIcon(QIcon(":/Ressources/previous_thumbnailButton.png"));
+
+    //Prepare and set buttons on thumbnailtoolbar
+    a_thumbnailToolbar.addButton(&a_thumbPreviousButton);
+    a_thumbnailToolbar.addButton(&a_thumbActionButton);
+    a_thumbnailToolbar.addButton(&a_thumbForwardButton);
+
+    a_thumbnailToolbar.setWindow(this->windowHandle());
+#endif
 }
 
 void Player::savePlaylists()
@@ -549,6 +567,12 @@ void Player::playMedia()
         neu->play();
         ui->a_playbtn->setVisible(false);
         ui->a_pausebtn->setVisible(true);
+
+#ifdef Q_OS_WIN
+        a_thumbActionButton.setIcon(QIcon(":/Ressources/pause_thumbnailButton.png"));
+        connect(&a_thumbActionButton, SIGNAL(clicked()), this, SLOT(pauseMedia()));
+#endif
+
         connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
         if(a_isPlaylistOpen)
         {
@@ -565,6 +589,12 @@ void Player::pauseMedia()
     disconnect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
     ui->a_playbtn->setVisible(true);
     ui->a_pausebtn->setVisible(false);
+
+#ifdef Q_OS_WIN
+    a_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
+    connect(&a_thumbActionButton, SIGNAL(clicked()), this, SLOT(playMedia()));
+#endif
+
     connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     if(a_isPlaylistOpen)
     {
