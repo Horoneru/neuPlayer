@@ -8,7 +8,7 @@ QT       += core gui
 
 QMAKE_CXXFLAGS += -std=c++11 #This reinforces c++11 on GCC/MinGW compilers
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia winextras
 RC_FILE = win-icon.rc
 TARGET = neuPlayer
 TEMPLATE = app

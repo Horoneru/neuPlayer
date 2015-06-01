@@ -265,11 +265,11 @@ private:
     void updateProgressDisplay(qint64 pos, bool isProgress); //Used to update the display of both duration (isProgress = false) and progress (isProgress = true)
 
     //Attributs
-    QMediaPlayer *neu; //Dat media player
-    Slider *a_progressSlider;
-    Slider *a_volumeSlider;
-    QPointer <Playlist> a_playlist;
-    QPointer <Settings> a_settingsForm;
+    QMediaPlayer *neu = nullptr; //Dat media player
+    Slider *a_progressSlider = nullptr;
+    Slider *a_volumeSlider = nullptr;
+    QPointer <Playlist> a_playlist = nullptr;
+    QPointer <Settings> a_settingsForm = nullptr;
 
     /* Extras for win */
 #ifdef Q_OS_WIN
@@ -325,10 +325,10 @@ private:
 
     ScrollingLabel a_scrollingLabel; //Custom label
     QPixmap a_coverArt;
-    QPropertyAnimation *a_titleAnimate;
-    QPropertyAnimation *a_audioFade;
-    QGraphicsOpacityEffect *a_infoFadein;
-    QPropertyAnimation *a_infoFadeAnim;
+    QPropertyAnimation *a_titleAnimate = nullptr;
+    QPropertyAnimation *a_audioFade = nullptr;
+    QGraphicsOpacityEffect *a_infoFadein = nullptr;
+    QPropertyAnimation *a_infoFadeAnim = nullptr;
     //Regular timer, updated each second
     QTimer Timer;
     //The timer which sets the type when it timeouts

@@ -41,12 +41,12 @@ private:
     void setupConnections();
 
     //Attributes
-    Ui::Settings *ui;
-    QSettings *a_settings;
-    Player *a_passerelle;
+    Ui::Settings *ui = nullptr;
+    QSettings *a_settings = nullptr;
+    Player *a_passerelle = nullptr;
     MoveAnimation a_moveAnim;
     QString a_bgPath;
-    UpdaterHandler *a_handler;
+    UpdaterHandler *a_handler = nullptr;
     bool a_isUpdateHandlerAlreadyCalled;
     bool a_isLibraryAtStartchecked;
     bool a_isDynamicLibChecked;

@@ -105,8 +105,8 @@ private:
 
     //Attributes
     int a_duration; //Duration in ms
-    QWidget *a_target; //Used when starting only one animation
-    QGraphicsOpacityEffect *a_effectContainer; //Used when starting only one animation
+    QWidget *a_target = nullptr; //Used when starting only one animation
+    QGraphicsOpacityEffect *a_effectContainer = nullptr; //Used when starting only one animation
     QSequentialAnimationGroup a_sequentialAnimations;
     QParallelAnimationGroup a_parallelAnimations;
     bool a_deleteWhenFinished;
