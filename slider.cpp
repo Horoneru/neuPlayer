@@ -1,14 +1,14 @@
 #include "slider.h"
 Slider::Slider(QWidget *parent) :
     QSlider(parent)
-{
-}
+{}
 
 void Slider::mousePressEvent(QMouseEvent * event)
 {
     QStyleOptionSlider opt;
     initStyleOption(&opt);
-    QRect sr = style()->subControlRect(QStyle::CC_Slider, &opt, QStyle::SC_SliderHandle, this);
+    QRect sr = style()->subControlRect(QStyle::CC_Slider, &opt,
+                                       QStyle::SC_SliderHandle, this);
 
     if (event->button() == (Qt::LeftButton) &&
         sr.contains(event->pos()) == false)

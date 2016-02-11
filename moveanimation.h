@@ -23,27 +23,27 @@ public:
 
     inline void setDuration(int duration)
     {
-        a_duration = duration;
+        m_duration = duration;
     }
 
     inline void setDirection (Direction direction)
     {
-        a_direction = direction;
+        m_direction = direction;
     }
 
     inline void setTarget(QWidget *target)
     {
-        a_target = target;
+        m_target = target;
     }
 
     void setEndPosition(QPoint pos)
     {
-        a_anim.setEndValue(pos);
+        m_anim.setEndValue(pos);
     }
 
     void setStartPosition(QPoint pos)
     {
-        a_anim.setStartValue(pos);
+        m_anim.setStartValue(pos);
     }
 
     void start();
@@ -52,10 +52,10 @@ private:
     void setupDirection();
 
     //Attributes
-    QWidget *a_target = nullptr;
-    int a_duration;
-    Direction a_direction;
-    QPropertyAnimation a_anim;
+    QWidget *m_target = nullptr;
+    int m_duration;
+    Direction m_direction;
+    QPropertyAnimation m_anim;
 
 signals:
     void finished();

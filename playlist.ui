@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string>Playlist</string>
   </property>
-  <widget class="QPushButton" name="a_tools">
+  <widget class="QPushButton" name="m_tools">
    <property name="geometry">
     <rect>
      <x>228</x>
@@ -47,7 +47,7 @@
     <string>...</string>
    </property>
   </widget>
-  <widget class="QLabel" name="a_cover">
+  <widget class="QLabel" name="m_cover">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -66,7 +66,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="a_searchLine">
+  <widget class="QLineEdit" name="m_searchLine">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -76,7 +76,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="a_titleHeader">
+  <widget class="QPushButton" name="m_titleHeader">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -92,7 +92,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="a_switchRandomPlay">
+  <widget class="QPushButton" name="m_switchRandomPlay">
    <property name="geometry">
     <rect>
      <x>236</x>
@@ -130,7 +130,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="a_switchLoopPlay">
+  <widget class="QPushButton" name="m_switchLoopPlay">
    <property name="geometry">
     <rect>
      <x>205</x>
@@ -165,7 +165,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QTabWidget" name="a_tabWidget">
+  <widget class="QTabWidget" name="m_tabWidget">
    <property name="geometry">
     <rect>
      <x>7</x>
@@ -184,7 +184,7 @@
     <attribute name="toolTip">
      <string>Liste de lecture actuelle</string>
     </attribute>
-    <widget class="QListWidget" name="a_playlistWidget">
+    <widget class="QListWidget" name="m_playlistWidget">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -234,7 +234,7 @@
 Il est possible d'en rajouter en appuyant sur le bouton
 d'ajout de favoris, ou par click droit sur la musique</string>
     </attribute>
-    <widget class="QListWidget" name="a_playlistFavWidget">
+    <widget class="QListWidget" name="m_playlistFavWidget">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -276,7 +276,7 @@ d'ajout de favoris, ou par click droit sur la musique</string>
     </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="a_addFavStar">
+  <widget class="QPushButton" name="m_addFavStar">
    <property name="geometry">
     <rect>
      <x>234</x>
@@ -302,14 +302,14 @@ d'ajout de favoris, ou par click droit sur la musique</string>
     <bool>true</bool>
    </property>
   </widget>
-  <zorder>a_cover</zorder>
-  <zorder>a_searchLine</zorder>
-  <zorder>a_titleHeader</zorder>
-  <zorder>a_switchRandomPlay</zorder>
-  <zorder>a_switchLoopPlay</zorder>
-  <zorder>a_tabWidget</zorder>
-  <zorder>a_tools</zorder>
-  <zorder>a_addFavStar</zorder>
+  <zorder>m_cover</zorder>
+  <zorder>m_searchLine</zorder>
+  <zorder>m_titleHeader</zorder>
+  <zorder>m_switchRandomPlay</zorder>
+  <zorder>m_switchLoopPlay</zorder>
+  <zorder>m_tabWidget</zorder>
+  <zorder>m_tools</zorder>
+  <zorder>m_addFavStar</zorder>
  </widget>
  <resources>
   <include location="assets.qrc"/>

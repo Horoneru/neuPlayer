@@ -30,37 +30,45 @@ public:
     //Duration of animation
     inline void setDuration(const int duration)
     {
-        a_duration = duration;
+        m_duration = duration;
     }
     //Do we activate the timer to report the animation finished ?
     void setTimerEnabled(const bool enabled)
     {
-        a_timerEnabled = enabled;
+        m_timerEnabled = enabled;
     }
 
     void start(qreal endValue = 0.0);
 
     inline const bool isFinished() const
     {
-        return a_finished;
+        return m_finished;
     }
 
 private slots:
 
     inline void setFinished() //Called when the requested object finishes to animate.
     {
-        a_finished = true;
+        m_finished = true;
     }
 
 private:
 
     void setMode(QPropertyAnimation *anim, FadeMode mode, qreal endValue);
     //Attributes
+<<<<<<< HEAD
+    int m_duration;
+    QObject *m_target = nullptr; //All the windows inherit from QWidget, so to simplify things we're also sure it's a QObject.
+    FadeMode m_mode;
+    bool m_timerEnabled;
+    bool m_finished;
+=======
     int a_duration;
     QObject *a_target = nullptr; //All the windows inherit from QWidget, so to simplify things we're also sure it's a QObject.
     FadeMode a_mode;
     bool a_timerEnabled;
     bool a_finished;
+>>>>>>> 8be90d0feae33059fced48e5c9cbf5b95bc64903
 };
 
 #endif // FADEWINDOW_H
