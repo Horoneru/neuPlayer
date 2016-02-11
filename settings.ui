@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTabWidget" name="m_tabWidget">
+    <widget class="QTabWidget" name="a_tabWidget">
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
@@ -72,7 +72,7 @@
          <string>Activer le chargement de la bibilothèque au démarrage du player</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="m_libraryAtStartupActivate">
+       <widget class="QCheckBox" name="a_libraryAtStartupActivate">
         <property name="geometry">
          <rect>
           <x>11</x>
@@ -82,7 +82,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QCheckBox" name="m_staticLibraryActivate">
+       <widget class="QCheckBox" name="a_staticLibraryActivate">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -119,7 +119,7 @@ En revanche, lors d'une modification du dossier de données, vous ne serez pas n
          <string>Créer une base de donnée statique (léger)</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="m_refreshWhenNeededActivate">
+       <widget class="QCheckBox" name="a_refreshWhenNeededActivate">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -158,7 +158,7 @@ pour rafraîchir les médias présents</string>
          <string>Créer une base de donnée dynamique (Recommandé)</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="m_changeDbpush">
+       <widget class="QPushButton" name="a_changeDbpush">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -184,7 +184,7 @@ pour rafraîchir les médias présents</string>
          <string>Votre base actuelle est : </string>
         </property>
        </widget>
-       <widget class="QLabel" name="m_pathView">
+       <widget class="QLabel" name="a_pathView">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -219,7 +219,7 @@ pour rafraîchir les médias présents</string>
          <string>Sauvegarder la musique en lecture avant de fermer</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="m_saveIndexActivate">
+       <widget class="QCheckBox" name="a_saveIndexActivate">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -235,7 +235,7 @@ pour rafraîchir les médias présents</string>
          <string>Activer le Tag Viewer</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="m_refreshNeededpush">
+       <widget class="QPushButton" name="a_refreshNeededpush">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -248,7 +248,7 @@ pour rafraîchir les médias présents</string>
          <string>Actualiser base</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="m_playlistAtStartupCheck">
+       <widget class="QCheckBox" name="a_playlistAtStartupCheck">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -262,7 +262,7 @@ pour rafraîchir les médias présents</string>
         </property>
        </widget>
       </widget>
-      <widget class="QPushButton" name="m_confirm">
+      <widget class="QPushButton" name="a_confirm">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -275,7 +275,7 @@ pour rafraîchir les médias présents</string>
         <string>OK</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="m_close">
+      <widget class="QPushButton" name="a_close">
        <property name="geometry">
         <rect>
          <x>320</x>
@@ -293,7 +293,7 @@ pour rafraîchir les médias présents</string>
       <attribute name="title">
        <string>Apparence</string>
       </attribute>
-      <widget class="QLabel" name="m_layoutView">
+      <widget class="QLabel" name="a_layoutView">
        <property name="geometry">
         <rect>
          <x>200</x>
@@ -306,7 +306,7 @@ pour rafraîchir les médias présents</string>
         <string/>
        </property>
       </widget>
-      <widget class="QPushButton" name="m_confirm_2">
+      <widget class="QPushButton" name="a_confirm_2">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -319,7 +319,7 @@ pour rafraîchir les médias présents</string>
         <string>OK</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="m_close_2">
+      <widget class="QPushButton" name="a_close_2">
        <property name="geometry">
         <rect>
          <x>320</x>
@@ -356,7 +356,7 @@ pour rafraîchir les médias présents</string>
        <property name="checkable">
         <bool>false</bool>
        </property>
-       <widget class="QLabel" name="m_SkinDescription">
+       <widget class="QLabel" name="a_SkinDescription">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -369,7 +369,7 @@ pour rafraîchir les médias présents</string>
          <string>Description Skin</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="m_skinPick">
+       <widget class="QComboBox" name="a_skinPick">
         <property name="geometry">
          <rect>
           <x>8</x>
@@ -399,7 +399,7 @@ pour rafraîchir les médias présents</string>
          </property>
         </item>
        </widget>
-       <widget class="QLabel" name="m_skinImage">
+       <widget class="QLabel" name="a_skinImage">
         <property name="geometry">
          <rect>
           <x>165</x>
@@ -415,7 +415,7 @@ pour rafraîchir les médias présents</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QCheckBox" name="m_framelessCheck">
+       <widget class="QCheckBox" name="a_framelessCheck">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -457,7 +457,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
        <property name="checkable">
         <bool>false</bool>
        </property>
-       <widget class="QLabel" name="m_skinImage_2">
+       <widget class="QLabel" name="a_skinImage_2">
         <property name="geometry">
          <rect>
           <x>165</x>
@@ -473,7 +473,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QPushButton" name="m_changeBackgroundPush">
+       <widget class="QPushButton" name="a_changeBackgroundPush">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -486,7 +486,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
          <string>Changer l'image</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="m_reloadDefaultSkinPush">
+       <widget class="QPushButton" name="a_reloadDefaultSkinPush">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -512,7 +512,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
          <string>Veuillez séléctionner une image de 400 x 50 px pour un bon rendu</string>
         </property>
        </widget>
-       <widget class="QLabel" name="m_opacityLabel">
+       <widget class="QLabel" name="a_opacityLabel">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -525,7 +525,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
          <string>Opacité : </string>
         </property>
        </widget>
-       <widget class="QSlider" name="m_opacitySlide">
+       <widget class="QSlider" name="a_opacitySlide">
         <property name="geometry">
          <rect>
           <x>70</x>
@@ -547,7 +547,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
-       <widget class="QLabel" name="m_valueSlide">
+       <widget class="QLabel" name="a_valueSlide">
         <property name="geometry">
          <rect>
           <x>240</x>
@@ -578,7 +578,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
        <property name="title">
         <string>Fondu</string>
        </property>
-       <widget class="QLabel" name="m_valueFadeSlide">
+       <widget class="QLabel" name="a_valueFadeSlide">
         <property name="geometry">
          <rect>
           <x>290</x>
@@ -591,7 +591,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
          <string>1</string>
         </property>
        </widget>
-       <widget class="QSlider" name="m_fadeSlide">
+       <widget class="QSlider" name="a_fadeSlide">
         <property name="geometry">
          <rect>
           <x>120</x>
@@ -631,7 +631,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
          <number>2</number>
         </property>
        </widget>
-       <widget class="QCheckBox" name="m_fadeCheck">
+       <widget class="QCheckBox" name="a_fadeCheck">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -645,7 +645,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
         </property>
        </widget>
       </widget>
-      <widget class="QPushButton" name="m_confirm_3">
+      <widget class="QPushButton" name="a_confirm_3">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -658,7 +658,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
         <string>OK</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="m_close_3">
+      <widget class="QPushButton" name="a_close_3">
        <property name="geometry">
         <rect>
          <x>320</x>
@@ -683,7 +683,7 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
        <property name="title">
         <string>Informations musicales</string>
        </property>
-       <widget class="QPushButton" name="m_indexingPush">
+       <widget class="QPushButton" name="a_indexingPush">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -819,7 +819,7 @@ build 290515</string>
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QPushButton" name="m_checkUpdatesBtn">
+      <widget class="QPushButton" name="a_checkUpdatesBtn">
        <property name="geometry">
         <rect>
          <x>264</x>
@@ -845,7 +845,7 @@ build 290515</string>
         <string notr="true"/>
        </property>
       </widget>
-      <widget class="QPushButton" name="m_gotoWorkingDir">
+      <widget class="QPushButton" name="a_gotoWorkingDir">
        <property name="geometry">
         <rect>
          <x>2</x>
@@ -858,7 +858,7 @@ build 290515</string>
         <string>Répertoire du programme</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="m_issueLink">
+      <widget class="QPushButton" name="a_issueLink">
        <property name="geometry">
         <rect>
          <x>313</x>

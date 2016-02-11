@@ -20,8 +20,7 @@ int main(int argc, char *argv[])
 
     if (!sharedMemory.create(1))
     {
-        QMessageBox::warning(nullptr, QObject::tr("Warning!"),
-                             QObject::tr("An instance of this application is running!"));
+        QMessageBox::warning(nullptr, QObject::tr("Warning!"), QObject::tr("An instance of this application is running!"));
         exit(0); // Exit process immediately
     }
 

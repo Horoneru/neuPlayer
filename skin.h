@@ -16,7 +16,7 @@ public:
 
     void setSkin(int id)
     {
-        m_idSkin = id;
+        a_idSkin = id;
     }
 
     void load(); //Used when loaded (For both startup and runtime)
@@ -25,11 +25,11 @@ public:
 private:
     void initSkinPalettes();
     //Attributes
-    int m_idSkin;
-    QPalette m_darkPalette;
-    QString m_darkPaletteCSS;
-    QPalette m_lightPalette;
-    QString m_lightPaletteCSS;
+    int a_idSkin;
+    QPalette a_darkPalette;
+    QString a_darkPaletteCSS;
+    QPalette a_lightPalette;
+    QString a_lightPaletteCSS;
 
 };
 

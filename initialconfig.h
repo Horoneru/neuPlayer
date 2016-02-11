@@ -46,18 +46,18 @@ private:
 
     //Attributes
     Ui::InitialConfig *ui;
-    QSettings m_settings;
+    QSettings a_settings;
     Player *neuPlayer;
     //We only need this manager now !
-    FadeManager m_animManager;
+    FadeManager a_animManager;
 
     //Others
-    bool m_canClose; //To setup an anim before closing
-    bool m_willRestart;
-    QString m_mediaPath;
-    QTimer m_timer;
-    int m_page; //"Where are we ?"
-    double m_slideValue;
+    bool a_canClose; //To setup an anim before closing
+    bool a_willRestart;
+    QString a_mediaPath;
+    QTimer a_timer;
+    int a_page; //"Where are we ?"
+    double a_slideValue;
 };
 
 #endif // INITIALCONFIG_H

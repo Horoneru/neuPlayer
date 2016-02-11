@@ -3,26 +3,23 @@
 neuPlaylist::neuPlaylist(QObject *parent) :
     QMediaPlaylist(parent)
 {
-    m_listFilter << "*.wav";
-    m_listFilter << "*.mp3";
-    m_listFilter << "*.mp4";
-    m_listFilter << "*.m4a";
+    a_listFilter << "*.wav";
+    a_listFilter << "*.mp3";
+    a_listFilter << "*.mp4";
+    a_listFilter << "*.m4a";
 }
 
 void neuPlaylist::save(const QString &toFileName) //Default
 {
     this->clear();
     QSettings settings("neuPlayer.ini", QSettings::IniFormat, this);
-    QDirIterator dirIterator(settings.value("mediapath").toString(),
-                             m_listFilter, QDir::Files | QDir::NoSymLinks,
-                             QDirIterator::Subdirectories);
+    QDirIterator dirIterator(settings.value("mediapath").toString(), a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     QFile fileHandler(toFileName);
 
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "),
-                              tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
         return;
     }
     //We're going to write in this streamer which will serve as a buffer
@@ -30,8 +27,7 @@ void neuPlaylist::save(const QString &toFileName) //Default
     out.setCodec("UTF-8");
     while(dirIterator.hasNext())
     {
-        //adding the common structure of a m3u file to the URL
-        out << dirIterator.next().prepend("file:///").append("\n").toUtf8();
+        out << dirIterator.next().prepend("file:///").append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
     fileHandler.close();
@@ -42,21 +38,19 @@ void neuPlaylist::save(const QString &toFileName) //Default
 void neuPlaylist::save(const QString &toFileName, const QUrl &pathSaved)
 {
     this->clear();
-    QDirIterator dirIterator(pathSaved.toString(), m_listFilter ,QDir::Files |
-                             QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator(pathSaved.toString(), a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     QFile fileHandler(toFileName);
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "),
-                              tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
         return;
     }
     QTextStream out(&fileHandler);
     out.setCodec("UTF-8");
     while(dirIterator.hasNext())
     {
-        out << dirIterator.next().prepend("file:///").append("\n").toUtf8();
+        out << dirIterator.next().prepend("file:///").append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
     fileHandler.close();
@@ -67,8 +61,7 @@ void neuPlaylist::saveFromPlaylist(const QString &playlistName)
     QFile fileHandler(playlistName);
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "),
-                              tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
         return;
     }
     QTextStream out(&fileHandler);
@@ -76,7 +69,7 @@ void neuPlaylist::saveFromPlaylist(const QString &playlistName)
     int const mediaCount = this->mediaCount();
     for(int i (0); i < mediaCount; i++ )
     {
-        out << this->media(i).canonicalUrl().path().append("\n").toUtf8();
+        out << this->media(i).canonicalUrl().path().append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
     }
     fileHandler.close();
 }
@@ -84,13 +77,13 @@ void neuPlaylist::saveFromPlaylist(const QString &playlistName)
 //Called from Settings
 QList <QUrl> neuPlaylist::setLibrary(const QString &path)
 {
-    QDirIterator dirIterator(path, m_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
-    QFile fileHandler("neuLibrary.m3u8");
+    QDirIterator dirIterator(path, a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
+    //I'm doing that to reconstruct the structure of a .m3u8 file so that it forces UT8
+    QFile fileHandler("neuLibrary.m3u8");
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "),
-                              tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
     }
     else
     {
@@ -101,7 +94,7 @@ QList <QUrl> neuPlaylist::setLibrary(const QString &path)
         medias = new QList <QUrl>();
         while(dirIterator.hasNext())
         {
-            out << dirIterator.next().prepend("file:///").append("\n").toUtf8();
+            out << dirIterator.next().prepend("file:///").append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
             medias->append(QUrl(dirIterator.filePath().prepend("file:///").toUtf8()));
             qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
         }
@@ -113,8 +106,7 @@ QList <QUrl> neuPlaylist::setLibrary(const QString &path)
 //Returns the updated list
 QList <QUrl> neuPlaylist::update(const QString &path)
 {
-    QDirIterator dirIterator(path, m_listFilter ,QDir::Files |
-                             QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator(path, a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     // Variable qui contiendra tous les fichiers correspondant à notre recherche
     QList <QUrl> *urlList;

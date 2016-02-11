@@ -5,22 +5,19 @@ UpdaterHandler::UpdaterHandler(QObject *parent) :
 {
 }
 
-void UpdaterHandler::start(QString appName, QString currentVersion,
-                           QString urlLatestVersion, QString urlLatestExe,
-                           QString showMessageIfNoUpdate)
+void UpdaterHandler::start(QString appName, QString currentVersion, QString urlLatestVersion, QString urlLatestExe, QString showMessageIfNoUpdate)
 {
     QStringList arguments;
     arguments << appName << currentVersion << urlLatestVersion << urlLatestExe << showMessageIfNoUpdate;
-    m_updateprocess.start("Updater.exe", arguments);
-    connect(&m_updateprocess, SIGNAL(readyReadStandardOutput()), this, SLOT(on_newInfosFromProc()));
+    a_updateprocess.start("Updater.exe", arguments);
+    connect(&a_updateprocess, SIGNAL(readyReadStandardOutput()), this, SLOT(on_newInfosFromProc()));
 }
 
 void UpdaterHandler::on_newInfosFromProc()
 {
-    while (m_updateprocess.canReadLine())
+    while (a_updateprocess.canReadLine())
     {
-        //Signal that we must shut down the player now
-        if(m_updateprocess.readLine().contains("downloading"))
+        if(a_updateprocess.readLine().contains("downloading")) //Signal that we must shut down the player now
             qApp->closeAllWindows();
     }
 }

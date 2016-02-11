@@ -118,24 +118,24 @@ public:
 
     void setAudioFadeValue(int value)
     {
-        m_audioFade->setDuration(value);
+        a_audioFade->setDuration(value);
     }
 
     void setAudioFade(bool enabled)
     {
-        m_audioFadeActivated = enabled;
+        a_audioFadeActivated = enabled;
     }
 
     void runAudioFade();
     void setPlaylistOpen(bool open)
     {
-        m_isPlaylistOpen = open;
-        if(!m_isPlaylistOpen)
-            m_playlist = nullptr;
+        a_isPlaylistOpen = open;
+        if(!a_isPlaylistOpen)
+            a_playlist = nullptr;
     }
     void setSettingsOpen(bool open)
     {
-        m_isSettingsOpen = open;
+        a_isSettingsOpen = open;
     }
 
     inline int getIndexOfThePlayer() //Will always return the correct index regardless of the playlist used
@@ -147,21 +147,21 @@ public:
     void addMediasToThePlayer(QList <QUrl> &medias);
     void setPlaylistToBeSaved(bool foo)
     {
-        m_hasToSavePlaylistLater = foo;
+        a_hasToSavePlaylistLater = foo;
     }
 
     void setFavsToBeSaved(bool foo)
     {
-        m_hasToSaveFavsLater = foo;
+        a_hasToSaveFavsLater = foo;
     }
 
     bool deleteMedia(int index, int tab = 0)
     {
-        if(!m_isUsingFavPlaylist)
+        if(!a_isUsingFavPlaylist)
         {
             if(tab == 0)
             {
-                if(m_mediaPlaylist.currentIndex() == index)
+                if(a_mediaPlaylist.currentIndex() == index)
                     return false;
             }
         }
@@ -169,35 +169,35 @@ public:
         {
             if(tab == 1)
             {
-                if(m_favPlaylist.currentIndex() == index)
+                if(a_favPlaylist.currentIndex() == index)
                     return false;
             }
         }
-        m_settings.setValue("trackPosition", neu->position());
+        a_settings.setValue("trackPosition", neu->position());
         int track = neu->playlist()->currentIndex() - 1;
         if(tab == 0)
-            m_mediaPlaylist.removeMedia(index);
+            a_mediaPlaylist.removeMedia(index);
         else
-            m_favPlaylist.removeMedia(index);
-        if(tab == 0 && !m_isUsingFavPlaylist)
+            a_favPlaylist.removeMedia(index);
+        if(tab == 0 && !a_isUsingFavPlaylist)
         {
             if(index <= track)
             {
-                m_deleteTriggered = true;
-                m_mediaPlaylist.setCurrentIndex(track);
+                a_deleteTriggered = true;
+                a_mediaPlaylist.setCurrentIndex(track);
             }
         }
-        else if (tab == 1 && m_isUsingFavPlaylist)
+        else if (tab == 1 && a_isUsingFavPlaylist)
         {
             if(index <= track)
             {
-                m_deleteTriggered = true;
-                m_favPlaylist.setCurrentIndex(track);
+                a_deleteTriggered = true;
+                a_favPlaylist.setCurrentIndex(track);
             }
         }
-        if(m_hasToSavePlaylistLater != true)
-            m_hasToSavePlaylistLater = true;
-        //The update of m_hasToSaveFavsLater is handled by the playlist if needed
+        if(a_hasToSavePlaylistLater != true)
+            a_hasToSavePlaylistLater = true;
+        //The update of a_hasToSaveFavsLater is handled by the playlist if needed
         return true;
     }
 
@@ -212,28 +212,28 @@ public:
     void setLoopMode(bool mode);
     bool getRandomState() const
     {
-        return m_isRandomMode;
+        return a_isRandomMode;
     }
     inline void setUsingFav(bool usingFav)
     {
-        m_isUsingFavPlaylist = usingFav;
+        a_isUsingFavPlaylist = usingFav;
     }
 
     inline bool isUsingFav() const
     {
-        return m_isUsingFavPlaylist;
+        return a_isUsingFavPlaylist;
     }
     bool getLoopState() const
     {
-        return m_isLoopPlaylistMode;
+        return a_isLoopPlaylistMode;
     }
     inline bool canChangeMusic() const
     {
-        return m_canChangeMusic;
+        return a_canChangeMusic;
     }
     bool deleteTriggered() const
     {
-        return m_deleteTriggered;
+        return a_deleteTriggered;
     }
     void updatePlaylistOfThePlayer(const QList <QUrl> &medias, bool play = false);
     void saveBeforeClosing();
@@ -244,11 +244,11 @@ public:
 private slots:
     inline void canChangeMusicNow()
     {
-        m_canChangeMusic = true;
+        a_canChangeMusic = true;
     }
     inline void canShuffleNow()
     {
-        m_canDoShuffleAgain = true;
+        a_canDoShuffleAgain = true;
     }
 private:
     //Méthodes de constructeur
@@ -266,85 +266,69 @@ private:
 
     //Attributs
     QMediaPlayer *neu = nullptr; //Dat media player
-<<<<<<< HEAD
-    Slider *m_progressSlider = nullptr;
-    Slider *m_volumeSlider = nullptr;
-    QPointer <Playlist> m_playlist = nullptr;
-    QPointer <Settings> m_settingsForm = nullptr;
-=======
     Slider *a_progressSlider = nullptr;
     Slider *a_volumeSlider = nullptr;
     QPointer <Playlist> a_playlist = nullptr;
     QPointer <Settings> a_settingsForm = nullptr;
->>>>>>> 8be90d0feae33059fced48e5c9cbf5b95bc64903
 
     /* Extras for win */
 #ifdef Q_OS_WIN
-    QWinThumbnailToolButton m_thumbActionButton;
-    QWinThumbnailToolButton m_thumbPreviousButton;
-    QWinThumbnailToolButton m_thumbForwardButton;
-    QWinThumbnailToolBar m_thumbnailToolbar;
+    QWinThumbnailToolButton a_thumbActionButton;
+    QWinThumbnailToolButton a_thumbPreviousButton;
+    QWinThumbnailToolButton a_thumbForwardButton;
+    QWinThumbnailToolBar a_thumbnailToolbar;
 #endif
 
-    QSettings m_settings; //Contient les settings de l'application
-    neuPlaylist m_mediaPlaylist;
-    neuPlaylist m_favPlaylist;
-    QPointer<FadeManager> m_animManager;
-    int m_idSkin; // 0 : Light | 1 : Dark | n : custom theme
-    int m_previousIndex;
-    bool m_isFrameless;
-    bool m_hasToSavePlaylistLater;
-    bool m_hasToSaveFavsLater;
-    bool m_wasPrevious;
-    bool m_hasToStartupPlaylist;
-    bool m_deleteTriggered;
-    bool m_recoveredProgress;
-    bool m_isSettingsOpen;
-    bool m_isPlaylistOpen;
-    bool m_isRandomMode;
-    bool m_isLoopPlaylistMode;
-    bool m_hasToDoInitialShuffle;
-    bool m_isPlaying;
-    bool m_isScrollingText;
-    bool m_hasToSetLabelType;
-    bool m_canClose;
-    bool m_canChangeMusic;
-    bool m_canDoShuffleAgain;
-    bool m_isStarting;
-    bool m_isUsingFavPlaylist;
-    bool m_audioFadeActivated;
-    bool m_no_meta;
-    int m_secondesPasse;
-    int m_volumeBeforeMute;
+    QSettings a_settings; //Contient les settings de l'application
+    neuPlaylist a_mediaPlaylist;
+    neuPlaylist a_favPlaylist;
+    QPointer<FadeManager> a_animManager;
+    int a_idSkin; // 0 : Light | 1 : Dark | n : custom theme
+    int a_previousIndex;
+    bool a_isFrameless;
+    bool a_hasToSavePlaylistLater;
+    bool a_hasToSaveFavsLater;
+    bool a_wasPrevious;
+    bool a_hasToStartupPlaylist;
+    bool a_deleteTriggered;
+    bool a_recoveredProgress;
+    bool a_isSettingsOpen;
+    bool a_isPlaylistOpen;
+    bool a_isRandomMode;
+    bool a_isLoopPlaylistMode;
+    bool a_hasToDoInitialShuffle;
+    bool a_isPlaying;
+    bool a_isScrollingText;
+    bool a_hasToSetLabelType;
+    bool a_canClose;
+    bool a_canChangeMusic;
+    bool a_canDoShuffleAgain;
+    bool a_isStarting;
+    bool a_isUsingFavPlaylist;
+    bool a_audioFadeActivated;
+    bool a_no_meta;
+    int a_secondesPasse;
+    int a_volumeBeforeMute;
     //The three int delays at which we switch over
-    int m_titleCase;
-    int m_artistCase;
-    int m_albumCase;
+    int a_titleCase;
+    int a_artistCase;
+    int a_albumCase;
     //Meta datas
-    QString m_titre, m_artiste, m_album;
+    QString a_titre, a_artiste, a_album;
     /* Icons stored on attributes to avoid reloading each time */
-    const QIcon m_forwardIcon, m_forwardDarkIcon;
-    const QIcon m_previousIcon, m_previousDarkIcon;
-    const QIcon m_volumeIcon, m_volumeDarkIcon;
-    const QIcon m_volumeLowIcon, m_volumeLowDarkIcon;
-    const QIcon m_volumeMutedIcon, m_volumeMutedDarkIcon;
-    const QPixmap m_neuDarkBg, m_neuLightBg, m_neuLightCustombg, m_neuDarkCustombg;
+    const QIcon a_forwardIcon, a_forwardDarkIcon;
+    const QIcon a_previousIcon, a_previousDarkIcon;
+    const QIcon a_volumeIcon, a_volumeDarkIcon;
+    const QIcon a_volumeLowIcon, a_volumeLowDarkIcon;
+    const QIcon a_volumeMutedIcon, a_volumeMutedDarkIcon;
+    const QPixmap a_neuDarkBg, a_neuLightBg, a_neuLightCustombg, a_neuDarkCustombg;
 
-<<<<<<< HEAD
-    ScrollingLabel m_scrollingLabel; //Custom label
-    QPixmap m_coverArt;
-    QPropertyAnimation *m_titleAnimate = nullptr;
-    QPropertyAnimation *m_audioFade = nullptr;
-    QGraphicsOpacityEffect *m_infoFadein = nullptr;
-    QPropertyAnimation *m_infoFadeAnim = nullptr;
-=======
     ScrollingLabel a_scrollingLabel; //Custom label
     QPixmap a_coverArt;
     QPropertyAnimation *a_titleAnimate = nullptr;
     QPropertyAnimation *a_audioFade = nullptr;
     QGraphicsOpacityEffect *a_infoFadein = nullptr;
     QPropertyAnimation *a_infoFadeAnim = nullptr;
->>>>>>> 8be90d0feae33059fced48e5c9cbf5b95bc64903
     //Regular timer, updated each second
     QTimer Timer;
     //The timer which sets the type when it timeouts
@@ -354,24 +338,24 @@ private:
     QTimer grantShuffleAgainTimer;
     /*          Permet l'utilisation de raccourcis clavier
      * qui interagissent directement avec le player sans souris */
-    QAction m_advance;
-    QAction m_back;
-    QAction m_volumeUp;
-    QAction m_volumeDown;
+    QAction a_advance;
+    QAction a_back;
+    QAction a_volumeUp;
+    QAction a_volumeDown;
     //Menu et ses actions
-    QMenu m_playbackMenu;
-    QActionGroup m_playbackrates;
-    QAction m_normalrate;
-    QAction m_halfrate;
-    QAction m_doublerate;
-    int m_playbackState;
-    QMenu m_menu;
-    QAction m_openMedia;
-    QAction m_accessSettings ;
-    QAction m_tagViewer;
-    QAction m_showPlaylist;
-    QAction m_alwaysOnTopHandler; //Set les flags pour always on top ou non
-    QAction m_shuffle;
+    QMenu a_playbackMenu;
+    QActionGroup a_playbackrates;
+    QAction a_normalrate;
+    QAction a_halfrate;
+    QAction a_doublerate;
+    int a_playbackState;
+    QMenu a_menu;
+    QAction a_openMedia;
+    QAction a_accessSettings ;
+    QAction a_tagViewer;
+    QAction a_showPlaylist;
+    QAction a_alwaysOnTopHandler; //Set les flags pour always on top ou non
+    QAction a_shuffle;
 };
 
 #endif // PLAYER_H

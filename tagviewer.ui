@@ -85,7 +85,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLabel" name="m_num">
+      <widget class="QLabel" name="a_num">
        <property name="text">
         <string/>
        </property>
@@ -104,7 +104,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLabel" name="m_title">
+      <widget class="QLabel" name="a_title">
        <property name="text">
         <string/>
        </property>
@@ -118,7 +118,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLabel" name="m_artist">
+      <widget class="QLabel" name="a_artist">
        <property name="text">
         <string/>
        </property>
@@ -132,7 +132,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLabel" name="m_album">
+      <widget class="QLabel" name="a_album">
        <property name="text">
         <string/>
        </property>
@@ -146,7 +146,7 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QLabel" name="m_year">
+      <widget class="QLabel" name="a_year">
        <property name="text">
         <string/>
        </property>
@@ -160,7 +160,7 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLabel" name="m_genre">
+      <widget class="QLabel" name="a_genre">
        <property name="text">
         <string/>
        </property>
@@ -168,7 +168,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="m_coverArt">
+   <widget class="QLabel" name="a_coverArt">
     <property name="geometry">
      <rect>
       <x>130</x>

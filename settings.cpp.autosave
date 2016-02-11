@@ -9,10 +9,8 @@ Settings::Settings(Player *Player, QWidget *parent) :
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-
     //Make the Player received as an attribute so we can use it
     a_passerelle = Player;
-    a_moveAnim.setDuration(MoveAnimation::Fast); //Prepare animation
     //Restore current config from QSettings
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_settings->beginGroup("Additional_Features");
@@ -21,16 +19,11 @@ Settings::Settings(Player *Player, QWidget *parent) :
     ui->a_staticLibraryActivate->setChecked(a_settings->value("staticLibrary", false).toBool());
     ui->a_saveIndexActivate->setChecked(a_settings->value("saveTrackIndex", true).toBool());
     ui->a_framelessCheck->setChecked(a_settings->value("framelessWindow", false).toBool());
-    ui->a_fadeCheck->setChecked(a_settings->value("audioFade", false).toBool());
     a_settings->endGroup();
     a_bgPath = a_settings->value("customimage", "").toString();
     a_opacityValue = a_settings->value("opacity", 100).toReal();
     ui->a_opacitySlide->setValue(a_opacityValue * 100);
-    on_fadeClicked(ui->a_fadeCheck->isChecked());
-    updateFadeValue(a_settings->value("fadeValue", 1).toInt() / 1000);
-    ui->a_fadeSlide->setValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     ui->a_valueSlide->setText(QString::number(ui->a_opacitySlide->value()) + "%");
-    ui->groupBox_5->setVisible(false); //Not ready for prime time yet
     //Process config into UI
     setupConfig();
 
@@ -76,25 +69,20 @@ void Settings::setupConnections()
     connect(ui->a_libraryAtStartupActivate, SIGNAL(clicked()), this, SLOT(enableLibraryAtStartup()));
     connect(ui->a_staticLibraryActivate, SIGNAL(clicked()), this, SLOT(on_staticLibActivated()));
     connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()), this, SLOT(on_RNlibActivated()));
-    connect(ui->a_fadeCheck, SIGNAL(clicked(bool)), this, SLOT(on_fadeClicked(bool)));
     connect(ui->a_skinPick, SIGNAL(currentIndexChanged(int)), this, SLOT(setSkin(int)));
     connect(ui->a_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(on_changeTab(int)));
     connect(ui->a_changeDbpush, SIGNAL(clicked()), this, SLOT(changeMusicPath()));
     connect(ui->a_close_2, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(ui->a_close, SIGNAL(clicked()), this, SLOT(cancel()));
-    connect(ui->a_close_3, SIGNAL(clicked()), this, SLOT(cancel()));
     connect(ui->a_refreshNeededpush, SIGNAL(clicked()), this, SLOT(setLibrary()));
     connect(ui->a_changeBackgroundPush, SIGNAL(clicked()), this, SLOT(changeBg()));
     connect(ui->a_reloadDefaultSkinPush, SIGNAL(clicked()), this, SLOT(reloadDefaultBg()));
     connect(ui->a_opacitySlide, SIGNAL(valueChanged(int)), this, SLOT(updateOpacity(int)));
-    connect(ui->a_fadeSlide, SIGNAL(valueChanged(int)), this, SLOT(updateFadeValue(int)));
     connect(ui->a_confirm, SIGNAL(clicked()), this, SLOT(confirm()));
     connect(ui->a_confirm_2, SIGNAL(clicked()), this, SLOT(confirm()));
-    connect(ui->a_confirm_3, SIGNAL(clicked()), this, SLOT(confirm()));
     connect(ui->a_framelessCheck, SIGNAL(clicked()), this, SLOT(popupFramelessWindow()));
     connect(ui->a_gotoWorkingDir, SIGNAL(clicked()), this, SLOT(gotoWorkingDir()));
     connect(ui->a_checkUpdatesBtn, SIGNAL(clicked()), this, SLOT(checkUpdates()));
-    connect(ui->a_issueLink, SIGNAL(clicked()), this, SLOT(gotoIssues()));
 }
 
 
@@ -187,19 +175,23 @@ void Settings::popupFramelessWindow()
         if(result == QMessageBox::Yes)
         {
             confirm();
-            a_passerelle->restart();
+            a_passerelle->saveBeforeClosing();
+            qApp->quit();
+            QProcess::startDetached("neuPlayer.exe");
         }
     }
 }
 
 void Settings::on_changeTab(int tabId)
 {
-    a_moveAnim.setTarget(ui->a_tabWidget->currentWidget());
     if(tabId < a_previousTabId)
-        a_moveAnim.setDirection(MoveAnimation::RightToLeft);
+    {
+        //TODO
+    }
     else
-        a_moveAnim.setDirection(MoveAnimation::LeftToRight);
-    a_moveAnim.start();
+    {
+        //TODO
+    }
     a_previousTabId = tabId;
 }
 
@@ -211,7 +203,9 @@ void Settings::changeMusicPath()
     else
     {
         if(path == ui->a_pathView->text())
+        {
             a_isNewPath = false;
+        }
         else
         {
             a_isNewPath = true;
@@ -265,17 +259,7 @@ void Settings::setSkin(int index)
         else
             ui->a_skinImage_2->setPixmap(QPixmap(a_bgPath));
 
-        ui->a_SkinDescription->setText("Skin light 2 pour neuPlayer");
-    }
-    if(index == 3) //Night Fusion
-    {
-        ui->a_skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewcustomdark.png"));
-        if(a_bgPath.isEmpty())
-            ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomdark.jpg"));
-        else
-            ui->a_skinImage_2->setPixmap(QPixmap(a_bgPath));
-
-        ui->a_SkinDescription->setText("Skin dark 2 pour neuPlayer");
+        ui->a_SkinDescription->setText("Skin light custom pour neuPlayer");
     }
 }
 
@@ -295,16 +279,18 @@ void Settings::reloadDefaultBg()
 {
     a_bgPath = "";
     if (ui->a_skinPick->currentIndex() == 0) //Clean Fusion
+    {
         ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewwhite.jpg"));
+    }
 
     if (ui->a_skinPick->currentIndex() == 1) // Holo Fusion
+    {
         ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewdark.png"));
-
+    }
     if(ui->a_skinPick->currentIndex() == 2) //Sky Fusion
-        ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomwhite.jpg"));
-
-    if(ui->a_skinPick->currentIndex() == 3) //Night Fusion
-        ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomdark.jpg"));
+    {
+        ui->a_skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomlight.jpg"));
+    }
 }
 
 void Settings::updateOpacity(int value)
@@ -377,10 +363,6 @@ void Settings::confirm()
         a_passerelle->update();
     }
     a_settings->setValue("opacity", a_opacityValue);
-    a_settings->setValue("Additional_Features/audioFade", ui->a_fadeCheck->isChecked());
-    a_settings->setValue("fadeValue", a_fadeValue);
-    a_passerelle->setAudioFade(ui->a_fadeCheck->isChecked());
-    a_passerelle->setAudioFadeValue(a_fadeValue);
     this->cancel();
 }
 
@@ -423,25 +405,6 @@ void Settings::checkUpdates()
         a_isUpdateHandlerAlreadyCalled = true;
     }
     a_handler->start("neuPlayer", QApplication::applicationVersion(), "http://sd-2.archive-host.com/membres/up/16630996856616518/version.txt", "http://sd-2.archive-host.com/membres/up/16630996856616518/neuPlayer.exe", "show");
-}
-
-void Settings::on_fadeClicked(bool enabled)
-{
-    ui->a_fadeSlide->setVisible(enabled); ui->a_valueFadeSlide->setVisible(enabled);
-}
-
-void Settings::updateFadeValue(int value)
-{
-    a_fadeValue = value * 1000;
-    if(value == 1)
-        ui->a_valueFadeSlide->setText(QString::number(value) + " sec");
-    else
-        ui->a_valueFadeSlide->setText(QString::number(value) + " secs");
-}
-
-void Settings::gotoIssues()
-{
-    QDesktopServices::openUrl(QUrl("https://github.com/Horoneru/neuPlayer/issues"));
 }
 
 Settings::~Settings()
