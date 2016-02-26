@@ -9,37 +9,43 @@ Settings::Settings(Player *Player, QWidget *parent) :
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-
     //Make the Player received as an attribute so we can use it
     a_passerelle = Player;
     a_moveAnim.setDuration(MoveAnimation::Fast); //Prepare animation
     //Restore current config from QSettings
     a_settings = new QSettings("neuPlayer.ini", QSettings::IniFormat, this);
     a_settings->beginGroup("Additional_Features");
-    ui->a_libraryAtStartupActivate->setChecked(a_settings->value("libraryAtStartup", false).toBool());
-    ui->a_refreshWhenNeededActivate->setChecked(a_settings->value("refreshWhenNeeded", true).toBool());
-    ui->a_staticLibraryActivate->setChecked(a_settings->value("staticLibrary", false).toBool());
-    ui->a_saveIndexActivate->setChecked(a_settings->value("saveTrackIndex", true).toBool());
-    ui->a_framelessCheck->setChecked(a_settings->value("framelessWindow", false).toBool());
+    ui->a_libraryAtStartupActivate->setChecked(
+                a_settings->value("libraryAtStartup", false).toBool());
+    ui->a_refreshWhenNeededActivate->setChecked(
+                a_settings->value("refreshWhenNeeded", true).toBool());
+    ui->a_staticLibraryActivate->setChecked(
+                a_settings->value("staticLibrary", false).toBool());
+    ui->a_saveIndexActivate->setChecked(
+                a_settings->value("saveTrackIndex", true).toBool());
+    ui->a_framelessCheck->setChecked(
+                a_settings->value("framelessWindow", false).toBool());
     ui->a_fadeCheck->setChecked(a_settings->value("audioFade", false).toBool());
     a_settings->endGroup();
     a_bgPath = a_settings->value("customimage", "").toString();
     a_opacityValue = a_settings->value("opacity", 100).toReal();
     ui->a_opacitySlide->setValue(a_opacityValue * 100);
+
     on_fadeClicked(ui->a_fadeCheck->isChecked());
     updateFadeValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     ui->a_fadeSlide->setValue(a_settings->value("fadeValue", 1).toInt() / 1000);
     ui->a_valueSlide->setText(QString::number(ui->a_opacitySlide->value()) + "%");
-    ui->groupBox_5->setVisible(false); //Not ready for prime time yet
     //Process config into UI
     setupConfig();
-
     setupConnections();
+    ui->versionLabel->setText("v" +
+                              QApplication::applicationVersion());
 }
                 /* Setup Section */
 void Settings::setupConfig()
 {
-    ui->a_playlistAtStartupCheck->setChecked(a_settings->value("playlistAtStartup", false).toBool());
+    ui->a_playlistAtStartupCheck->setChecked(
+                a_settings->value("playlistAtStartup", false).toBool());
     ui->a_skinPick->setCurrentIndex(a_settings->value("skin", 1).toInt());
     setSkin(ui->a_skinPick->currentIndex());
     a_isDynamicLibChecked = ui->a_refreshWhenNeededActivate->isChecked();
@@ -73,9 +79,12 @@ void Settings::setupConfig()
 void Settings::setupConnections()
 {
     /* Connexions */
-    connect(ui->a_libraryAtStartupActivate, SIGNAL(clicked()), this, SLOT(enableLibraryAtStartup()));
-    connect(ui->a_staticLibraryActivate, SIGNAL(clicked()), this, SLOT(on_staticLibActivated()));
-    connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()), this, SLOT(on_RNlibActivated()));
+    connect(ui->a_libraryAtStartupActivate, SIGNAL(clicked()),
+            this, SLOT(enableLibraryAtStartup()));
+    connect(ui->a_staticLibraryActivate, SIGNAL(clicked()),
+            this, SLOT(on_staticLibActivated()));
+    connect(ui->a_refreshWhenNeededActivate, SIGNAL(clicked()),
+            this, SLOT(on_RNlibActivated()));
     connect(ui->a_fadeCheck, SIGNAL(clicked(bool)), this, SLOT(on_fadeClicked(bool)));
     connect(ui->a_skinPick, SIGNAL(currentIndexChanged(int)), this, SLOT(setSkin(int)));
     connect(ui->a_tabWidget, SIGNAL(currentChanged(int)), this, SLOT(on_changeTab(int)));
@@ -161,7 +170,8 @@ void Settings::popupFramelessWindow()
 {
     if(ui->a_framelessCheck->isChecked())
     {
-        QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"), tr("Vous devez redémarrer pour utiliser le player sans bordures"));
+        QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"),
+                           tr("Vous devez redémarrer pour utiliser le player sans bordures"));
         msgbox.setWindowFlags(Qt::WindowStaysOnTopHint);
         msgbox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ignore);
         msgbox.setButtonText(QMessageBox::Yes, tr("Redémarrer"));
@@ -177,7 +187,8 @@ void Settings::popupFramelessWindow()
     }
     else
     {
-        QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"), tr("Vous devez redémarrer pour utiliser le player avec ses bordures"));
+        QMessageBox msgbox(QMessageBox::NoIcon, tr("neuPlayer"),
+                           tr("Vous devez redémarrer pour utiliser le player avec ses bordures"));
         msgbox.setWindowFlags(Qt::WindowStaysOnTopHint);
         msgbox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ignore);
         msgbox.setButtonText(QMessageBox::Yes, tr("Redémarrer"));
@@ -199,24 +210,31 @@ void Settings::on_changeTab(int tabId)
         a_moveAnim.setDirection(MoveAnimation::RightToLeft);
     else
         a_moveAnim.setDirection(MoveAnimation::LeftToRight);
+
     a_moveAnim.start();
     a_previousTabId = tabId;
 }
 
 void Settings::changeMusicPath()
 {
-    QString path = QFileDialog::getExistingDirectory(this, tr("Selectionnez votre répertoire de musique"),"", QFileDialog::DontResolveSymlinks);
+    QString path = QFileDialog::getExistingDirectory(this,
+                                                     tr("Selectionnez votre répertoire de musique"),
+                                                     "",
+                                                     QFileDialog::DontResolveSymlinks);
     if (path.isEmpty())
         return;
     else
     {
         if(path == ui->a_pathView->text())
+        {
             a_isNewPath = false;
+        }
         else
         {
             a_isNewPath = true;
             a_settings->setValue("mediapath", path);
-            if(a_isLibraryAtStartchecked && (a_isDynamicLibChecked || a_isStaticLibChecked))
+            if(a_isLibraryAtStartchecked &&
+              (a_isDynamicLibChecked || a_isStaticLibChecked))
             {
                 a_settings->setValue("currentTrack", 0);
                 a_settings->setValue("trackPosition", 0);
@@ -267,6 +285,7 @@ void Settings::setSkin(int index)
 
         ui->a_SkinDescription->setText("Skin light 2 pour neuPlayer");
     }
+
     if(index == 3) //Night Fusion
     {
         ui->a_skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewcustomdark.png"));
@@ -282,7 +301,10 @@ void Settings::setSkin(int index)
 
 void Settings::changeBg()
 {
-    QString tempPath = QFileDialog::getOpenFileName(this, tr("Sélectionnez un fond pour le player"),QString(), tr("Images (*.jpg *.png)"));
+    QString tempPath = QFileDialog::getOpenFileName(this,
+                                                    tr("Sélectionnez un fond pour le player"),
+                                                    QString(),
+                                                    tr("Images (*.jpg *.png)"));
     if(!tempPath.isEmpty())
     {
         a_bgPath = tempPath;
@@ -366,8 +388,12 @@ void Settings::confirm()
         a_settings->setValue("Additional_Features/framelessWindow", false);
 
     /* Skin section */
+
     int currentSkin = a_settings->value("skin").toInt(); //Backup to test
-    if(currentSkin != ui->a_skinPick->currentIndex() || a_settings->value("customimage").toString() != a_bgPath ) //Si un élément de skin a changé
+
+    //Si un élément de skin a changé
+    if(currentSkin != ui->a_skinPick->currentIndex() ||
+       a_settings->value("customimage").toString() != a_bgPath )
     {
         a_settings->setValue("skin", ui->a_skinPick->currentIndex());
         a_settings->setValue("customimage", a_bgPath);
@@ -422,7 +448,10 @@ void Settings::checkUpdates()
         a_handler = new UpdaterHandler(nullptr);
         a_isUpdateHandlerAlreadyCalled = true;
     }
-    a_handler->start("neuPlayer", QApplication::applicationVersion(), "http://sd-2.archive-host.com/membres/up/16630996856616518/version.txt", "http://sd-2.archive-host.com/membres/up/16630996856616518/neuPlayer.exe", "show");
+    a_handler->start("neuPlayer", QApplication::applicationVersion(),
+                     "http://sd-2.archive-host.com/membres/up/16630996856616518/version.txt",
+                     "http://sd-2.archive-host.com/membres/up/16630996856616518/neuPlayer.exe",
+                     "show");
 }
 
 void Settings::on_fadeClicked(bool enabled)
