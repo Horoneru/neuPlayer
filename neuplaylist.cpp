@@ -13,13 +13,15 @@ void neuPlaylist::save(const QString &toFileName) //Default
 {
     this->clear();
     QSettings settings("neuPlayer.ini", QSettings::IniFormat, this);
-    QDirIterator dirIterator(settings.value("mediapath").toString(), a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator(settings.value("mediapath").toString(), a_listFilter,
+                             QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     QFile fileHandler(toFileName);
 
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "),
+                              tr("Le fichier de playlist n'a pas pu être ouvert"));
         return;
     }
     //We're going to write in this streamer which will serve as a buffer
@@ -38,12 +40,14 @@ void neuPlaylist::save(const QString &toFileName) //Default
 void neuPlaylist::save(const QString &toFileName, const QUrl &pathSaved)
 {
     this->clear();
-    QDirIterator dirIterator(pathSaved.toString(), a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator(pathSaved.toString(), a_listFilter,
+                             QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     QFile fileHandler(toFileName);
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "),
+                              tr("Le fichier de playlist n'a pas pu être ouvert"));
         return;
     }
     QTextStream out(&fileHandler);
@@ -61,7 +65,8 @@ void neuPlaylist::saveFromPlaylist(const QString &playlistName)
     QFile fileHandler(playlistName);
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "),
+                              tr("Le fichier de playlist n'a pas pu être ouvert"));
         return;
     }
     QTextStream out(&fileHandler);
@@ -77,13 +82,15 @@ void neuPlaylist::saveFromPlaylist(const QString &playlistName)
 //Called from Settings
 QList <QUrl> neuPlaylist::setLibrary(const QString &path)
 {
-    QDirIterator dirIterator(path, a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator(path, a_listFilter, QDir::Files | QDir::NoSymLinks,
+                             QDirIterator::Subdirectories);
 
     //I'm doing that to reconstruct the structure of a .m3u8 file so that it forces UT8
     QFile fileHandler("neuLibrary.m3u8");
     if(!fileHandler.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
-        QMessageBox::critical(nullptr, tr("Erreur ! "), tr("Le fichier de playlist n'a pas pu être ouvert"));
+        QMessageBox::critical(nullptr, tr("Erreur ! "),
+                              tr("Le fichier de playlist n'a pas pu être ouvert"));
     }
     else
     {
@@ -94,7 +101,8 @@ QList <QUrl> neuPlaylist::setLibrary(const QString &path)
         medias = new QList <QUrl>();
         while(dirIterator.hasNext())
         {
-            out << dirIterator.next().prepend("file:///").append("\n").toUtf8(); //adding the common structure of a m3u file to the URL
+            //adding the common structure of a m3u file to the URL
+            out << dirIterator.next().prepend("file:///").append("\n").toUtf8();
             medias->append(QUrl(dirIterator.filePath().prepend("file:///").toUtf8()));
             qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
         }
@@ -106,7 +114,8 @@ QList <QUrl> neuPlaylist::setLibrary(const QString &path)
 //Returns the updated list
 QList <QUrl> neuPlaylist::update(const QString &path)
 {
-    QDirIterator dirIterator(path, a_listFilter ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator(path, a_listFilter, QDir::Files | QDir::NoSymLinks,
+                             QDirIterator::Subdirectories);
 
     // Variable qui contiendra tous les fichiers correspondant à notre recherche
     QList <QUrl> *urlList;

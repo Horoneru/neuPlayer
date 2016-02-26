@@ -28,7 +28,8 @@ public slots:
     //Other
     void setTab(int tabId); //Called by :  user, programmatically, and by player when needed.
 public:
-    explicit Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
+    explicit Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player,
+                      QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
     explicit Playlist(QWidget *parent = 0);
     void setupConnections();
     void setupActions();
@@ -101,8 +102,8 @@ private:
     int a_previousTab;
     int a_currentIndex;
     int a_queueIndex;
-    QList <QListWidgetItem*> a_backupItems = nullptr;
-    QAction *a_findItemTrigger = nullptr; // ctrl-F to search ~
+    QList <QListWidgetItem*> a_backupItems;
+    QAction *a_findItemTrigger = nullptr;
     QAction *a_validateFind = nullptr; // Pouvoir trigger facilement un search sans farfouiller des events
     QAction *a_easyHideFind = nullptr; // Pour pouvoir hide avec echap
     QMenu *a_playlistMenu = nullptr; //This is for the ... button

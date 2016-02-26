@@ -12,7 +12,8 @@ FadeWindow::FadeWindow(QDialog *dialogWidget, QObject *parent) :
     a_finished(false), a_timerEnabled(false), QObject(parent)
 {}
 
-FadeWindow::FadeWindow(QDialog *dialogWidget, int msecs, FadeWindow::FadeMode mode, QObject *parent) :
+FadeWindow::FadeWindow(QDialog *dialogWidget, int msecs,
+                       FadeWindow::FadeMode mode, QObject *parent) :
     a_target(dialogWidget), a_duration(msecs),
     a_finished(false), a_timerEnabled(false), QObject(parent),
     a_mode(mode)
@@ -23,13 +24,15 @@ FadeWindow::FadeWindow(QWindow *windowWidget, QObject *parent) :
     a_finished(false), a_timerEnabled(false), QObject(parent)
 {}
 
-FadeWindow::FadeWindow(QWindow *windowWidget, int msecs, FadeWindow::FadeMode mode, QObject *parent) :
+FadeWindow::FadeWindow(QWindow *windowWidget, int msecs,
+                       FadeWindow::FadeMode mode, QObject *parent) :
     a_target(windowWidget), a_duration(msecs),
     a_finished(false), a_timerEnabled(false), QObject(parent),
     a_mode(mode)
 {}
 
-FadeWindow::FadeWindow(QMainWindow *mainWindowWidget, int msecs, FadeWindow::FadeMode mode, QObject *parent) :
+FadeWindow::FadeWindow(QMainWindow *mainWindowWidget, int msecs,
+                       FadeWindow::FadeMode mode, QObject *parent) :
     a_target(mainWindowWidget), a_duration(msecs), a_finished(false),
     a_timerEnabled(false), QObject(parent), a_mode(mode)
 {}
@@ -41,7 +44,8 @@ FadeWindow::FadeWindow(QMainWindow *mainWindowWidget, QObject *parent) :
 
 
 //Helper method
-void FadeWindow::setMode(QPropertyAnimation *anim, FadeWindow::FadeMode mode, qreal endValue)
+void FadeWindow::setMode(QPropertyAnimation *anim,
+                         FadeWindow::FadeMode mode, qreal endValue)
 {
     if(mode == FadeIn)
     {

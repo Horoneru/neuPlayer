@@ -17,7 +17,8 @@ public:
     enum MoveDuration { Slow = 400, Normal = 200 , Fast = 100 };
     enum Direction { LeftToRight, RightToLeft, BottomToTop, TopToBottom };
     explicit MoveAnimation(QObject *parent = 0);
-    MoveAnimation (QWidget *target, MoveAnimation::Direction direction, MoveAnimation::MoveDuration duration = Normal, QObject *parent = 0);
+    MoveAnimation (QWidget *target, MoveAnimation::Direction direction,
+                   MoveAnimation::MoveDuration duration = Normal, QObject *parent = 0);
     MoveAnimation (QWidget *target, QObject *parent = 0);
     ~MoveAnimation();
 

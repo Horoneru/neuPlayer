@@ -235,9 +235,11 @@ void Playlist::quickUpdate(QList<QUrl> *items, int currentItemPlusOne)
 void::Playlist::setToPlaying(int index)
 {
     if(!a_player->isUsingFav())
-        ui->a_playlistWidget->item(index)->setIcon(QIcon(":/Ressources/playingState_icon.png"));
+        ui->a_playlistWidget->item(index)->setIcon(
+                    QIcon(":/Ressources/playingState_icon.png"));
     else
-        ui->a_playlistFavWidget->item(index)->setIcon(QIcon(":/Ressources/playingState_icon.png"));
+        ui->a_playlistFavWidget->item(index)->setIcon(
+                    QIcon(":/Ressources/playingState_icon.png"));
     a_isPlaying = true;
 }
 
@@ -245,9 +247,11 @@ void::Playlist::setToPlaying(int index)
 void Playlist::setToPaused(int index)
 {
     if(!a_player->isUsingFav())
-        ui->a_playlistWidget->item(index)->setIcon(QIcon(":/Ressources/pausedState-icon2.png"));
+        ui->a_playlistWidget->item(index)->setIcon(
+                    QIcon(":/Ressources/pausedState-icon2.png"));
     else
-        ui->a_playlistFavWidget->item(index)->setIcon(QIcon(":/Ressources/pausedState-icon2.png"));
+        ui->a_playlistFavWidget->item(index)->setIcon(
+                    QIcon(":/Ressources/pausedState-icon2.png"));
     a_isPlaying = false;
 }
 

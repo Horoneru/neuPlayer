@@ -7,33 +7,26 @@ FadeManager::FadeManager(QObject *parent) : //Primarily used for groups
 {}
 
 FadeManager::FadeManager(QWidget *target, FadeManager::FadeMode mode,
-                                 int msecs, FadeManager::AnimationSequenceType sequence, QObject *parent) :
+                         int msecs, FadeManager::AnimationSequenceType sequence, QObject *parent) :
     QObject(parent), a_target(target), a_mode(mode),
     a_duration(msecs), a_sequenceType(sequence), a_deleteWhenFinished(false)
-{
+{}
 
-}
-
-FadeManager::FadeManager(QWidget *target, int msecs, QObject *parent, FadeManager::FadeMode mode) :
+FadeManager::FadeManager(QWidget *target, int msecs,
+                         QObject *parent, FadeManager::FadeMode mode) :
     QObject(parent), a_target(target),
     a_duration(msecs), a_mode(mode), a_deleteWhenFinished(false)
-{
-
-}
+{}
 
 FadeManager::FadeManager(QWidget *target, QObject *parent) :
     QObject(parent), a_target(target), a_duration(300),
     a_deleteWhenFinished(false)
-{
-
-}
+{}
 
 FadeManager::FadeManager(FadeManager::FadeMode mode, QObject *parent) :
     QObject(parent), a_mode(mode), a_duration(300),
     a_deleteWhenFinished(false)
-{
-
-}
+{}
 
 //Will set the entire group to fade out
 //It is used when using fadeOutGroup();
@@ -113,7 +106,8 @@ QAbstractAnimation *FadeManager::searchTarget(QWidget *target, AnimationSequence
         }
     }
     //We get here only if we didn't find anything
-    qWarning() << "Couldn't find target " << target->objectName() << "in the specified group !";
+    qWarning() << "Couldn't find target " << target->objectName()
+               << "in the specified group !";
     return nullptr;
 }
 
@@ -190,7 +184,7 @@ void FadeManager::addTarget(QWidget *target, int msecs)
 }
 
 void FadeManager::addTarget(QWidget *target, FadeManager::FadeMode mode,
-                                int msecs, FadeManager::AnimationSequenceType sequence)
+                            int msecs, FadeManager::AnimationSequenceType sequence)
 {
     QGraphicsOpacityEffect *effectContainer;
     effectContainer = new QGraphicsOpacityEffect(this);
@@ -207,7 +201,8 @@ void FadeManager::addTarget(QWidget *target, FadeManager::FadeMode mode,
         a_sequentialAnimations.addAnimation(anim);
 }
 
-void FadeManager::deleteTarget(QWidget *targetToDelete, FadeManager::AnimationSequenceType fromWhichGroup)
+void FadeManager::deleteTarget(QWidget *targetToDelete,
+                               FadeManager::AnimationSequenceType fromWhichGroup)
 {
     if(fromWhichGroup == Parallel)
     {
@@ -225,7 +220,8 @@ void FadeManager::deleteTarget(QWidget *targetToDelete, FadeManager::AnimationSe
     }
 }
 
-void FadeManager::editTarget(QWidget *targetToModify, FadeManager::FadeMode mode, FadeManager::AnimationSequenceType fromWhichGroup)
+void FadeManager::editTarget(QWidget *targetToModify, FadeManager::FadeMode mode,
+                             FadeManager::AnimationSequenceType fromWhichGroup)
 {
     if(fromWhichGroup == Parallel)
     {
@@ -247,7 +243,8 @@ void FadeManager::editTarget(QWidget *targetToModify, FadeManager::FadeMode mode
     }
 }
 
-void FadeManager::changeTargetGroup(QWidget *targetToModify, FadeManager::AnimationSequenceType fromWhichGroup)
+void FadeManager::changeTargetGroup(QWidget *targetToModify,
+                                    FadeManager::AnimationSequenceType fromWhichGroup)
 {
     if(fromWhichGroup == Parallel)
     {
@@ -278,7 +275,8 @@ void FadeManager::clearGroup(FadeManager::AnimationSequenceType whichGroup)
         a_sequentialAnimations.clear();
 }
 
-void FadeManager::editTarget(QWidget *targetToModify, int msecs, FadeManager::AnimationSequenceType fromWhichGroup)
+void FadeManager::editTarget(QWidget *targetToModify, int msecs,
+                             FadeManager::AnimationSequenceType fromWhichGroup)
 {
     if(fromWhichGroup == Parallel)
     {
@@ -298,7 +296,8 @@ void FadeManager::editTarget(QWidget *targetToModify, int msecs, FadeManager::An
     }
 }
 
-void FadeManager::editTarget(QWidget *targetToModify, FadeManager::FadeMode mode, int msecs, FadeManager::AnimationSequenceType fromWhichGroup)
+void FadeManager::editTarget(QWidget *targetToModify, FadeManager::FadeMode mode,
+                             int msecs, FadeManager::AnimationSequenceType fromWhichGroup)
 {
     if(fromWhichGroup == Parallel)
     {
@@ -337,7 +336,8 @@ void FadeManager::start(bool deleteWhenFinished)
         anim->start();
 }
 
-void FadeManager::setMode(QPropertyAnimation *anim, FadeMode mode, QGraphicsOpacityEffect *container)
+void FadeManager::setMode(QPropertyAnimation *anim, FadeMode mode,
+                          QGraphicsOpacityEffect *container)
 {
     if(mode == FadeIn)
     {
@@ -353,7 +353,8 @@ void FadeManager::setMode(QPropertyAnimation *anim, FadeMode mode, QGraphicsOpac
     }
 }
 
-void FadeManager::startGroup(FadeManager::AnimationSequenceType typeToStart, bool deleteWhenFinished)
+void FadeManager::startGroup(FadeManager::AnimationSequenceType typeToStart,
+                             bool deleteWhenFinished)
 {
     if(typeToStart == Sequential)
     {
@@ -375,13 +376,15 @@ void FadeManager::startGroup(FadeManager::AnimationSequenceType typeToStart, boo
     }
 }
 
-void FadeManager::fadeOutGroup(FadeManager::AnimationSequenceType typeToStart, bool deleteWhenFinished)
+void FadeManager::fadeOutGroup(FadeManager::AnimationSequenceType typeToStart,
+                               bool deleteWhenFinished)
 {
     setGroupToFadeOut(typeToStart);
     startGroup(typeToStart, deleteWhenFinished);
 }
 
-void FadeManager::fadeInGroup(FadeManager::AnimationSequenceType typeToStart, bool deleteWhenFinished)
+void FadeManager::fadeInGroup(FadeManager::AnimationSequenceType typeToStart,
+                              bool deleteWhenFinished)
 {
     setGroupToFadeIn(typeToStart);
     startGroup(typeToStart, deleteWhenFinished);

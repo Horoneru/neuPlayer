@@ -11,7 +11,8 @@ Player::Player(QWidget *parent) :
     a_neuLightCustombg(":/Ressources/neucustombackgroundwhite.jpg"),
     a_neuDarkCustombg(":/Ressources/neucustombackgroundblack.jpg"),
     /* Volume icons ressources */
-    a_volumeIcon(":/Ressources/volumebtn.png"), a_volumeDarkIcon(":/Ressources/volumedarkbtn.png"),
+    a_volumeIcon(":/Ressources/volumebtn.png"),
+    a_volumeDarkIcon(":/Ressources/volumedarkbtn.png"),
     a_volumeMutedIcon(":/Ressources/volumebtn_onPressed.png"),
     a_volumeMutedDarkIcon(":/Ressources/volumedarkbtn_onPressed.png"),
     a_volumeLowIcon(":/Ressources/volumebtn2.png"),

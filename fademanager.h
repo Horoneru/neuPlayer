@@ -24,8 +24,10 @@ public:
     enum AnimationSequenceType { Parallel, Sequential };
     //Constructors
     explicit FadeManager(QObject *parent = 0);
-    FadeManager(QWidget *target, FadeMode mode , int msecs, AnimationSequenceType sequence, QObject *parent);
-    FadeManager(QWidget *target, int msecs, QObject *parent, FadeMode mode = FadeMode::FadeIn);
+    FadeManager(QWidget *target, FadeMode mode, int msecs,
+                AnimationSequenceType sequence, QObject *parent);
+    FadeManager(QWidget *target, int msecs, QObject *parent,
+                FadeMode mode = FadeMode::FadeIn);
     FadeManager(QWidget *target, QObject *parent);
     FadeManager(FadeMode mode, QObject *parent);
     ~FadeManager();
@@ -59,21 +61,29 @@ public:
     /* Those Use the target names and calls searchTarget(); to iterate */
     void deleteTarget(QWidget *targetToDelete, AnimationSequenceType fromWhichGroup);
 
-    void editTarget(QWidget *targetToModify, FadeMode mode, AnimationSequenceType fromWhichGroup = Parallel);
-    void editTarget(QWidget *targetToModify, int msecs, AnimationSequenceType fromWhichGroup = Parallel);
-    void editTarget(QWidget *targetToModify, FadeMode mode, int msecs, AnimationSequenceType fromWhichGroup = Parallel);
+    void editTarget(QWidget *targetToModify, FadeMode mode,
+                    AnimationSequenceType fromWhichGroup = Parallel);
+    void editTarget(QWidget *targetToModify, int msecs,
+                    AnimationSequenceType fromWhichGroup = Parallel);
+    void editTarget(QWidget *targetToModify, FadeMode mode, int msecs,
+                    AnimationSequenceType fromWhichGroup = Parallel);
 
-    void changeTargetGroup(QWidget *targetToModify, AnimationSequenceType fromWhichGroup = Parallel);
+    void changeTargetGroup(QWidget *targetToModify,
+                           AnimationSequenceType fromWhichGroup = Parallel);
 
     void clearGroup(AnimationSequenceType whichGroup);
 
     void start(bool deleteWhenFinished = true); //Start one animation with the arguments specified on constructor
-    void startGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Starts the animations in the group started
-    void fadeOutGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Sets the entire group to FadeOut
-    void fadeInGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true); //Sets the entire group to FadeIn
+    //Starts the animations in the group started
+    void startGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true);
+    //Sets the entire group to FadeOut
+    void fadeOutGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true);
+    //Sets the entire group to FadeIn
+    void fadeInGroup(AnimationSequenceType typeToStart, bool deleteWhenFinished = true);
 
 signals:
-    void finished(FadeManager::AnimationSequenceType); //When finished, you will be notified, and know which group finished.
+    //When finished, you will be notified, and know which group finished.
+    void finished(FadeManager::AnimationSequenceType);
 
 public slots:
 

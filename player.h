@@ -138,7 +138,8 @@ public:
         a_isSettingsOpen = open;
     }
 
-    inline int getIndexOfThePlayer() //Will always return the correct index regardless of the playlist used
+    //Will always return the correct index regardless of the playlist used
+    inline int getIndexOfThePlayer()
     {
         return neu->playlist()->currentIndex();
     }
@@ -262,7 +263,9 @@ private:
     void forwardAnim(); //Created as a separate module because we call it at several places
     void previousAnim(); //Created for consistency with forwardAnim();
     void fadeInLabel(); //Convenience function
-    void updateProgressDisplay(qint64 pos, bool isProgress); //Used to update the display of both duration (isProgress = false) and progress (isProgress = true)
+    //Used to update the display of both duration
+    // (isProgress = false) and progress (isProgress = true)
+    void updateProgressDisplay(qint64 pos, bool isProgress);
 
     //Attributs
     QMediaPlayer *neu = nullptr; //Dat media player

@@ -2,7 +2,8 @@
 #include "ui_settings.h"
 
 Settings::Settings(Player *Player, QWidget *parent) :
-    QDialog(parent), a_isNewPath(false), a_isUpdateHandlerAlreadyCalled(false), a_previousTabId(0),
+    QDialog(parent), a_isNewPath(false),
+    a_isUpdateHandlerAlreadyCalled(false), a_previousTabId(0),
     ui(new Ui::Settings)
 {
     ui->setupUi(this);
@@ -242,7 +243,8 @@ void Settings::changeMusicPath()
         }
         ui->a_pathView->setText(path);
         ui->a_pathView->setToolTip(path);
-        if(!path.isEmpty() && !ui->a_libraryAtStartupActivate->isChecked()) //If the user didn't check but selected something...
+        //If the user didn't check but selected something...
+        if(!path.isEmpty() && !ui->a_libraryAtStartupActivate->isChecked())
         {
             ui->a_libraryAtStartupActivate->setChecked(true); //...Check the library at startup and...
             enableLibraryAtStartup(); //...Enable it
@@ -438,7 +440,7 @@ void Settings::setLibrary()
 
 void Settings::gotoWorkingDir()
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile("")); //Cross-platform solution, always works.
+    QDesktopServices::openUrl(QUrl::fromLocalFile(""));
 }
 
 void Settings::checkUpdates()

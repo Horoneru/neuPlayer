@@ -517,7 +517,8 @@ bool NcFramelessHelper::eventFilter( QObject *obj, QEvent *event )
   return false;
 }
 
-void NcFramelessHelper::activateOn(QWidget* topLevelWidget, bool alwaysOnTop , bool borders, bool animatedEntrance)
+void NcFramelessHelper::activateOn(QWidget* topLevelWidget, bool alwaysOnTop,
+                                   bool borders, bool animatedEntrance)
 {
   if ( d->mHashWidgetData.contains( topLevelWidget ) )
     return;

@@ -2,18 +2,16 @@
 
 MoveAnimation::MoveAnimation(QObject *parent) :
     QObject(parent), a_direction(RightToLeft), a_duration(Normal)
-{
-}
+{}
 
-MoveAnimation::MoveAnimation(QWidget *target, MoveAnimation::Direction direction, MoveAnimation::MoveDuration duration, QObject *parent) :
+MoveAnimation::MoveAnimation(QWidget *target, MoveAnimation::Direction direction,
+                             MoveAnimation::MoveDuration duration, QObject *parent) :
         QObject(parent), a_target(target), a_direction(direction), a_duration(duration)
-{
-}
+{}
 
 MoveAnimation::MoveAnimation(QWidget *target, QObject *parent) :
     QObject(parent), a_target(target), a_direction(RightToLeft), a_duration(Normal)
-{
-}
+{}
 
 void MoveAnimation::setupDirection()
 {

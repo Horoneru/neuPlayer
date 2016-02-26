@@ -57,7 +57,8 @@ private:
     void setMode(QPropertyAnimation *anim, FadeMode mode, qreal endValue);
     //Attributes
     int a_duration;
-    QObject *a_target = nullptr; //All the windows inherit from QWidget, so to simplify things we're also sure it's a QObject.
+    //All the windows inherit from QWidget, so to simplify things we're also sure it's a QObject.
+    QObject *a_target = nullptr;
     FadeMode a_mode;
     bool a_timerEnabled;
     bool a_finished;
