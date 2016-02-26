@@ -40,7 +40,8 @@ public:
   explicit NcFramelessHelper( QObject* parent = 0 );
   ~NcFramelessHelper();
 
-  void activateOn(QWidget* topLevelWidget , bool alwaysOnTop = false, bool borders = true, bool animatedEntrance = true);
+  void activateOn(QWidget* topLevelWidget , bool alwaysOnTop = false,
+                  bool borders = true, bool animatedEntrance = true);
   void setCustomBorders(QWidget *topLevelWidget);
   void removeFrom( QWidget* topLevelWidget );
 

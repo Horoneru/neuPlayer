@@ -42,19 +42,19 @@ private:
 
     //Attributes
     Ui::Settings *ui = nullptr;
-    QSettings *a_settings = nullptr;
-    Player *a_passerelle = nullptr;
-    MoveAnimation a_moveAnim;
-    QString a_bgPath;
-    UpdaterHandler *a_handler = nullptr;
-    bool a_isUpdateHandlerAlreadyCalled;
-    bool a_isLibraryAtStartchecked;
-    bool a_isDynamicLibChecked;
-    bool a_isStaticLibChecked;
-    bool a_isNewPath;
-    int a_previousTabId;
-    int a_fadeValue;
-    double a_opacityValue;
+    QSettings *m_settings = nullptr;
+    Player *m_passerelle = nullptr;
+    MoveAnimation m_moveAnim;
+    QString m_bgPath;
+    UpdaterHandler *m_handler = nullptr;
+    bool m_isUpdateHandlerAlreadyCalled;
+    bool m_isLibraryAtStartchecked;
+    bool m_isDynamicLibChecked;
+    bool m_isStaticLibChecked;
+    bool m_isNewPath;
+    int m_previousTabId;
+    int m_fadeValue;
+    double m_opacityValue;
 };
 
 #endif // SETTINGS_H

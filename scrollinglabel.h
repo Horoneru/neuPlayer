@@ -1,5 +1,5 @@
-#ifndef SCROLLTEXT_H
-#define SCROLLTEXT_H
+#ifndef SCROLLINGLABEL_H
+#define SCROLLINGLABEL_H
 
 #include <QWidget>
 #include <QLabel>
@@ -57,4 +57,4 @@ private slots:
     virtual void timer_timeout();
 };
 
-#endif // SCROLLTEXT_H
+#endif // SCROLLINGLABEL_H

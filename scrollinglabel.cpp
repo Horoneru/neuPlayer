@@ -50,7 +50,8 @@ void ScrollingLabel::updateText()
     }
 
     staticText.prepare(QTransform(), font());
-    wholeTextSize = QSize(fontMetrics().width(staticText.text()), fontMetrics().height());
+    wholeTextSize = QSize(fontMetrics().width(staticText.text()),
+                          fontMetrics().height());
 }
 
 void ScrollingLabel::paintEvent(QPaintEvent*)
@@ -76,7 +77,8 @@ void ScrollingLabel::paintEvent(QPaintEvent*)
         pb.setClipRect(width() - 15, 0, 15, height());
         pb.drawImage(0, 0, alphaChannel);
         pb.setClipRect(0, 0, 15, height());
-        //initial situation: don't apply alpha channel in the left half of the image at all; apply it more and more until scrollPos gets positive
+        //initial situation: don't apply alpha channel in the left half of the image at all;
+        //apply it more and more until scrollPos gets positive
         if(scrollPos < 0)
             pb.setOpacity((qreal)(qMax(-8, scrollPos) + 8) / 8.0);
         pb.drawImage(0, 0, alphaChannel);

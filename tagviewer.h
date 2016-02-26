@@ -11,14 +11,15 @@ class TagViewer : public QDialog
 {
     Q_OBJECT
 public:
-    explicit TagViewer(QList <QString> currentMediaInfo, QPixmap *cover, QWidget *parent = 0);
+    explicit TagViewer(QList <QString> currentMediaInfo,
+                       QPixmap *cover, QWidget *parent = 0);
     ~TagViewer();
 
 private:
     void setupInfos(QPixmap *cover);
     //Attributes
     Ui::TagViewer *ui = nullptr;
-    QList <QString> a_metas;
+    QList <QString> m_metas;
 };
 
 #endif // TAGVIEWER_H

@@ -5,43 +5,47 @@
 */
 
 FadeWindow::FadeWindow(QObject *parent) :
-    QObject(parent), a_finished(false), a_timerEnabled(false)
+    QObject(parent), m_finished(false), m_timerEnabled(false)
 {}
 FadeWindow::FadeWindow(QDialog *dialogWidget, QObject *parent) :
-    a_target(dialogWidget), a_duration(200),
-    a_finished(false), a_timerEnabled(false), QObject(parent)
+    m_target(dialogWidget), m_duration(200),
+    m_finished(false), m_timerEnabled(false), QObject(parent)
 {}
 
-FadeWindow::FadeWindow(QDialog *dialogWidget, int msecs, FadeWindow::FadeMode mode, QObject *parent) :
-    a_target(dialogWidget), a_duration(msecs),
-    a_finished(false), a_timerEnabled(false), QObject(parent),
-    a_mode(mode)
+FadeWindow::FadeWindow(QDialog *dialogWidget, int msecs,
+                       FadeWindow::FadeMode mode, QObject *parent) :
+    m_target(dialogWidget), m_duration(msecs),
+    m_finished(false), m_timerEnabled(false), QObject(parent),
+    m_mode(mode)
 {}
 
 FadeWindow::FadeWindow(QWindow *windowWidget, QObject *parent) :
-    a_target(windowWidget), a_duration(200),
-    a_finished(false), a_timerEnabled(false), QObject(parent)
+    m_target(windowWidget), m_duration(200),
+    m_finished(false), m_timerEnabled(false), QObject(parent)
 {}
 
-FadeWindow::FadeWindow(QWindow *windowWidget, int msecs, FadeWindow::FadeMode mode, QObject *parent) :
-    a_target(windowWidget), a_duration(msecs),
-    a_finished(false), a_timerEnabled(false), QObject(parent),
-    a_mode(mode)
+FadeWindow::FadeWindow(QWindow *windowWidget, int msecs,
+                       FadeWindow::FadeMode mode, QObject *parent) :
+    m_target(windowWidget), m_duration(msecs),
+    m_finished(false), m_timerEnabled(false), QObject(parent),
+    m_mode(mode)
 {}
 
-FadeWindow::FadeWindow(QMainWindow *mainWindowWidget, int msecs, FadeWindow::FadeMode mode, QObject *parent) :
-    a_target(mainWindowWidget), a_duration(msecs), a_finished(false),
-    a_timerEnabled(false), QObject(parent), a_mode(mode)
+FadeWindow::FadeWindow(QMainWindow *mainWindowWidget, int msecs,
+                       FadeWindow::FadeMode mode, QObject *parent) :
+    m_target(mainWindowWidget), m_duration(msecs), m_finished(false),
+    m_timerEnabled(false), QObject(parent), m_mode(mode)
 {}
 
 FadeWindow::FadeWindow(QMainWindow *mainWindowWidget, QObject *parent) :
-    a_target(mainWindowWidget), a_duration(200), a_finished(false),
-    a_timerEnabled(false), QObject(parent)
+    m_target(mainWindowWidget), m_duration(200), m_finished(false),
+    m_timerEnabled(false), QObject(parent)
 {}
 
 
 //Helper method
-void FadeWindow::setMode(QPropertyAnimation *anim, FadeWindow::FadeMode mode, qreal endValue)
+void FadeWindow::setMode(QPropertyAnimation *anim,
+                         FadeWindow::FadeMode mode, qreal endValue)
 {
     if(mode == FadeIn)
     {
@@ -67,17 +71,17 @@ void FadeWindow::start(qreal endValue)
 {
     QPropertyAnimation *animation;
     animation = new QPropertyAnimation(this);
-    animation->setTargetObject(a_target);
-    animation->setDuration(a_duration);
-    setMode(animation, a_mode, endValue);
+    animation->setTargetObject(m_target);
+    animation->setDuration(m_duration);
+    setMode(animation, m_mode, endValue);
     animation->setPropertyName("windowOpacity");
     animation->start(QAbstractAnimation::DeleteWhenStopped);
     //If the timer is enabled, the user will be able to be notified by checking via getter if the animation is finished.
-    if(a_timerEnabled)
+    if(m_timerEnabled)
         connect(animation, SIGNAL(finished()), this, SLOT(setFinished()));
 }
 
 FadeWindow::~FadeWindow()
 {
-    a_target = nullptr;
+    m_target = nullptr;
 }

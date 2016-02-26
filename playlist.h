@@ -28,7 +28,8 @@ public slots:
     //Other
     void setTab(int tabId); //Called by :  user, programmatically, and by player when needed.
 public:
-    explicit Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player, QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
+    explicit Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player,
+                      QPixmap *cover, QString title, bool playingState, QWidget *parent = 0);
     explicit Playlist(QWidget *parent = 0);
     void setupConnections();
     void setupActions();
@@ -41,14 +42,14 @@ public:
     void deleteItem(int index);
     bool isPlayingState() const
     {
-        return a_isPlaying;
+        return m_isPlaying;
     }
 
     void updateFavs(neuPlaylist *favPlaylist);
     void setHeader(QPixmap *cover, QString title); //Sets the cover art and the title
     int queuedIndex() //getter
     {
-        return ++a_queueIndex;
+        return ++m_queueIndex;
     }
 
     ~Playlist();
@@ -88,35 +89,35 @@ private:
     //Attributes
 
     Ui::Playlist *ui = nullptr;
-    Player *a_player = nullptr;
-    neuPlaylist *a_playlist = nullptr;
-    neuPlaylist *a_favPlaylist = nullptr;
-    bool a_isPlaying;
-    bool a_isReload;
-    bool a_favsNotLoadedYet;
-    QPixmap a_defaultCover;
-    FadeManager a_fadeManager;
-    MoveAnimation a_moveAnim;
-    int a_previousIndex;
-    int a_previousTab;
-    int a_currentIndex;
-    int a_queueIndex;
-    QList <QListWidgetItem*> a_backupItems = nullptr;
-    QAction *a_findItemTrigger = nullptr; // ctrl-F to search ~
-    QAction *a_validateFind = nullptr; // Pouvoir trigger facilement un search sans farfouiller des events
-    QAction *a_easyHideFind = nullptr; // Pour pouvoir hide avec echap
-    QMenu *a_playlistMenu = nullptr; //This is for the ... button
+    Player *m_player = nullptr;
+    neuPlaylist *m_playlist = nullptr;
+    neuPlaylist *m_favPlaylist = nullptr;
+    bool m_isPlaying;
+    bool m_isReload;
+    bool m_favsNotLoadedYet;
+    QPixmap m_defaultCover;
+    FadeManager m_fadeManager;
+    MoveAnimation m_moveAnim;
+    int m_previousIndex;
+    int m_previousTab;
+    int m_currentIndex;
+    int m_queueIndex;
+    QList <QListWidgetItem*> m_backupItems;
+    QAction *m_findItemTrigger = nullptr;
+    QAction *m_validateFind = nullptr; // Pouvoir trigger facilement un search sans farfouiller des events
+    QAction *m_easyHideFind = nullptr; // Pour pouvoir hide avec echap
+    QMenu *m_playlistMenu = nullptr; //This is for the ... button
     //Actions of the playlist menu
-    QAction *a_reloadLibrary = nullptr;
-    QAction *a_selectOtherDir = nullptr;
-    QMenu *a_playlistContextMenu = nullptr; //This is the context menu called by right-click on an item
+    QAction *m_reloadLibrary = nullptr;
+    QAction *m_selectOtherDir = nullptr;
+    QMenu *m_playlistContextMenu = nullptr; //This is the context menu called by right-click on an item
     //Actions of the context menu
-    QAction *a_addToQueue = nullptr;
-    QAction *a_viewInfo = nullptr;
-    QAction *a_deleteItemFromQueue = nullptr;
-    QAction *a_addToFav = nullptr;
-    QSettings a_settings;
-    QPointer <QMediaPlayer> a_tempPlayer;
+    QAction *m_addToQueue = nullptr;
+    QAction *m_viewInfo = nullptr;
+    QAction *m_deleteItemFromQueue = nullptr;
+    QAction *m_addToFav = nullptr;
+    QSettings m_settings;
+    QPointer <QMediaPlayer> m_tempPlayer;
 };
 
 #endif // PLAYLIST_H
