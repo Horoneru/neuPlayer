@@ -671,32 +671,6 @@ Vous avez besoin de redémarrer le player pour appliquer </string>
         <string>Fermer</string>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_5">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>110</y>
-         <width>381</width>
-         <height>71</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Informations musicales</string>
-       </property>
-       <widget class="QPushButton" name="a_indexingPush">
-        <property name="geometry">
-         <rect>
-          <x>140</x>
-          <y>30</y>
-          <width>101</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Indexer les titres</string>
-        </property>
-       </widget>
-      </widget>
      </widget>
      <widget class="QWidget" name="about">
       <attribute name="title">
@@ -797,13 +771,13 @@ petit mais puissant sans consommer énormément de ressources.</string>
         <string>Créé avec Qt 5.3.2.
 Licencié sous GNU GPL V3
 Copyright Horoneru 2015
-build 290515</string>
+build 260216</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_11">
+      <widget class="QLabel" name="versionLabel">
        <property name="geometry">
         <rect>
          <x>345</x>
@@ -813,7 +787,7 @@ build 290515</string>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v2.0.1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#7d86ff;&quot;&gt;v&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
