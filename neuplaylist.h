@@ -24,7 +24,7 @@ public:
     ~neuPlaylist();
 
 private:
-    QStringList a_listFilter;
+    QStringList m_listFilter;
 };
 
 #endif // NEUPLAYLIST_H

@@ -14,7 +14,7 @@ public:
 private slots:
     void on_newInfosFromProc();
 private:
-    QProcess a_updateprocess;
+    QProcess m_updateprocess;
 };
 
 #endif // UPDATERHANDLER_H

@@ -1,58 +1,58 @@
 #include "moveanimation.h"
 
 MoveAnimation::MoveAnimation(QObject *parent) :
-    QObject(parent), a_direction(RightToLeft), a_duration(Normal)
+    QObject(parent), m_direction(RightToLeft), m_duration(Normal)
 {}
 
 MoveAnimation::MoveAnimation(QWidget *target, MoveAnimation::Direction direction,
                              MoveAnimation::MoveDuration duration, QObject *parent) :
-        QObject(parent), a_target(target), a_direction(direction), a_duration(duration)
+        QObject(parent), m_target(target), m_direction(direction), m_duration(duration)
 {}
 
 MoveAnimation::MoveAnimation(QWidget *target, QObject *parent) :
-    QObject(parent), a_target(target), a_direction(RightToLeft), a_duration(Normal)
+    QObject(parent), m_target(target), m_direction(RightToLeft), m_duration(Normal)
 {}
 
 void MoveAnimation::setupDirection()
 {
     int startPosition[2];
-    switch (a_direction)
+    switch (m_direction)
     {
     case LeftToRight:
-        startPosition[0] = a_target->x() + 50;
-        startPosition[1] = a_target->y();
+        startPosition[0] = m_target->x() + 50;
+        startPosition[1] = m_target->y();
         break;
     case RightToLeft:
-        startPosition[0] = a_target->x() - 50;
-        startPosition[1] = a_target->y();
+        startPosition[0] = m_target->x() - 50;
+        startPosition[1] = m_target->y();
         break;
     case BottomToTop:
-        startPosition[0] = a_target->x();
-        startPosition[1] = a_target->y() + 50;
+        startPosition[0] = m_target->x();
+        startPosition[1] = m_target->y() + 50;
         break;
     case TopToBottom:
-        startPosition[0] = a_target->x();
-        startPosition[1] = a_target->y() - 50;
+        startPosition[0] = m_target->x();
+        startPosition[1] = m_target->y() - 50;
         break;
     }
-    a_anim.setStartValue(QPoint(startPosition[0], startPosition[1]));
+    m_anim.setStartValue(QPoint(startPosition[0], startPosition[1]));
 }
 
 void MoveAnimation::start()
 {
-    a_anim.setDuration(a_duration);
-    if(a_anim.endValue().isNull()) //If it hasn't been set yet
+    m_anim.setDuration(m_duration);
+    if(m_anim.endValue().isNull()) //If it hasn't been set yet
         setupDirection();
-    a_anim.setTargetObject(a_target);
-    a_anim.setPropertyName("pos");
-    a_anim.setEndValue(QPoint(a_target->x(), a_target->y()));
-    if(a_anim.state() == QPropertyAnimation::Running)
-        a_anim.stop();
-    a_anim.start();
-    connect(&a_anim, SIGNAL(finished()), this, SLOT(hasFinished()));
+    m_anim.setTargetObject(m_target);
+    m_anim.setPropertyName("pos");
+    m_anim.setEndValue(QPoint(m_target->x(), m_target->y()));
+    if(m_anim.state() == QPropertyAnimation::Running)
+        m_anim.stop();
+    m_anim.start();
+    connect(&m_anim, SIGNAL(finished()), this, SLOT(hasFinished()));
 }
 
 MoveAnimation::~MoveAnimation()
 {
-    a_target = nullptr;
+    m_target = nullptr;
 }

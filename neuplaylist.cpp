@@ -3,17 +3,17 @@
 neuPlaylist::neuPlaylist(QObject *parent) :
     QMediaPlaylist(parent)
 {
-    a_listFilter << "*.wav";
-    a_listFilter << "*.mp3";
-    a_listFilter << "*.mp4";
-    a_listFilter << "*.m4a";
+    m_listFilter << "*.wav";
+    m_listFilter << "*.mp3";
+    m_listFilter << "*.mp4";
+    m_listFilter << "*.m4a";
 }
 
 void neuPlaylist::save(const QString &toFileName) //Default
 {
     this->clear();
     QSettings settings("neuPlayer.ini", QSettings::IniFormat, this);
-    QDirIterator dirIterator(settings.value("mediapath").toString(), a_listFilter,
+    QDirIterator dirIterator(settings.value("mediapath").toString(), m_listFilter,
                              QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     QFile fileHandler(toFileName);
@@ -40,7 +40,7 @@ void neuPlaylist::save(const QString &toFileName) //Default
 void neuPlaylist::save(const QString &toFileName, const QUrl &pathSaved)
 {
     this->clear();
-    QDirIterator dirIterator(pathSaved.toString(), a_listFilter,
+    QDirIterator dirIterator(pathSaved.toString(), m_listFilter,
                              QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
 
     QFile fileHandler(toFileName);
@@ -82,7 +82,7 @@ void neuPlaylist::saveFromPlaylist(const QString &playlistName)
 //Called from Settings
 QList <QUrl> neuPlaylist::setLibrary(const QString &path)
 {
-    QDirIterator dirIterator(path, a_listFilter, QDir::Files | QDir::NoSymLinks,
+    QDirIterator dirIterator(path, m_listFilter, QDir::Files | QDir::NoSymLinks,
                              QDirIterator::Subdirectories);
 
     //I'm doing that to reconstruct the structure of a .m3u8 file so that it forces UT8
@@ -114,7 +114,7 @@ QList <QUrl> neuPlaylist::setLibrary(const QString &path)
 //Returns the updated list
 QList <QUrl> neuPlaylist::update(const QString &path)
 {
-    QDirIterator dirIterator(path, a_listFilter, QDir::Files | QDir::NoSymLinks,
+    QDirIterator dirIterator(path, m_listFilter, QDir::Files | QDir::NoSymLinks,
                              QDirIterator::Subdirectories);
 
     // Variable qui contiendra tous les fichiers correspondant à notre recherche

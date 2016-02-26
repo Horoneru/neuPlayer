@@ -6,36 +6,36 @@ Player::Player(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Player),
     /* Background ressources */
-    a_neuDarkBg(":/Ressources/neudarkbg.png"),
-    a_neuLightBg(":/Ressources/neubackgroundwhite.jpg"),
-    a_neuLightCustombg(":/Ressources/neucustombackgroundwhite.jpg"),
-    a_neuDarkCustombg(":/Ressources/neucustombackgroundblack.jpg"),
+    m_neuDarkBg(":/Ressources/neudarkbg.png"),
+    m_neuLightBg(":/Ressources/neubackgroundwhite.jpg"),
+    m_neuLightCustombg(":/Ressources/neucustombackgroundwhite.jpg"),
+    m_neuDarkCustombg(":/Ressources/neucustombackgroundblack.jpg"),
     /* Volume icons ressources */
-    a_volumeIcon(":/Ressources/volumebtn.png"),
-    a_volumeDarkIcon(":/Ressources/volumedarkbtn.png"),
-    a_volumeMutedIcon(":/Ressources/volumebtn_onPressed.png"),
-    a_volumeMutedDarkIcon(":/Ressources/volumedarkbtn_onPressed.png"),
-    a_volumeLowIcon(":/Ressources/volumebtn2.png"),
-    a_volumeLowDarkIcon(":/Ressources/volumedarkbtn2.png"),
+    m_volumeIcon(":/Ressources/volumebtn.png"),
+    m_volumeDarkIcon(":/Ressources/volumedarkbtn.png"),
+    m_volumeMutedIcon(":/Ressources/volumebtn_onPressed.png"),
+    m_volumeMutedDarkIcon(":/Ressources/volumedarkbtn_onPressed.png"),
+    m_volumeLowIcon(":/Ressources/volumebtn2.png"),
+    m_volumeLowDarkIcon(":/Ressources/volumedarkbtn2.png"),
     /* No CSS controls ressources */
-    a_previousIcon(":/Ressources/previousbtn.png"),
-    a_previousDarkIcon(":/Ressources/previousdarkbtn.png"),
-    a_forwardIcon(":/Ressources/forwardbtn.png"),
-    a_forwardDarkIcon(":/Ressources/forwarddarkbtn.png"),
+    m_previousIcon(":/Ressources/previousbtn.png"),
+    m_previousDarkIcon(":/Ressources/previousdarkbtn.png"),
+    m_forwardIcon(":/Ressources/forwardbtn.png"),
+    m_forwardDarkIcon(":/Ressources/forwarddarkbtn.png"),
     /* Actions */
-    a_accessSettings(tr("Paramètres"), this),
-    a_alwaysOnTopHandler(tr("Toujours visible"), this), a_advance(this), a_back(this),
-    a_doublerate("2.0x", this), a_halfrate("0.5x", this),
-    a_normalrate("1.0x", this), a_playbackrates(this),
-    a_openMedia(tr("Ouvrir des fichiers"), this),
-    a_showPlaylist(tr("Ouvrir la liste de lecture"), this),
-    a_shuffle(tr("Mélanger la playlist"), this),
-    a_tagViewer(tr("Voir les tags"), this),
-    a_volumeDown(this), a_volumeUp(this),
+    m_accessSettings(tr("Paramètres"), this),
+    m_alwaysOnTopHandler(tr("Toujours visible"), this), m_advance(this), m_back(this),
+    m_doublerate("2.0x", this), m_halfrate("0.5x", this),
+    m_normalrate("1.0x", this), m_playbackrates(this),
+    m_openMedia(tr("Ouvrir des fichiers"), this),
+    m_showPlaylist(tr("Ouvrir la liste de lecture"), this),
+    m_shuffle(tr("Mélanger la playlist"), this),
+    m_tagViewer(tr("Voir les tags"), this),
+    m_volumeDown(this), m_volumeUp(this),
     /* Menus */
-    a_playbackMenu (tr("Vitesse de lecture"), this), a_menu (this),
+    m_playbackMenu (tr("Vitesse de lecture"), this), m_menu (this),
     /* Settings */
-    a_settings ("neuPlayer.ini", QSettings::IniFormat, this)
+    m_settings ("neuPlayer.ini", QSettings::IniFormat, this)
 {
     /*!
                                2015 Horoneru                   2.1.1 stable 240216 active
@@ -54,64 +54,64 @@ Player::Player(QWidget *parent) :
 
     setupMenus();
     // Bool to control playlist state
-    a_isPlaylistOpen = false;
+    m_isPlaylistOpen = false;
 
     //Same logic
-    a_isSettingsOpen = false;
+    m_isSettingsOpen = false;
 
     //Bool to detect a delete. Used to manage a possible problem after a delete
-    a_deleteTriggered = false;
+    m_deleteTriggered = false;
 
     //Bool to do initial shuffle when selecting random play and forwarding
-    a_hasToDoInitialShuffle = false;
+    m_hasToDoInitialShuffle = false;
 
     //self-explanatory
-    a_hasToStartupPlaylist = false;
+    m_hasToStartupPlaylist = false;
 
     //Bool to control whether we have to set the type of label (Scrolling Label or normal)
-    a_hasToSetLabelType = false;
+    m_hasToSetLabelType = false;
 
     //Bool to indicate to the playlist if the player is playing
-    a_isPlaying = false;
+    m_isPlaying = false;
 
     //Bool to indicate that we were using the previous button. It'll launch the animation when receiving meta-data
-    a_wasPrevious = false;
+    m_wasPrevious = false;
 
     //Bool to recover progress when needed
-    a_recoveredProgress = true;
+    m_recoveredProgress = true;
 
     //Bool to control if we have to animate the window when closing
-    a_canClose = true;
+    m_canClose = true;
 
     //Bool to avoid the user to go too fast.
-    a_canChangeMusic = true;
+    m_canChangeMusic = true;
 
     //Bool to avoid the user going too fast again when shuffling the playlist
-    a_canDoShuffleAgain = true;
+    m_canDoShuffleAgain = true;
 
     //Bool that is used to know if we're starting up
-    a_isStarting = true;
+    m_isStarting = true;
 
     //Bool to indicate the playlist needs to be refreshed on the disk
-    a_hasToSavePlaylistLater = false;
+    m_hasToSavePlaylistLater = false;
 
-    ui->a_pausebtn->setVisible(false);
+    ui->pausebtn->setVisible(false);
 
-    if(a_settings.value("Additional_Features/framelessWindow", false).toBool() == true)
+    if(m_settings.value("Additional_Features/framelessWindow", false).toBool() == true)
     {
-        a_isFrameless = true;
+        m_isFrameless = true;
         setFramelessButtonsVisibility(true);
-        a_canClose = false;
+        m_canClose = false;
     }
     else
     {
-        a_isFrameless = false;
+        m_isFrameless = false;
         setFramelessButtonsVisibility(false);
     }
-    a_audioFade = new QPropertyAnimation(neu, "volume", this);
-    a_audioFade->setStartValue(0);
-    a_audioFade->setDuration(a_settings.value("fadeValue").toInt());
-    if(a_settings.value("Additional_Features/audioFade", false).toBool() == true)
+    m_audioFade = new QPropertyAnimation(neu, "volume", this);
+    m_audioFade->setStartValue(0);
+    m_audioFade->setDuration(m_settings.value("fadeValue").toInt());
+    if(m_settings.value("Additional_Features/audioFade", false).toBool() == true)
         setAudioFade(true);
 
     setPlaybackRate();
@@ -123,16 +123,16 @@ Player::Player(QWidget *parent) :
 
     setupPlayMode();
 
-    a_volumeSlider->setValue(a_settings.value("volume", 50).toInt());
+    m_volumeSlider->setValue(m_settings.value("volume", 50).toInt());
 
-    a_alwaysOnTopHandler.setChecked(a_settings.value("visibilite", false).toBool());
+    m_alwaysOnTopHandler.setChecked(m_settings.value("visibilite", false).toBool());
 
-    if(a_settings.value("playlistAtStartup").toBool() == true)
-        a_hasToStartupPlaylist = true; //Will trigger the playlist startup
+    if(m_settings.value("playlistAtStartup").toBool() == true)
+        m_hasToStartupPlaylist = true; //Will trigger the playlist startup
 
     setOpacity();
 
-    a_isStarting = false;    //Done !
+    m_isStarting = false;    //Done !
 }
 
     /*///////Plugins & Setup Section///////*/
@@ -140,72 +140,72 @@ Player::Player(QWidget *parent) :
 void Player::setupObjects()
 {
     /*///////Setup Objects and Data///////*/
-    resize(a_settings.value("size", QSize(400, 47) ).toSize());
-    move(a_settings.value("pos", QPoint(200,200)).toPoint());
-    a_playbackState = a_settings.value("playbackrate", 0).toInt();
-    a_isRandomMode = a_settings.value("random", false).toBool();
-    a_isLoopPlaylistMode = a_settings.value("loop", false).toBool();
+    resize(m_settings.value("size", QSize(400, 47) ).toSize());
+    move(m_settings.value("pos", QPoint(200,200)).toPoint());
+    m_playbackState = m_settings.value("playbackrate", 0).toInt();
+    m_isRandomMode = m_settings.value("random", false).toBool();
+    m_isLoopPlaylistMode = m_settings.value("loop", false).toBool();
 
     //Media Player
     neu = new QMediaPlayer(this);
 
     //Prepare custom Sliders
-    a_progressSlider = new Slider(ui->centralWidget);
-    a_progressSlider->setGeometry(QRect(132, 26, 110, 20));
-    a_progressSlider->setOrientation(Qt::Horizontal);
-    a_progressSlider->setInvertedAppearance(false);
-    a_progressSlider->setInvertedControls(false);
-    a_progressSlider->setTickPosition(QSlider::NoTicks);
-    a_progressSlider->setTickInterval(10);
-    a_progressSlider->setToolTip(tr("Alt + droite ou gauche pour parcourir"));
+    m_progressSlider = new Slider(ui->centralWidget);
+    m_progressSlider->setGeometry(QRect(132, 26, 110, 20));
+    m_progressSlider->setOrientation(Qt::Horizontal);
+    m_progressSlider->setInvertedAppearance(false);
+    m_progressSlider->setInvertedControls(false);
+    m_progressSlider->setTickPosition(QSlider::NoTicks);
+    m_progressSlider->setTickInterval(10);
+    m_progressSlider->setToolTip(tr("Alt + droite ou gauche pour parcourir"));
 
 
-    a_volumeSlider = new Slider(ui->centralWidget);
-    a_volumeSlider->setGeometry(QRect(310, 28, 60, 16));
-    a_volumeSlider->setMaximum(99);
-    a_volumeSlider->setValue(50);
-    a_volumeSlider->setOrientation(Qt::Horizontal);
-    a_volumeSlider->setToolTip(tr("Volume (Ctrl haut ou bas) "));
+    m_volumeSlider = new Slider(ui->centralWidget);
+    m_volumeSlider->setGeometry(QRect(310, 28, 60, 16));
+    m_volumeSlider->setMaximum(99);
+    m_volumeSlider->setValue(50);
+    m_volumeSlider->setOrientation(Qt::Horizontal);
+    m_volumeSlider->setToolTip(tr("Volume (Ctrl haut ou bas) "));
 
     //Prepare animation
-    a_titleAnimate = new QPropertyAnimation(ui->a_label, "pos", this);
-    a_titleAnimate->setDuration(200); //Always 200 ms
-    a_infoFadein = new QGraphicsOpacityEffect(this);
-    a_infoFadein->setOpacity(1.0);
-    ui->a_label->setGraphicsEffect(a_infoFadein);
-    a_infoFadeAnim = new QPropertyAnimation(a_infoFadein, "opacity", this);
+    m_titleAnimate = new QPropertyAnimation(ui->label, "pos", this);
+    m_titleAnimate->setDuration(200); //Always 200 ms
+    m_infoFadein = new QGraphicsOpacityEffect(this);
+    m_infoFadein->setOpacity(1.0);
+    ui->label->setGraphicsEffect(m_infoFadein);
+    m_infoFadeAnim = new QPropertyAnimation(m_infoFadein, "opacity", this);
 
     //Prepare the sliding text object
     QFont font;
     font.setFamily(QStringLiteral("Segoe UI"));
     font.setPointSize(10);
-    a_scrollingLabel.setParent(this);
-    a_scrollingLabel.setFont(font);
-    a_scrollingLabel.setGeometry(QRect(100, 0, 175, 31));
-    a_scrollingLabel.setMinimumSize(QSize(170, 30));
+    m_scrollingLabel.setParent(this);
+    m_scrollingLabel.setFont(font);
+    m_scrollingLabel.setGeometry(QRect(100, 0, 175, 31));
+    m_scrollingLabel.setMinimumSize(QSize(170, 30));
 
     //Raccourcis clavier pour parcourir les éléments du player
-    a_advance.setShortcut(Qt::ALT + Qt::Key_Right);
-    a_back.setShortcut(Qt::ALT + Qt::Key_Left);
-    ui->a_volumebtn->setCheckable(true);
-    a_volumeUp.setShortcut(Qt::CTRL + Qt::Key_Up);
-    a_volumeDown.setShortcut(Qt::CTRL + Qt::Key_Down);
+    m_advance.setShortcut(Qt::ALT + Qt::Key_Right);
+    m_back.setShortcut(Qt::ALT + Qt::Key_Left);
+    ui->volumebtn->setCheckable(true);
+    m_volumeUp.setShortcut(Qt::CTRL + Qt::Key_Up);
+    m_volumeDown.setShortcut(Qt::CTRL + Qt::Key_Down);
 
-    this->addAction(&a_advance);
-    this->addAction(&a_back);
-    this->addAction(&a_volumeUp);
-    this->addAction(&a_volumeDown);
+    this->addAction(&m_advance);
+    this->addAction(&m_back);
+    this->addAction(&m_volumeUp);
+    this->addAction(&m_volumeDown);
 
     //Elements du menu :
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    a_openMedia.setShortcut(Qt::CTRL + Qt::Key_O);
-    a_showPlaylist.setShortcut(Qt::CTRL + Qt::Key_P); //P comme Playlist ?
-    a_alwaysOnTopHandler.setCheckable(true);
-    a_alwaysOnTopHandler.setShortcut(Qt::CTRL + Qt::Key_V); // V comme visible :3
-    a_accessSettings.setShortcut(Qt::CTRL + Qt::Key_Space);
-    a_accessSettings.setShortcutContext(Qt::ApplicationShortcut);
-    a_shuffle.setShortcut(Qt::CTRL + Qt::Key_R); // R comme random !
-    a_tagViewer.setShortcut(Qt::ALT + Qt::Key_Return);
+    m_openMedia.setShortcut(Qt::CTRL + Qt::Key_O);
+    m_showPlaylist.setShortcut(Qt::CTRL + Qt::Key_P); //P comme Playlist ?
+    m_alwaysOnTopHandler.setCheckable(true);
+    m_alwaysOnTopHandler.setShortcut(Qt::CTRL + Qt::Key_V); // V comme visible :3
+    m_accessSettings.setShortcut(Qt::CTRL + Qt::Key_Space);
+    m_accessSettings.setShortcutContext(Qt::ApplicationShortcut);
+    m_shuffle.setShortcut(Qt::CTRL + Qt::Key_R); // R comme random !
+    m_tagViewer.setShortcut(Qt::ALT + Qt::Key_Return);
 
     //Timer enabling the scrolling of the label info
     Timer.setInterval(1000);
@@ -222,47 +222,47 @@ void Player::setupMenus()
 {
 
     //Sous-menu playback rate
-    a_normalrate.setCheckable(true);
-    a_doublerate.setCheckable(true);
-    a_halfrate.setCheckable(true);
-    a_playbackrates.addAction(&a_doublerate);
-    a_playbackrates.addAction(&a_normalrate);
-    a_playbackrates.addAction(&a_halfrate);
-    a_playbackrates.setExclusive(true);
-    a_playbackMenu.addAction(&a_halfrate);
-    a_playbackMenu.addAction(&a_normalrate);
-    a_playbackMenu.addAction(&a_doublerate);
+    m_normalrate.setCheckable(true);
+    m_doublerate.setCheckable(true);
+    m_halfrate.setCheckable(true);
+    m_playbackrates.addAction(&m_doublerate);
+    m_playbackrates.addAction(&m_normalrate);
+    m_playbackrates.addAction(&m_halfrate);
+    m_playbackrates.setExclusive(true);
+    m_playbackMenu.addAction(&m_halfrate);
+    m_playbackMenu.addAction(&m_normalrate);
+    m_playbackMenu.addAction(&m_doublerate);
 
     //Setup The menu
-    a_menu.addAction(&a_showPlaylist);
-    a_menu.addAction(&a_openMedia);
-    a_menu.addAction(&a_accessSettings);
-    a_menu.addMenu(&a_playbackMenu);
-    a_menu.addAction(&a_alwaysOnTopHandler);
-    a_menu.addAction(&a_shuffle);
-    a_menu.addAction(&a_tagViewer);
-    this->addAction(&a_openMedia);
-    this->addAction(&a_showPlaylist);
-    this->addAction(&a_alwaysOnTopHandler);
-    this->addAction(&a_shuffle);
-    this->addAction(&a_accessSettings);
-    this->addAction(&a_tagViewer);
+    m_menu.addAction(&m_showPlaylist);
+    m_menu.addAction(&m_openMedia);
+    m_menu.addAction(&m_accessSettings);
+    m_menu.addMenu(&m_playbackMenu);
+    m_menu.addAction(&m_alwaysOnTopHandler);
+    m_menu.addAction(&m_shuffle);
+    m_menu.addAction(&m_tagViewer);
+    this->addAction(&m_openMedia);
+    this->addAction(&m_showPlaylist);
+    this->addAction(&m_alwaysOnTopHandler);
+    this->addAction(&m_shuffle);
+    this->addAction(&m_accessSettings);
+    this->addAction(&m_tagViewer);
 
 }
 
 void Player::setupPlayMode()
 {
-    if(a_isRandomMode)
+    if(m_isRandomMode)
     {
 
-        a_mediaPlaylist.setPlaybackMode(QMediaPlaylist::Random);
-        a_favPlaylist.setPlaybackMode(QMediaPlaylist::Random);
-        a_hasToDoInitialShuffle = true;
+        m_mediaPlaylist.setPlaybackMode(QMediaPlaylist::Random);
+        m_favPlaylist.setPlaybackMode(QMediaPlaylist::Random);
+        m_hasToDoInitialShuffle = true;
     }
     else
     {
-        a_mediaPlaylist.setPlaybackMode(QMediaPlaylist::Sequential);
-        a_favPlaylist.setPlaybackMode(QMediaPlaylist::Sequential);
+        m_mediaPlaylist.setPlaybackMode(QMediaPlaylist::Sequential);
+        m_favPlaylist.setPlaybackMode(QMediaPlaylist::Sequential);
     }
 }
 
@@ -270,26 +270,26 @@ void Player::setupPlayMode()
 void Player::setupConnections()
 {
     /*///////Connexions///////*/
-    connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
+    connect(ui->playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     connect(neu, SIGNAL(error(QMediaPlayer::Error)),
             this, SLOT(errorHandling(QMediaPlayer::Error)));
     connect(neu, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             this, SLOT(statusChanged(QMediaPlayer::MediaStatus)));
     connect(neu, SIGNAL(stateChanged(QMediaPlayer::State)),
             this, SLOT(stateChanged(QMediaPlayer::State)));
-    connect(ui->a_forward, SIGNAL(clicked()), this, SLOT(forwardMedia()));
-    connect(ui->a_previous, SIGNAL(clicked()), this, SLOT(previousMedia()));
-    connect(ui->a_menubtn, SIGNAL(clicked()), this, SLOT(showMenu()));
-    connect(&a_advance, SIGNAL(triggered()), this, SLOT(advanceProgress()));
-    connect(&a_back, SIGNAL(triggered()), this, SLOT(backProgress()));
-    connect(&a_mediaPlaylist, SIGNAL(loaded()), this, SLOT(finishingUp()));
+    connect(ui->forward, SIGNAL(clicked()), this, SLOT(forwardMedia()));
+    connect(ui->previous, SIGNAL(clicked()), this, SLOT(previousMedia()));
+    connect(ui->menubtn, SIGNAL(clicked()), this, SLOT(showMenu()));
+    connect(&m_advance, SIGNAL(triggered()), this, SLOT(advanceProgress()));
+    connect(&m_back, SIGNAL(triggered()), this, SLOT(backProgress()));
+    connect(&m_mediaPlaylist, SIGNAL(loaded()), this, SLOT(finishingUp()));
     connect(neu, SIGNAL(durationChanged(qint64)), this, SLOT(on_durationChanged(qint64)));
     connect(neu, SIGNAL(positionChanged(qint64)), this, SLOT(UpdateProgress(qint64)));
-    connect(a_progressSlider, SIGNAL(sliderMoved(int)), this, SLOT(seekProgress(int)));
-    connect(a_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
-    connect(ui->a_volumebtn, SIGNAL(clicked()), this, SLOT(setVolumeMuted()));
-    connect(&a_volumeUp, SIGNAL(triggered()), this, SLOT(volumeUp()));
-    connect(&a_volumeDown, SIGNAL(triggered()), this, SLOT(volumeDown()));
+    connect(m_progressSlider, SIGNAL(sliderMoved(int)), this, SLOT(seekProgress(int)));
+    connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(on_volumeChanged(int)));
+    connect(ui->volumebtn, SIGNAL(clicked()), this, SLOT(setVolumeMuted()));
+    connect(&m_volumeUp, SIGNAL(triggered()), this, SLOT(volumeUp()));
+    connect(&m_volumeDown, SIGNAL(triggered()), this, SLOT(volumeDown()));
     connect(neu, SIGNAL(metaDataChanged()), this, SLOT(setMeta()));
     connect(&Timer, SIGNAL(timeout()), this, SLOT(update_info()));
     connect(&setTypeTimer, SIGNAL(timeout()), this, SLOT(setType()));
@@ -297,40 +297,40 @@ void Player::setupConnections()
     connect(&grantShuffleAgainTimer, SIGNAL(timeout()), this, SLOT(canShuffleNow()));
     connect(this, SIGNAL(EndOfMedia()), this, SLOT(endOfMediaGuard()));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
-    connect(&a_openMedia, SIGNAL(triggered()), this, SLOT(openMedia()));
-    connect(&a_alwaysOnTopHandler, SIGNAL(toggled(bool)), this, SLOT(windowFlagsHandler()));
-    connect(&a_playbackrates, SIGNAL(triggered(QAction*)),
+    connect(&m_openMedia, SIGNAL(triggered()), this, SLOT(openMedia()));
+    connect(&m_alwaysOnTopHandler, SIGNAL(toggled(bool)), this, SLOT(windowFlagsHandler()));
+    connect(&m_playbackrates, SIGNAL(triggered(QAction*)),
             this, SLOT(playbackHandler(QAction*)));
-    connect(&a_shuffle, SIGNAL(triggered()), this, SLOT(setShuffle()));
-    connect(&a_showPlaylist, SIGNAL(triggered()), this, SLOT(showPlaylist()));
-    connect(&a_tagViewer, SIGNAL(triggered()), this, SLOT(showTagViewer()));
-    connect(&a_accessSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
-    connect(&a_mediaPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
-    connect(ui->a_closeButton, SIGNAL(clicked()), this, SLOT(close()));
-    connect(ui->a_hideButton, SIGNAL(clicked()), this, SLOT(showMinimized()));
+    connect(&m_shuffle, SIGNAL(triggered()), this, SLOT(setShuffle()));
+    connect(&m_showPlaylist, SIGNAL(triggered()), this, SLOT(showPlaylist()));
+    connect(&m_tagViewer, SIGNAL(triggered()), this, SLOT(showTagViewer()));
+    connect(&m_accessSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
+    connect(&m_mediaPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
+    connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->hideButton, SIGNAL(clicked()), this, SLOT(showMinimized()));
 
 #ifdef Q_OS_WIN
-    connect(&a_thumbActionButton, SIGNAL(clicked()), this, SLOT(playMedia()));
-    connect(&a_thumbForwardButton, SIGNAL(clicked()), this, SLOT(forwardMedia()));
-    connect(&a_thumbPreviousButton, SIGNAL(clicked()), this, SLOT(previousMedia()));
+    connect(&m_thumbActionButton, SIGNAL(clicked()), this, SLOT(playMedia()));
+    connect(&m_thumbForwardButton, SIGNAL(clicked()), this, SLOT(forwardMedia()));
+    connect(&m_thumbPreviousButton, SIGNAL(clicked()), this, SLOT(previousMedia()));
 #endif
 }
 
 void Player::setupPlugins()
 {
     loadSkin();
-    if(a_settings.value("Additional_Features/libraryAtStartup", false).toBool() == true)
+    if(m_settings.value("Additional_Features/libraryAtStartup", false).toBool() == true)
     {
         //Modes de chargement de la librairie
 
-        ui->a_label->setText("<No Media>");
-        if(a_settings.value("Additional_Features/refreshWhenNeeded", false).toBool() == true)
+        ui->label->setText("<No Media>");
+        if(m_settings.value("Additional_Features/refreshWhenNeeded", false).toBool() == true)
         {
             QFile fileHandler(".configdone");
             if(!fileHandler.exists())
             {
                 updateLibrary();
-                if(a_settings.value("playlistAtStartup", false).toBool() == true)
+                if(m_settings.value("playlistAtStartup", false).toBool() == true)
                     deleteLater();
             }
             else
@@ -347,18 +347,18 @@ void Player::setupPlugins()
 
 void Player::loadPlaylist()
 {
-    if(a_settings.value("usingFavorites", false).toBool() == true) //Are we on the favorites playlist ?
+    if(m_settings.value("usingFavorites", false).toBool() == true) //Are we on the favorites playlist ?
     {
-        a_isUsingFavPlaylist = true;
-        disconnect(&a_mediaPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
-        connect(&a_favPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
+        m_isUsingFavPlaylist = true;
+        disconnect(&m_mediaPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
+        connect(&m_favPlaylist, SIGNAL(loaded()), this, SLOT(setupNewLibrary()));
 
     }
     else
         setUsingFav(false);
     //We load both anyways
-    a_mediaPlaylist.load(QUrl::fromLocalFile("neuLibrary.m3u8"), "m3u8");
-    a_favPlaylist.load(QUrl::fromLocalFile("favorites.m3u8"), "m3u8");
+    m_mediaPlaylist.load(QUrl::fromLocalFile("neuLibrary.m3u8"), "m3u8");
+    m_favPlaylist.load(QUrl::fromLocalFile("favorites.m3u8"), "m3u8");
 }
 
 void Player::setOpacity(qreal opacityFromSettings)
@@ -369,106 +369,106 @@ void Player::setOpacity(qreal opacityFromSettings)
     {
         this->setWindowOpacity(opacityFromSettings);
         if(opacityFromSettings != 1.0)
-            a_canClose = false; //Handle the fade out anim
+            m_canClose = false; //Handle the fade out anim
         else
-            if(!a_isFrameless) //Frameless also isn't handled by the system anymore
-                a_canClose = true;
+            if(!m_isFrameless) //Frameless also isn't handled by the system anymore
+                m_canClose = true;
         return;
     }
 
     //Because I know someone will somehow set a 0 opacity...
-    if(a_settings.value("opacity", 1.0).toReal() <= 0)
+    if(m_settings.value("opacity", 1.0).toReal() <= 0)
     {
         this->setWindowOpacity(1.0);
         return;
     }
-    if(a_settings.value("opacity", 1.0).toReal() < 1.0)
+    if(m_settings.value("opacity", 1.0).toReal() < 1.0)
     {
-        this->setWindowOpacity(a_settings.value("opacity").toReal());
-        a_canClose = false; //Handle the fade out anim
+        this->setWindowOpacity(m_settings.value("opacity").toReal());
+        m_canClose = false; //Handle the fade out anim
     }
 }
 
 void Player::setFramelessButtonsVisibility(bool visible)
 {
-    ui->a_closeButton->setVisible(visible);
-    ui->a_hideButton->setVisible(visible);
+    ui->closeButton->setVisible(visible);
+    ui->hideButton->setVisible(visible);
 }
 
 void Player::loadSkin()
 {
-    a_idSkin = a_settings.value("skin", 1).toInt();
-    if(a_idSkin == 1 || a_idSkin == 3) //Dark skin
+    m_idSkin = m_settings.value("skin", 1).toInt();
+    if(m_idSkin == 1 || m_idSkin == 3) //Dark skin
     {
-        if(!a_isStarting)
+        if(!m_isStarting)
             setDarkCSS(); //Because the stylesheet is already set as default
-        if(a_idSkin == 1)
+        if(m_idSkin == 1)
         {
             //We won't charge something which doesn't exists
-            if(!QFile(a_settings.value("customimage").toString()).exists())
-                ui->a_image->setPixmap(a_neuDarkBg);
+            if(!QFile(m_settings.value("customimage").toString()).exists())
+                ui->image->setPixmap(m_neuDarkBg);
             else
-                ui->a_image->setPixmap(QPixmap(a_settings.value("customimage").toString()));
+                ui->image->setPixmap(QPixmap(m_settings.value("customimage").toString()));
         }
         else //Custom bg
         {
-            if(!QFile(a_settings.value("customimage").toString()).exists())
-                ui->a_image->setPixmap(a_neuDarkCustombg);
+            if(!QFile(m_settings.value("customimage").toString()).exists())
+                ui->image->setPixmap(m_neuDarkCustombg);
             else
-                ui->a_image->setPixmap(QPixmap(a_settings.value("customimage").toString()));
+                ui->image->setPixmap(QPixmap(m_settings.value("customimage").toString()));
         }
     }
 
-    if(a_idSkin == 0 || a_idSkin == 2) //Light skin
+    if(m_idSkin == 0 || m_idSkin == 2) //Light skin
     {
         setLightCSS();
-        if(a_idSkin == 0)
+        if(m_idSkin == 0)
         {
-            if(!QFile(a_settings.value("customimage").toString()).exists())
-                ui->a_image->setPixmap(a_neuLightBg);
+            if(!QFile(m_settings.value("customimage").toString()).exists())
+                ui->image->setPixmap(m_neuLightBg);
             else
-                ui->a_image->setPixmap(QPixmap(a_settings.value("customimage").toString()));
+                ui->image->setPixmap(QPixmap(m_settings.value("customimage").toString()));
         }
         else //Custom bg
         {
-            if(!QFile(a_settings.value("customimage").toString()).exists())
-                ui->a_image->setPixmap(a_neuLightCustombg);
+            if(!QFile(m_settings.value("customimage").toString()).exists())
+                ui->image->setPixmap(m_neuLightCustombg);
             else
-                ui->a_image->setPixmap(QPixmap(a_settings.value("customimage").toString()));
+                ui->image->setPixmap(QPixmap(m_settings.value("customimage").toString()));
         }
     }
-    if(!a_isStarting)
+    if(!m_isStarting)
     {
-        if(!a_animManager) //If the pointer is null
-            a_animManager = new FadeManager(ui->a_image, 1000, this, FadeManager::FadeIn);
-        a_animManager->start();
+        if(!m_animManager) //If the pointer is null
+            m_animManager = new FadeManager(ui->image, 1000, this, FadeManager::FadeIn);
+        m_animManager->start();
     }
 }
 
 void Player::setLightCSS()
 {
-    ui->a_playbtn->setStyleSheet("QPushButton#a_playbtn{background-image: url(:/Ressources/Playdarkbtn.png);}"
-                                 "QPushButton#a_playbtn:hover{background-image: url(:/Ressources/Playdarkbtn_onHover.png);}");
+    ui->playbtn->setStyleSheet("QPushButton#m_playbtn{background-image: url(:/Ressources/Playdarkbtn.png);}"
+                                 "QPushButton#m_playbtn:hover{background-image: url(:/Ressources/Playdarkbtn_onHover.png);}");
 
-    ui->a_pausebtn->setStyleSheet("QPushButton#a_pausebtn{background-image: url(:/Ressources/Pausedarkbtn.png);}"
-                                  "QPushButton#a_pausebtn:hover{background-image: url(:/Ressources/Pausedarkbtn_onHover.png);}");
+    ui->pausebtn->setStyleSheet("QPushButton#m_pausebtn{background-image: url(:/Ressources/Pausedarkbtn.png);}"
+                                  "QPushButton#m_pausebtn:hover{background-image: url(:/Ressources/Pausedarkbtn_onHover.png);}");
 
-    ui->a_menubtn->setStyleSheet("QPushButton#a_menubtn{background-image: url(:/Ressources/roundedmenudarkbtn.png);}"
-                                 "QPushButton#a_menubtn:hover{background-image: url(:/Ressources/roundedmenudarkbtn_onHover.png);}");
+    ui->menubtn->setStyleSheet("QPushButton#m_menubtn{background-image: url(:/Ressources/roundedmenudarkbtn.png);}"
+                                 "QPushButton#m_menubtn:hover{background-image: url(:/Ressources/roundedmenudarkbtn_onHover.png);}");
 
-    a_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
-    a_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
-    if(a_isFrameless)
+    m_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
+    m_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
+    if(m_isFrameless)
     {
-        ui->a_closeButton->setStyleSheet("QPushButton#a_closeButton{background-image: url(:/Ressources/closeButtonDark.png);}"
-                                         "QPushButton#a_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
-        ui->a_hideButton->setStyleSheet("QPushButton#a_hideButton{background-image: url(:/Ressources/hideButtonDark.png);}"
-                                        "QPushButton#a_hideButton:hover{background-image: url(:/Ressources/hideButtonDark_onHover.png);}");
+        ui->closeButton->setStyleSheet("QPushButton#m_closeButton{background-image: url(:/Ressources/closeButtonDark.png);}"
+                                         "QPushButton#m_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
+        ui->hideButton->setStyleSheet("QPushButton#m_hideButton{background-image: url(:/Ressources/hideButtonDark.png);}"
+                                        "QPushButton#m_hideButton:hover{background-image: url(:/Ressources/hideButtonDark_onHover.png);}");
     }
 
     //Stylize the rest by putting icons...
-    ui->a_forward->setIcon(a_forwardDarkIcon);
-    ui->a_previous->setIcon(a_previousDarkIcon);
+    ui->forward->setIcon(m_forwardDarkIcon);
+    ui->previous->setIcon(m_previousDarkIcon);
     //TODO : place this on loadSkin() method
     //to avoid double call in both dark and light methods
     on_volumeChanged(neu->volume()); //Will reload the correct icon for volume
@@ -476,35 +476,35 @@ void Player::setLightCSS()
 
 void Player::setDarkCSS()
 {
-    ui->a_playbtn->setStyleSheet("QPushButton#a_playbtn{background-image: url(:/Ressources/Playbtn.png);}"
-                                 "QPushButton#a_playbtn:hover{background-image: url(:/Ressources/Playbtn_onHover.png);}");
+    ui->playbtn->setStyleSheet("QPushButton#m_playbtn{background-image: url(:/Ressources/Playbtn.png);}"
+                                 "QPushButton#m_playbtn:hover{background-image: url(:/Ressources/Playbtn_onHover.png);}");
 
-    ui->a_pausebtn->setStyleSheet("QPushButton#a_pausebtn{background-image: url(:/Ressources/Pausebtn.png);}"
-                                  "QPushButton#a_pausebtn:hover{background-image: url(:/Ressources/Pausebtn_onHover.png);}");
+    ui->pausebtn->setStyleSheet("QPushButton#m_pausebtn{background-image: url(:/Ressources/Pausebtn.png);}"
+                                  "QPushButton#m_pausebtn:hover{background-image: url(:/Ressources/Pausebtn_onHover.png);}");
 
-    ui->a_menubtn->setStyleSheet("QPushButton#a_menubtn{background-image: url(:/Ressources/roundedmenubtn.png);}"
-                                 "QPushButton#a_menubtn:hover{background-image: url(:/Ressources/roundedmenubtn_onHover.png);}");
+    ui->menubtn->setStyleSheet("QPushButton#m_menubtn{background-image: url(:/Ressources/roundedmenubtn.png);}"
+                                 "QPushButton#m_menubtn:hover{background-image: url(:/Ressources/roundedmenubtn_onHover.png);}");
 
-    a_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
-    a_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
+    m_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
+    m_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
 
-    if(a_isFrameless)
+    if(m_isFrameless)
     {
-        ui->a_closeButton->setStyleSheet("QPushButton#a_closeButton{background-image: url(:/Ressources/closeButton.png);}"
-                                         "QPushButton#a_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
-        ui->a_hideButton->setStyleSheet("QPushButton#a_hideButton{background-image: url(:/Ressources/hideButton.png);}"
-                                        "QPushButton#a_hideButton:hover{background-image: url(:/Ressources/hideButton_onHover.png);}");
+        ui->closeButton->setStyleSheet("QPushButton#m_closeButton{background-image: url(:/Ressources/closeButton.png);}"
+                                         "QPushButton#m_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
+        ui->hideButton->setStyleSheet("QPushButton#m_hideButton{background-image: url(:/Ressources/hideButton.png);}"
+                                        "QPushButton#m_hideButton:hover{background-image: url(:/Ressources/hideButton_onHover.png);}");
     }
     //Stylize the rest by putting icons...
-    ui->a_forward->setIcon(a_forwardIcon);
-    ui->a_previous->setIcon(a_previousIcon);
+    ui->forward->setIcon(m_forwardIcon);
+    ui->previous->setIcon(m_previousIcon);
     on_volumeChanged(neu->volume()); //Will reload the correct icon for volume
 }
 
 void Player::checkForNewMedias()
 {
-    QFileInfo currentInfo (a_settings.value("mediapath").toString());
-    if(a_settings.value("libModified").toLongLong() < currentInfo.lastModified().toMSecsSinceEpoch())
+    QFileInfo currentInfo (m_settings.value("mediapath").toString());
+    if(m_settings.value("libModified").toLongLong() < currentInfo.lastModified().toMSecsSinceEpoch())
     {
         //TODO : create a separate QMessageBox instance instead of using static instance
         //This way we can translate the buttons' strings
@@ -515,68 +515,68 @@ void Player::checkForNewMedias()
                                                QMessageBox::Ignore);
         if(reponse == QMessageBox::Yes)
         {
-            a_settings.setValue("libModified", currentInfo.lastModified().toMSecsSinceEpoch());
+            m_settings.setValue("libModified", currentInfo.lastModified().toMSecsSinceEpoch());
             updateLibrary();
         }
         //"Don't bug me for this change"
         if(reponse == QMessageBox::Ignore)
-            a_settings.setValue("libModified", currentInfo.lastModified().toMSecsSinceEpoch());
+            m_settings.setValue("libModified", currentInfo.lastModified().toMSecsSinceEpoch());
     }
 }
 
 void Player::updateLibrary()
 {
-    ui->a_label->setText(tr("Mise à jour librairie..."));
-    a_mediaPlaylist.save();
-    if(a_mediaPlaylist.isEmpty())
-        ui->a_label->setText(tr("Aucun média trouvé"));
+    ui->label->setText(tr("Mise à jour librairie..."));
+    m_mediaPlaylist.save();
+    if(m_mediaPlaylist.isEmpty())
+        ui->label->setText(tr("Aucun média trouvé"));
     else
-        a_mediaPlaylist.load(QUrl::fromLocalFile("neuLibrary.m3u8"), "m3u8");
+        m_mediaPlaylist.load(QUrl::fromLocalFile("neuLibrary.m3u8"), "m3u8");
 }
 
 //Have to delay it
 void Player::finishingUp()
 {
-    if(a_hasToStartupPlaylist)
+    if(m_hasToStartupPlaylist)
     {
-        a_hasToStartupPlaylist = false; //No more
+        m_hasToStartupPlaylist = false; //No more
         showPlaylist();
     }
 #ifdef Q_OS_WIN
-    a_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
-    a_thumbForwardButton.setIcon(QIcon(":/Ressources/forward_thumbnailButton.png"));
-    a_thumbPreviousButton.setIcon(QIcon(":/Ressources/previous_thumbnailButton.png"));
+    m_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
+    m_thumbForwardButton.setIcon(QIcon(":/Ressources/forward_thumbnailButton.png"));
+    m_thumbPreviousButton.setIcon(QIcon(":/Ressources/previous_thumbnailButton.png"));
 
     //Prepare and set buttons on thumbnailtoolbar
-    a_thumbnailToolbar.addButton(&a_thumbPreviousButton);
-    a_thumbnailToolbar.addButton(&a_thumbActionButton);
-    a_thumbnailToolbar.addButton(&a_thumbForwardButton);
+    m_thumbnailToolbar.addButton(&m_thumbPreviousButton);
+    m_thumbnailToolbar.addButton(&m_thumbActionButton);
+    m_thumbnailToolbar.addButton(&m_thumbForwardButton);
 
-    a_thumbnailToolbar.setWindow(this->windowHandle());
+    m_thumbnailToolbar.setWindow(this->windowHandle());
 #endif
 }
 
 void Player::savePlaylists()
 {
-    if(a_hasToSaveFavsLater)
-        a_favPlaylist.saveFromPlaylist("favorites.m3u8");
-    if(a_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
+    if(m_hasToSaveFavsLater)
+        m_favPlaylist.saveFromPlaylist("favorites.m3u8");
+    if(m_settings.value("Additional_Features/libraryAtStartup").toBool() == true)
     {
-        if(a_hasToSavePlaylistLater)
-            a_mediaPlaylist.saveFromPlaylist(); //Defaults to normal library
+        if(m_hasToSavePlaylistLater)
+            m_mediaPlaylist.saveFromPlaylist(); //Defaults to normal library
     }
 }
 
 void Player::setupNewLibrary()
 {
-    if(!a_isUsingFavPlaylist)
-        neu->setPlaylist(&a_mediaPlaylist); //The a_isUsingFavPlaylist was already updated before in the loadPlaylist() method
+    if(!m_isUsingFavPlaylist)
+        neu->setPlaylist(&m_mediaPlaylist); //The m_isUsingFavPlaylist was already updated before in the loadPlaylist() method
     else
-        neu->setPlaylist(&a_favPlaylist); // ^^^^^^^^^
-    if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
+        neu->setPlaylist(&m_favPlaylist); // ^^^^^^^^^
+    if(m_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
     {
-        a_recoveredProgress = false;
-        neu->playlist()->setCurrentIndex(a_settings.value("currentTrack").toInt());
+        m_recoveredProgress = false;
+        neu->playlist()->setCurrentIndex(m_settings.value("currentTrack").toInt());
     }
 }
 
@@ -584,66 +584,66 @@ void Player::setupNewLibrary()
 
 void Player::playMedia()
 {
-    if(a_isStarting)
+    if(m_isStarting)
         return; // Not ready yet !
     /* Those silly disconnect-reconnect are made so the openMedia(); method isn't called multiple times.
      * For whatever reasons if I don't do it, it will be called about 2 to 4 times ! */
 
-    disconnect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
+    disconnect(ui->playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     if ((neu->media().isNull()))
         openMedia();
     else //On peut play quelque chose
     {
-        if(a_audioFadeActivated) //If it was instantiated, it means It's activated
+        if(m_audioFadeActivated) //If it was instantiated, it means It's activated
             runAudioFade();
         neu->play();
-        ui->a_playbtn->setVisible(false);
-        ui->a_pausebtn->setVisible(true);
+        ui->playbtn->setVisible(false);
+        ui->pausebtn->setVisible(true);
 
 #ifdef Q_OS_WIN
-        a_thumbActionButton.setIcon(QIcon(":/Ressources/pause_thumbnailButton.png"));
-        connect(&a_thumbActionButton, SIGNAL(clicked()), this, SLOT(pauseMedia()));
+        m_thumbActionButton.setIcon(QIcon(":/Ressources/pause_thumbnailButton.png"));
+        connect(&m_thumbActionButton, SIGNAL(clicked()), this, SLOT(pauseMedia()));
 #endif
 
-        connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
-        if(a_isPlaylistOpen)
+        connect(ui->pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
+        if(m_isPlaylistOpen)
         {
-            a_playlist->setToPlaying(neu->playlist()->currentIndex());
+            m_playlist->setToPlaying(neu->playlist()->currentIndex());
         }
         return; //We don't want to go to that last line
     }
-    connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
+    connect(ui->playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
 }
 
 void Player::pauseMedia()
 {
     neu->pause();
-    disconnect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
-    ui->a_playbtn->setVisible(true);
-    ui->a_pausebtn->setVisible(false);
+    disconnect(ui->pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
+    ui->playbtn->setVisible(true);
+    ui->pausebtn->setVisible(false);
 
 #ifdef Q_OS_WIN
-    a_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
-    connect(&a_thumbActionButton, SIGNAL(clicked()), this, SLOT(playMedia()));
+    m_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
+    connect(&m_thumbActionButton, SIGNAL(clicked()), this, SLOT(playMedia()));
 #endif
 
-    connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
-    if(a_isPlaylistOpen)
+    connect(ui->playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
+    if(m_isPlaylistOpen)
     {
-        a_playlist->setToPaused(neu->playlist()->currentIndex());
+        m_playlist->setToPaused(neu->playlist()->currentIndex());
     }
 }
 
 void Player::forwardMedia()
 {
-    if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0 )
+    if(!m_canChangeMusic || m_mediaPlaylist.mediaCount() == 0 )
         return;
     neu->playlist()->next();
-    if(a_audioFadeActivated) //If it was instantiated, it means It's activated
+    if(m_audioFadeActivated) //If it was instantiated, it means It's activated
         runAudioFade();
     if(neu->playlist()->currentMedia().isNull())
     {
-        if(a_isLoopPlaylistMode)
+        if(m_isLoopPlaylistMode)
         {
             neu->playlist()->setCurrentIndex(0);
             playMedia();
@@ -654,87 +654,87 @@ void Player::forwardMedia()
             return;
         }
     }
-    if(a_hasToDoInitialShuffle) //For true randomness
+    if(m_hasToDoInitialShuffle) //For true randomness
     {
         qsrand(QTime::currentTime().msec());
         neu->playlist()->setCurrentIndex(qrand() % neu->playlist()->mediaCount());
-        a_hasToDoInitialShuffle = false;
+        m_hasToDoInitialShuffle = false;
     }
-    a_wasPrevious = false;
+    m_wasPrevious = false;
 }
 
 void Player::forwardAnim()
 {
-    a_titleAnimate->setStartValue(QPoint(130, 0));
-    a_titleAnimate->setEndValue(QPoint(110, 0));
-    a_titleAnimate->start();
+    m_titleAnimate->setStartValue(QPoint(130, 0));
+    m_titleAnimate->setEndValue(QPoint(110, 0));
+    m_titleAnimate->start();
 }
 
 void Player::previousMedia()
 {
-    if(!a_canChangeMusic || a_mediaPlaylist.mediaCount() == 0)
+    if(!m_canChangeMusic || m_mediaPlaylist.mediaCount() == 0)
         return;
     neu->playlist()->previous();
-    if(a_audioFadeActivated)
+    if(m_audioFadeActivated)
         runAudioFade();
     if(neu->playlist()->currentMedia().isNull())
     {
         emit EndOfMedia();
         return;
     }
-    if(a_hasToDoInitialShuffle)
+    if(m_hasToDoInitialShuffle)
     {
         qsrand(QTime::currentTime().msec());
         neu->playlist()->setCurrentIndex(qrand() % neu->playlist()->mediaCount());
-        a_hasToDoInitialShuffle = false;
+        m_hasToDoInitialShuffle = false;
     }
-    a_wasPrevious = true;
+    m_wasPrevious = true;
 }
 
 
 void Player::previousAnim()
 {
-    a_titleAnimate->setEndValue(QPoint(110, 0));
-    a_titleAnimate->start();
+    m_titleAnimate->setEndValue(QPoint(110, 0));
+    m_titleAnimate->start();
 }
 
 void Player::errorHandling(QMediaPlayer::Error error)
 {
     int current;
-    bool stateBefore = a_isPlaying;
+    bool stateBefore = m_isPlaying;
     switch (error) {
     case QMediaPlayer::NoError:
         break;
     case QMediaPlayer::ResourceError:
-        ui->a_label->setText(tr("erreur : Unresolved Resource"));
+        ui->label->setText(tr("erreur : Unresolved Resource"));
         neu->playlist()->previous();
         current = neu->playlist()->currentIndex();
         qDebug() << neu->playlist()->media(current).canonicalUrl();
         neu->playlist()->removeMedia(current);
-        if(a_isPlaylistOpen)
-            a_playlist->deleteItem(current);
+        if(m_isPlaylistOpen)
+            m_playlist->deleteItem(current);
         // I do this to ensure stability, because we're in a panic case
         neu->setPlaylist(neu->playlist());
-        if(!a_wasPrevious)
+        if(!m_wasPrevious)
             neu->playlist()->setCurrentIndex(current - 2);
         else
             neu->playlist()->setCurrentIndex(current - 1);
-        a_isPlaying = stateBefore;
-        if(a_isPlaying)
+        m_isPlaying = stateBefore;
+        if(m_isPlaying)
             playMedia();
-        if(!a_isUsingFavPlaylist)
-            a_hasToSavePlaylistLater = true; //Prevent error from coming back.
+        if(!m_isUsingFavPlaylist)
+            m_hasToSavePlaylistLater = true; //Prevent error from coming back.
         else
-            a_hasToSaveFavsLater = true;
+            m_hasToSaveFavsLater = true;
         break;
     case QMediaPlayer::FormatError :
-        ui->a_label->setText(tr("erreur : Format non supporté"));
+        ui->label->setText(tr("erreur : Format non supporté"));
         pauseMedia(); // Total panic
         neu->stop();
         neu->playlist()->clear();// so we have to discard the content
         break;
     case QMediaPlayer::NetworkError :
-        ui->a_label->setText(tr("erreur : Network error"));
+        ui->label->setText(tr("erreur : Network error"));
         break;
     case QMediaPlayer::AccessDeniedError :
         QMessageBox::critical(this, tr("Erreur ! "),
@@ -745,7 +745,7 @@ void Player::errorHandling(QMediaPlayer::Error error)
                               tr("Le service du player est indisponible. Impossible de lire le fichier !"));
         break;
     }
-    a_isPlaying = false;
+    m_isPlaying = false;
 }
 
 void Player::statusChanged(QMediaPlayer::MediaStatus status)
@@ -756,18 +756,18 @@ void Player::statusChanged(QMediaPlayer::MediaStatus status)
         this->setCursor(Qt::BusyCursor);
         break;
     case QMediaPlayer::StalledMedia:
-        ui->a_label->setText("Media stalled");
-        a_isPlaying = false;
+        ui->label->setText("Media stalled");
+        m_isPlaying = false;
         break;
     case QMediaPlayer::LoadedMedia:
         this->setCursor(Qt::ArrowCursor);
-        if(!a_recoveredProgress &&
-           a_settings.value("Additional_Features/saveTrackIndex", false).toBool() ||
-           a_deleteTriggered)
+        if(!m_recoveredProgress &&
+           m_settings.value("Additional_Features/saveTrackIndex", false).toBool() ||
+           m_deleteTriggered)
         {
-            a_deleteTriggered = false; // no more
-            seekProgress(a_settings.value("trackPosition").toInt());
-            a_recoveredProgress = true;
+            m_deleteTriggered = false; // no more
+            seekProgress(m_settings.value("trackPosition").toInt());
+            m_recoveredProgress = true;
         }
         break;
     case QMediaPlayer::EndOfMedia:
@@ -777,25 +777,25 @@ void Player::statusChanged(QMediaPlayer::MediaStatus status)
 
 void Player::stateChanged(QMediaPlayer::State state)
 {
-    //Handle the update of the bool a_isPlaying
+    //Handle the update of the bool m_isPlaying
     //Permits an up-to-date icon in the playlist and an info on what is the player's playing state
     switch(state)
     {
     case QMediaPlayer::PlayingState:
-        a_isPlaying = true;
+        m_isPlaying = true;
         break;
     case QMediaPlayer::PausedState:
-        a_isPlaying = false;
+        m_isPlaying = false;
         break;
     case QMediaPlayer::StoppedState:
-        a_isPlaying = false;
+        m_isPlaying = false;
         break;
     }
 }
 
 void Player::showMenu()
 {
-    a_menu.exec(QCursor::pos()); //simplest method pls
+    m_menu.exec(QCursor::pos()); //simplest method pls
 }
 
 void Player::openMedia()
@@ -810,20 +810,20 @@ void Player::openMedia()
     if(files.isEmpty()) //It was a mistake I guess, so don't do anything
         return;
     //Clear before processing
-    a_mediaPlaylist.clear();
+    m_mediaPlaylist.clear();
     unsigned int const fileNumber = files.size();
     for(unsigned int i (0); i < fileNumber; i++ )
     {
-        a_mediaPlaylist.addMedia(files.at(i));
+        m_mediaPlaylist.addMedia(files.at(i));
     }
-    if(!a_mediaPlaylist.isEmpty())
+    if(!m_mediaPlaylist.isEmpty())
     {
         changeToDefaultPlaylist();
         playMedia();
-        if(a_isPlaylistOpen)
+        if(m_isPlaylistOpen)
         {
-            a_mediaPlaylist.setCurrentIndex(0);
-            a_playlist->updateList(&a_mediaPlaylist, true);
+            m_mediaPlaylist.setCurrentIndex(0);
+            m_playlist->updateList(&m_mediaPlaylist, true);
         }
     }
 }
@@ -831,68 +831,68 @@ void Player::openMedia()
 void Player::setMeta()
 {
     //New track, we start at 0 secs !
-    a_secondesPasse = 0; //For infos
+    m_secondesPasse = 0; //For infos
     // On check pour savoir si les metas sont nulles ou avec une chaine vide pour avoir une donnée correcte à afficher
     if(!neu->metaData("Title").isNull() && !neu->metaData("Title").operator ==(""))
-        a_titre = neu->metaData("Title").toString();
+        m_titre = neu->metaData("Title").toString();
     else
-        a_titre = neu->currentMedia().canonicalUrl().fileName();
+        m_titre = neu->currentMedia().canonicalUrl().fileName();
     if(!neu->metaData("ContributingArtist").isNull() &&
        !neu->metaData("ContributingArtist").operator ==(""))
-        a_artiste = neu->metaData("ContributingArtist").toString();
+        m_artiste = neu->metaData("ContributingArtist").toString();
     else
-        a_artiste = tr("Artiste Inconnu");
+        m_artiste = tr("Artiste Inconnu");
     if(!neu->metaData("AlbumTitle").isNull() &&
        !neu->metaData("AlbumTitle").operator ==(""))
-        a_album = neu->metaData("AlbumTitle").toString();
+        m_album = neu->metaData("AlbumTitle").toString();
     else
-        a_album = tr("Album Inconnu");
+        m_album = tr("Album Inconnu");
 
     //Si c'est une vidéo ou un flux sans header
     if( (neu->metaData("Title").isNull())
          && (neu->metaData("ContributingArtist").isNull())
          && (neu->metaData("AlbumTitle").isNull()) )
     {
-        a_artiste = neu->currentMedia().canonicalUrl().fileName();
-        a_titre = neu->currentMedia().canonicalUrl().fileName();
-        a_album = neu->currentMedia().canonicalUrl().fileName();
-        a_no_meta = true;
+        m_artiste = neu->currentMedia().canonicalUrl().fileName();
+        m_titre = neu->currentMedia().canonicalUrl().fileName();
+        m_album = neu->currentMedia().canonicalUrl().fileName();
+        m_no_meta = true;
     }
     else
-        a_no_meta = false;
+        m_no_meta = false;
 
-    a_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
-    if(a_coverArt.isNull())
-        a_coverArt = QPixmap::fromImage(QImage(neu->metaData("CoverArtImage").value<QImage>()));
+    m_coverArt = QPixmap::fromImage(QImage(neu->metaData("ThumbnailImage").value<QImage>()));
+    if(m_coverArt.isNull())
+        m_coverArt = QPixmap::fromImage(QImage(neu->metaData("CoverArtImage").value<QImage>()));
 
-    if(!ui->a_label->isVisible())
+    if(!ui->label->isVisible())
     {
-        a_scrollingLabel.hide();
-        ui->a_label->setVisible(true);
+        m_scrollingLabel.hide();
+        ui->label->setVisible(true);
     }
-    a_hasToSetLabelType = true;
-    ui->a_label->setText(a_titre);
-    ui->a_label->setToolTip(a_titre);
-    if(!a_deleteTriggered) //To avoid animation, because the user wouldn't expect it
+    m_hasToSetLabelType = true;
+    ui->label->setText(m_titre);
+    ui->label->setToolTip(m_titre);
+    if(!m_deleteTriggered) //To avoid animation, because the user wouldn't expect it
     {
-        if(a_wasPrevious)
+        if(m_wasPrevious)
             previousAnim();
         else
             forwardAnim();
     }
 
-    a_canChangeMusic = false;
+    m_canChangeMusic = false;
     setTypeTimer.start(300); //Set the type 300 ms later
     grantChangeTimer.start(200);
 
 
-    a_previousIndex = neu->playlist()->currentIndex();
+    m_previousIndex = neu->playlist()->currentIndex();
 
-    if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
-        a_settings.setValue("currentTrack", a_previousIndex);
-    if(a_isPlaylistOpen)
-        a_playlist->setCurrentItem(neu->playlist()->currentIndex(), &a_coverArt,
-                                   a_titre, a_isPlaying);
+    if(m_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
+        m_settings.setValue("currentTrack", m_previousIndex);
+    if(m_isPlaylistOpen)
+        m_playlist->setCurrentItem(neu->playlist()->currentIndex(), &m_coverArt,
+                                   m_titre, m_isPlaying);
 
     updateFadeinSpeed();
     Timer.start();
@@ -900,8 +900,8 @@ void Player::setMeta()
 
 void Player::setType()
 {
-        updateLabel(a_titre); //Will set the good type
-        a_hasToSetLabelType = false; //It's been done !
+        updateLabel(m_titre); //Will set the good type
+        m_hasToSetLabelType = false; //It's been done !
         finishingUp();
 }
 
@@ -911,26 +911,26 @@ void Player::updateLabel(QString &text)
 {
     if(text.size() < 25)
     {
-        a_isScrollingText = false;
-        if(!ui->a_label->isVisible())
-            ui->a_label->show();
-        if(a_scrollingLabel.isVisible())
-            a_scrollingLabel.hide();
+        m_isScrollingText = false;
+        if(!ui->label->isVisible())
+            ui->label->show();
+        if(m_scrollingLabel.isVisible())
+            m_scrollingLabel.hide();
 
-        if(!a_hasToSetLabelType) //Doesn't need to set them if that's the case
+        if(!m_hasToSetLabelType) //Doesn't need to set them if that's the case
         {
-            ui->a_label->setText(text);
-            ui->a_label->setToolTip(text);
+            ui->label->setText(text);
+            ui->label->setToolTip(text);
         }
     }
     else
     {
-        a_isScrollingText = true;
-        if(ui->a_label->isVisible())
-            ui->a_label->hide();
-        a_scrollingLabel.setText(text);
-        a_scrollingLabel.setToolTip(text);
-        a_scrollingLabel.show();
+        m_isScrollingText = true;
+        if(ui->label->isVisible())
+            ui->label->hide();
+        m_scrollingLabel.setText(text);
+        m_scrollingLabel.setToolTip(text);
+        m_scrollingLabel.show();
     }
 }
 
@@ -943,50 +943,50 @@ void Player::updateFadeinSpeed()
      * As they're dependent from the previous one, we always add the seconds of the case before
      * ex : if each info is less/equal to 17 chars, it'll be case 3,6,9 so that it switches each 3 seconds
      * */
-    if(a_titre.size() <= 17) //17 so it won't go to the else and generate 3 when the default would be 4 (it's an int, it floors)
-        a_titleCase = 4;
+    if(m_titre.size() <= 17) //17 so it won't go to the else and generate 3 when the default would be 4 (it's an int, it floors)
+        m_titleCase = 4;
     else
-        a_titleCase = (a_titre.size() / 10) * 3; //3 is a magic number, and /10 is to have seconds
+        m_titleCase = (m_titre.size() / 10) * 3; //3 is a magic number, and /10 is to have seconds
 
-    if(a_artiste.size() <= 17)
-        a_artistCase = a_titleCase + 4;
+    if(m_artiste.size() <= 17)
+        m_artistCase = m_titleCase + 4;
     else
-        a_artistCase = a_titleCase + ((a_artiste.size() / 10) * 3);
-    if(a_album.size() <= 17)
-        a_albumCase = a_artistCase + 4;
+        m_artistCase = m_titleCase + ((m_artiste.size() / 10) * 3);
+    if(m_album.size() <= 17)
+        m_albumCase = m_artistCase + 4;
     else
-        a_albumCase = a_artistCase + ((a_album.size() / 10) * 3);
+        m_albumCase = m_artistCase + ((m_album.size() / 10) * 3);
 }
 
 void Player::runAudioFade()
 {
-    a_audioFade->setEndValue(a_volumeSlider->value());
-    if(a_audioFade->state() == QPropertyAnimation::Running)
-        a_audioFade->stop();
-    a_audioFade->start();
+    m_audioFade->setEndValue(m_volumeSlider->value());
+    if(m_audioFade->state() == QPropertyAnimation::Running)
+        m_audioFade->stop();
+    m_audioFade->start();
 }
 
 //Does the animation between each info
 void Player::fadeInLabel()
 {
     //This changes the target if we're using the scrolling label
-    if(a_isScrollingText)
-        a_scrollingLabel.setGraphicsEffect(a_infoFadein);
+    if(m_isScrollingText)
+        m_scrollingLabel.setGraphicsEffect(m_infoFadein);
     else
-        ui->a_label->setGraphicsEffect(a_infoFadein);
+        ui->label->setGraphicsEffect(m_infoFadein);
 
-    a_infoFadeAnim->setTargetObject(a_infoFadein);
-    a_infoFadeAnim->setPropertyName("opacity");
-    a_infoFadeAnim->setDuration(700);
-    a_infoFadeAnim->setStartValue(0);
-    a_infoFadeAnim->setEndValue(1.0);
-    a_infoFadeAnim->start();
+    m_infoFadeAnim->setTargetObject(m_infoFadein);
+    m_infoFadeAnim->setPropertyName("opacity");
+    m_infoFadeAnim->setDuration(700);
+    m_infoFadeAnim->setStartValue(0);
+    m_infoFadeAnim->setEndValue(1.0);
+    m_infoFadeAnim->start();
 }
 
 void Player::update_info()
 {
     //update à chaque seconde
-    a_secondesPasse++;
+    m_secondesPasse++;
 
     /*Permet de gérer les informations à afficher en fonction du temps
      * Fades each time
@@ -995,27 +995,27 @@ void Player::update_info()
     */
 
     //Switches over to normal if's because switch case can't evaluate non-constant expression
-    if(a_secondesPasse == a_titleCase)
+    if(m_secondesPasse == m_titleCase)
     {
-        updateLabel(a_artiste);
-        if(!a_no_meta)
+        updateLabel(m_artiste);
+        if(!m_no_meta)
             fadeInLabel();
     }
-    if(a_secondesPasse == a_artistCase)
+    if(m_secondesPasse == m_artistCase)
     {
-        updateLabel(a_album);
-        if(!a_no_meta)
+        updateLabel(m_album);
+        if(!m_no_meta)
             fadeInLabel();
     }
-    if(a_secondesPasse == a_albumCase)
+    if(m_secondesPasse == m_albumCase)
     {
-        a_secondesPasse = 0;
-        updateLabel(a_titre);
-        if(!a_no_meta)
+        m_secondesPasse = 0;
+        updateLabel(m_titre);
+        if(!m_no_meta)
             fadeInLabel();
     }
-    if(!a_menu.isVisible() &&  a_alwaysOnTopHandler.isChecked()) //If we're always on top, this assure that we're always on top, even if on Windows explorer gets on top
-        if(!a_isPlaylistOpen && !a_isSettingsOpen) //Raising also raises over the widgets of these windows... Can be weird if you're using it's context menus...
+    if(!m_menu.isVisible() &&  m_alwaysOnTopHandler.isChecked()) //If we're always on top, this assure that we're always on top, even if on Windows explorer gets on top
+        if(!m_isPlaylistOpen && !m_isSettingsOpen) //Raising also raises over the widgets of these windows... Can be weird if you're using it's context menus...
             this->raise();
 }
     /*///////SliderBar Section///////*/
@@ -1023,7 +1023,7 @@ void Player::UpdateProgress(qint64 pos)
 {
     if(pos < 0)
         pos = 0; //Will bring back bizarre values to saner levels
-    a_progressSlider->setValue(pos);
+    m_progressSlider->setValue(pos);
     updateProgressDisplay(pos, true);
 
 }
@@ -1045,19 +1045,19 @@ void Player::updateProgressDisplay(qint64 pos, bool isProgress)
     if(secondes < 10)
     {
         if(isProgress)
-            ui->a_currenttime->setText(QString::number(minutes) +
+            ui->currenttime->setText(QString::number(minutes) +
                                        ":0" + QString::number(secondes));
         else
-            ui->a_duration->setText(QString::number(minutes) +
+            ui->duration->setText(QString::number(minutes) +
                                     ":0" + QString::number(secondes));
     }
     else
     {
         if(isProgress)
-            ui->a_currenttime->setText(QString::number(minutes) +
+            ui->currenttime->setText(QString::number(minutes) +
                                        ":" + QString::number(secondes));
         else
-            ui->a_duration->setText(QString::number(minutes) +
+            ui->duration->setText(QString::number(minutes) +
                                     ":" + QString::number(secondes));
     }
 }
@@ -1066,32 +1066,32 @@ void Player::updateProgressDisplay(qint64 pos, bool isProgress)
 void Player::endOfMediaGuard()
 {
     Timer.stop(); //There should be no more info to display
-    ui->a_pausebtn->setVisible(false);
-    ui->a_playbtn->setVisible(true);
-    disconnect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
-    connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
-    ui->a_label->setText(tr("Stoppé"));
+    ui->pausebtn->setVisible(false);
+    ui->playbtn->setVisible(true);
+    disconnect(ui->pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
+    connect(ui->playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
+    ui->label->setText(tr("Stoppé"));
 }
 void Player::seekProgress(int pos)
 {
     neu->setPosition(pos);
-    if(a_recoveredProgress)
+    if(m_recoveredProgress)
     {
         neu->play();
-        disconnect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
-        ui->a_playbtn->setVisible(false);
-        ui->a_pausebtn->setVisible(true);
-        connect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
+        disconnect(ui->playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
+        ui->playbtn->setVisible(false);
+        ui->pausebtn->setVisible(true);
+        connect(ui->pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
     }
-    if(a_isPlaylistOpen && !a_playlist->isPlayingState())
-        a_playlist->setToPlaying(neu->playlist()->currentIndex());
+    if(m_isPlaylistOpen && !m_playlist->isPlayingState())
+        m_playlist->setToPlaying(neu->playlist()->currentIndex());
     if(pos > neu->duration())
         forwardMedia();
 }
 
 void Player::on_durationChanged(qint64 pos)
 {
-    a_progressSlider->setMaximum(pos);
+    m_progressSlider->setMaximum(pos);
     updateProgressDisplay(pos, false);
 }
 
@@ -1115,67 +1115,67 @@ void Player::on_volumeChanged(int pos)
     neu->setVolume(pos);
     if(pos == 0)
     {
-        ui->a_volumebtn->setChecked(true);
+        ui->volumebtn->setChecked(true);
         setVolumeMuted();
         return;
     }
     if(pos <= 50)
     {
-        if(a_idSkin == 1 || a_idSkin == 3)
-            ui->a_volumebtn->setIcon(a_volumeLowIcon);
+        if(m_idSkin == 1 || m_idSkin == 3)
+            ui->volumebtn->setIcon(m_volumeLowIcon);
         else
-            ui->a_volumebtn->setIcon(a_volumeLowDarkIcon);
+            ui->volumebtn->setIcon(m_volumeLowDarkIcon);
     }
     else
     {
-        if(a_idSkin == 1 || a_idSkin == 3)
-            ui->a_volumebtn->setIcon(a_volumeIcon);
+        if(m_idSkin == 1 || m_idSkin == 3)
+            ui->volumebtn->setIcon(m_volumeIcon);
         else
-            ui->a_volumebtn->setIcon(a_volumeDarkIcon);
+            ui->volumebtn->setIcon(m_volumeDarkIcon);
     }
-    ui->a_volumebtn->setChecked(false);
+    ui->volumebtn->setChecked(false);
     neu->setMuted(false);
 }
 
 void Player::setVolumeMuted()
 {
-    if(ui->a_volumebtn->isChecked())
+    if(ui->volumebtn->isChecked())
     {
-        a_volumeBeforeMute = neu->volume();
-        disconnect(a_volumeSlider, SIGNAL(valueChanged(int)),
+        m_volumeBeforeMute = neu->volume();
+        disconnect(m_volumeSlider, SIGNAL(valueChanged(int)),
                    this, SLOT(on_volumeChanged(int)));
         neu->setMuted(true);
-        a_volumeSlider->setValue(0);
-        connect(a_volumeSlider, SIGNAL(valueChanged(int)),
+        m_volumeSlider->setValue(0);
+        connect(m_volumeSlider, SIGNAL(valueChanged(int)),
                 this, SLOT(on_volumeChanged(int)));
-        if(a_idSkin == 1 || a_idSkin == 3)
-            ui->a_volumebtn->setIcon(a_volumeMutedIcon);
-        if(a_idSkin == 0 ||  a_idSkin == 2)
-            ui->a_volumebtn->setIcon(a_volumeMutedDarkIcon);
+        if(m_idSkin == 1 || m_idSkin == 3)
+            ui->volumebtn->setIcon(m_volumeMutedIcon);
+        if(m_idSkin == 0 ||  m_idSkin == 2)
+            ui->volumebtn->setIcon(m_volumeMutedDarkIcon);
     }
     else
     {
         neu->setMuted(false);
         //On laisse le _onvolumeChanged() faire le boulot de remettre les bonnes icones
-        a_volumeSlider->setValue(a_volumeBeforeMute);
+        m_volumeSlider->setValue(m_volumeBeforeMute);
     }
 }
 
 void Player::volumeUp()
 {
-    a_volumeSlider->setSliderPosition(a_volumeSlider->value() + 10);
+    m_volumeSlider->setSliderPosition(m_volumeSlider->value() + 10);
 }
 
 void Player::volumeDown()
 {
-    a_volumeSlider->setSliderPosition(a_volumeSlider->value() - 10);
+    m_volumeSlider->setSliderPosition(m_volumeSlider->value() - 10);
 }
 
     /*///////Menu Actions Section///////*/
 
 void Player::setShuffle()
 {
-    if(!a_canDoShuffleAgain)
+    if(!m_canDoShuffleAgain)
         return;
     if(neu->media().isNull()) //On évite de planter en essayant de play quelque chose qui n'existe pas
     {
@@ -1197,17 +1197,17 @@ void Player::setShuffle()
         //Plus le shuffle, qui crée un rand en prenant comme valeur le média actuel
         playlist->shuffle();
         playlist->setCurrentIndex(0); //So it looks better this way
-        if(!a_isRandomMode)
+        if(!m_isRandomMode)
             //Default : random. We want it back to Sequential if we were on sequential before
             playlist->setPlaybackMode(QMediaPlaylist::Sequential);
         //On a maintenant un double rand : un rand purement aléatoire, et un rand basé sur le media actuel
-        if(a_settings.value("Additional_Features/libraryAtStartup", false).toBool() == true)
-            a_hasToSavePlaylistLater = true; // Will update playlist to load the correct one when booting up later on
-        if(a_isPlaylistOpen && !a_isUsingFavPlaylist)
-            a_playlist->updateList(&a_mediaPlaylist, true);
-        else if(a_isPlaylistOpen)
-            a_playlist->updateFavs(&a_favPlaylist);
-        a_canDoShuffleAgain = false;
+        if(m_settings.value("Additional_Features/libraryAtStartup", false).toBool() == true)
+            m_hasToSavePlaylistLater = true; // Will update playlist to load the correct one when booting up later on
+        if(m_isPlaylistOpen && !m_isUsingFavPlaylist)
+            m_playlist->updateList(&m_mediaPlaylist, true);
+        else if(m_isPlaylistOpen)
+            m_playlist->updateFavs(&m_favPlaylist);
+        m_canDoShuffleAgain = false;
         grantShuffleAgainTimer.start(500);
         playlist = nullptr;
     }
@@ -1215,12 +1215,12 @@ void Player::setShuffle()
 
 void Player::windowFlagsHandler()
 {
-    if(a_alwaysOnTopHandler.isChecked())
+    if(m_alwaysOnTopHandler.isChecked())
         this->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     else
         this->setWindowFlags(this->windowFlags() & ~Qt::WindowStaysOnTopHint);
     QPointer <FadeWindow> fadeIn = new FadeWindow(this, 200, FadeWindow::FadeIn, this);
-    fadeIn->start(a_settings.value("opacity").toReal());
+    fadeIn->start(m_settings.value("opacity").toReal());
 
     this->show();
 }
@@ -1228,11 +1228,11 @@ void Player::windowFlagsHandler()
 void Player::playbackHandler(QAction *playbackSelected)
 {
     if(playbackSelected->text() == "1.0x")
-        a_playbackState = 0;
+        m_playbackState = 0;
     else if (playbackSelected->text() == "0.5x")
-        a_playbackState = 1;
+        m_playbackState = 1;
     else if (playbackSelected->text() == "2.0x")
-        a_playbackState = 2;
+        m_playbackState = 2;
     setPlaybackRate();
 }
 
@@ -1241,52 +1241,52 @@ void Player::setPlaybackRate()
     //Setup playback rate
     //Pause pour forcer de rappuyer sur lecture à nouveau, de façon à ce que le buffer soit déjà à nouveau à peu près rempli
     pauseMedia();
-    if(a_playbackState == 0)
+    if(m_playbackState == 0)
     {
         neu->setPlaybackRate(1);
-        a_normalrate.setChecked(true);
+        m_normalrate.setChecked(true);
     }
-    else if (a_playbackState == 1)
+    else if (m_playbackState == 1)
     {
         neu->setPlaybackRate(0.5);
-        a_halfrate.setChecked(true);
+        m_halfrate.setChecked(true);
     }
-    else if (a_playbackState == 2)
+    else if (m_playbackState == 2)
     {
         neu->setPlaybackRate(2);
-        a_doublerate.setChecked(true);
+        m_doublerate.setChecked(true);
     }
 }
 
 void Player::showPlaylist()
 {
-    if(!a_isPlaylistOpen)
+    if(!m_isPlaylistOpen)
     {
-        a_isPlaylistOpen = true;
-        if(a_mediaPlaylist.mediaCount()!= 0)
-            a_playlist = new Playlist(a_mediaPlaylist, a_favPlaylist, this,
-                                      &a_coverArt, a_titre, a_isPlaying, this);
-        a_playlist->show();
+        m_isPlaylistOpen = true;
+        if(m_mediaPlaylist.mediaCount()!= 0)
+            m_playlist = new Playlist(m_mediaPlaylist, m_favPlaylist, this,
+                                      &m_coverArt, m_titre, m_isPlaying, this);
+        m_playlist->show();
     }
     else
     {
-        a_playlist->showNormal();
-        a_playlist->activateWindow();
+        m_playlist->showNormal();
+        m_playlist->activateWindow();
     }
 }
 
 void Player::showSettings()
 {
-    if(!a_isSettingsOpen)
+    if(!m_isSettingsOpen)
     {
-        a_isSettingsOpen = true;
-        a_settingsForm = new Settings(this, this);
-        a_settingsForm->show();
+        m_isSettingsOpen = true;
+        m_settingsForm = new Settings(this, this);
+        m_settingsForm->show();
     }
     else
     {
-        a_settingsForm->show();
-        a_settingsForm->activateWindow();
+        m_settingsForm->show();
+        m_settingsForm->activateWindow();
     }
 }
 
@@ -1298,13 +1298,13 @@ void Player::showTagViewer()
     /* Add meta datas to a list which will be treated by the tagViewer constructor */
     QList<QString> metaDatas;
     metaDatas.append(neu->metaData("TrackNumber").toString());
-    metaDatas.append(a_titre);
-    metaDatas.append(a_artiste);
-    metaDatas.append(a_album);
+    metaDatas.append(m_titre);
+    metaDatas.append(m_artiste);
+    metaDatas.append(m_album);
     metaDatas.append(neu->metaData("Year").toString());
     metaDatas.append(neu->metaData("Genre").toString());
     //Load it now !
-    QPointer <TagViewer> TagWindow = new TagViewer(metaDatas, &a_coverArt, this);
+    QPointer <TagViewer> TagWindow = new TagViewer(metaDatas, &m_coverArt, this);
     TagWindow->exec();
 }
 
@@ -1318,7 +1318,7 @@ void Player::dragEnterEvent(QDragEnterEvent *event)
 
 void Player::dropEvent(QDropEvent *event)
 {
-    ui->a_label->setText("Loading...");
+    ui->label->setText("Loading...");
     neu->stop();
     Timer.stop(); //We don't want to fade in while we're loading, right ?
     this->setCursor(Qt::BusyCursor);
@@ -1335,7 +1335,7 @@ void Player::dropEvent(QDropEvent *event)
 
 void Player::closeEvent(QCloseEvent *event)
 {
-    if(a_canClose)
+    if(m_canClose)
     {
         saveBeforeClosing();
         qApp->closeAllWindows();
@@ -1348,12 +1348,12 @@ void Player::closeEvent(QCloseEvent *event)
         Timer.start(400);
         connect(&Timer, SIGNAL(timeout()), this, SLOT(delayedClose()));
         QPointer <FadeWindow> fadeOut = new FadeWindow(this, 200, FadeWindow::FadeOut, this);
-        if(a_isPlaying)
+        if(m_isPlaying)
         {
             QPointer <QPropertyAnimation> audioFadeOut =
                     new QPropertyAnimation(neu, "volume", this);
             audioFadeOut->setEndValue(0);
-            audioFadeOut->setStartValue(a_volumeSlider->value());
+            audioFadeOut->setStartValue(m_volumeSlider->value());
             audioFadeOut->setDuration(250);
             audioFadeOut->start(QAbstractAnimation::DeleteWhenStopped);
         }
@@ -1364,25 +1364,25 @@ void Player::closeEvent(QCloseEvent *event)
 void Player::saveBeforeClosing()
 {
     savePlaylists();
-    if(a_settings.value("Additional_Features/framelessWindow").toBool())
-        a_settings.setValue("pos", QPoint(this->x() - 8, this->y() - 31)); //Little hack to set the value correctly
+    if(m_settings.value("Additional_Features/framelessWindow").toBool())
+        m_settings.setValue("pos", QPoint(this->x() - 8, this->y() - 31)); //Little hack to set the value correctly
     else
-        a_settings.setValue("pos", pos());
-    a_settings.setValue("size", size());
-    a_settings.setValue("volume", a_volumeSlider->value());
-    a_settings.setValue("visibilite", a_alwaysOnTopHandler.isChecked());
-    a_settings.setValue("playbackrate", a_playbackState);
-    a_settings.setValue("random", a_isRandomMode);
-    a_settings.setValue("loop", a_isLoopPlaylistMode);
+        m_settings.setValue("pos", pos());
+    m_settings.setValue("size", size());
+    m_settings.setValue("volume", m_volumeSlider->value());
+    m_settings.setValue("visibilite", m_alwaysOnTopHandler.isChecked());
+    m_settings.setValue("playbackrate", m_playbackState);
+    m_settings.setValue("random", m_isRandomMode);
+    m_settings.setValue("loop", m_isLoopPlaylistMode);
     //If this is on, we're currently using the fav playlist. So it shall be set at next run
-    a_settings.setValue("usingFavorites", a_isUsingFavPlaylist);
-    if(a_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
-        a_settings.setValue("trackPosition", neu->position());
+    m_settings.setValue("usingFavorites", m_isUsingFavPlaylist);
+    if(m_settings.value("Additional_Features/saveTrackIndex", false).toBool() == true)
+        m_settings.setValue("trackPosition", neu->position());
 }
 
 void Player::delayedClose()
 {
-    a_canClose = true;
+    m_canClose = true;
     close(); //Now the event will be accepted
 }
 
@@ -1390,41 +1390,41 @@ void Player::delayedClose()
 
 void Player::setRandomMode(bool mode)
 {
-    bool prev = a_isRandomMode;
+    bool prev = m_isRandomMode;
     if(prev != mode) //On change que s'il y a besoin
     {
-        a_isRandomMode = mode;
-        if(a_isRandomMode)
+        m_isRandomMode = mode;
+        if(m_isRandomMode)
         {
             neu->playlist()->setPlaybackMode(QMediaPlaylist::Random);
-            a_hasToDoInitialShuffle = true;
+            m_hasToDoInitialShuffle = true;
         }
         else
         {
             neu->playlist()->setPlaybackMode(QMediaPlaylist::Sequential);
-            if(a_hasToDoInitialShuffle)
-                a_hasToDoInitialShuffle = false;
+            if(m_hasToDoInitialShuffle)
+                m_hasToDoInitialShuffle = false;
         }
     }
 }
 
 void Player::setLoopMode(bool mode)
 {
-    bool prev = a_isLoopPlaylistMode;
+    bool prev = m_isLoopPlaylistMode;
     if(prev != mode) //On change que s'il y a besoin
     {
-        a_isLoopPlaylistMode = mode;
+        m_isLoopPlaylistMode = mode;
     }
 }
 
 //Called when playlist wants to play something
 void Player::setIndexOfThePlayer(int index, bool play)
 {
-    a_wasPrevious = false; //To launch anim
-    if(!a_isUsingFavPlaylist)
-        a_mediaPlaylist.setCurrentIndex(index);
+    m_wasPrevious = false; //To launch anim
+    if(!m_isUsingFavPlaylist)
+        m_mediaPlaylist.setCurrentIndex(index);
     else
-        a_favPlaylist.setCurrentIndex(index);
+        m_favPlaylist.setCurrentIndex(index);
     if(play)
         playMedia();
 }
@@ -1438,90 +1438,90 @@ void Player::addMediasToThePlayer(QList<QUrl> &medias)
     {
         neu->playlist()->insertMedia(insertTo, QUrl(medias.at(i)));
     }
-    if(a_isPlaylistOpen)
-        a_playlist->quickUpdate(&medias, insertTo - 1);
-    if(!a_isUsingFavPlaylist)
-        if(a_hasToSavePlaylistLater != true)
-            a_hasToSavePlaylistLater = true;
+    if(m_isPlaylistOpen)
+        m_playlist->quickUpdate(&medias, insertTo - 1);
+    if(!m_isUsingFavPlaylist)
+        if(m_hasToSavePlaylistLater != true)
+            m_hasToSavePlaylistLater = true;
     else
-        if(a_hasToSaveFavsLater != true)
-            a_hasToSaveFavsLater = true;
+        if(m_hasToSaveFavsLater != true)
+            m_hasToSaveFavsLater = true;
 }
 
 void Player::addFav(int index)
 {
-    QMediaContent media(a_mediaPlaylist.media(index)); //We copy the media
-    a_favPlaylist.addMedia(media);
+    QMediaContent media(m_mediaPlaylist.media(index)); //We copy the media
+    m_favPlaylist.addMedia(media);
     QList <QUrl> temp;
     temp.append(media.canonicalUrl());
-    bool previousState = a_isUsingFavPlaylist;
-    a_isUsingFavPlaylist = true; //So the quickUpdate knows what to update
+    bool previousState = m_isUsingFavPlaylist;
+    m_isUsingFavPlaylist = true; //So the quickUpdate knows what to update
     //The quick update will place the media at the end of fav without reloading the whole playlist
-    a_playlist->quickUpdate(&temp, a_favPlaylist.mediaCount());
+    m_playlist->quickUpdate(&temp, m_favPlaylist.mediaCount());
     if(previousState == false)
-        a_isUsingFavPlaylist = false; //We're finished
-    if(a_hasToSaveFavsLater != true)
-        a_hasToSaveFavsLater = true;
+        m_isUsingFavPlaylist = false; //We're finished
+    if(m_hasToSaveFavsLater != true)
+        m_hasToSaveFavsLater = true;
 
 }
 
 void Player::changeToFavPlaylist()
 {
-    a_shuffle.setVisible(false); // Keep your favorites clean.
-    neu->setPlaylist(&a_favPlaylist);
-    a_isUsingFavPlaylist = true;
+    m_shuffle.setVisible(false); // Keep your favorites clean.
+    neu->setPlaylist(&m_favPlaylist);
+    m_isUsingFavPlaylist = true;
 }
 
 void Player::changeToDefaultPlaylist()
 {
-    a_shuffle.setVisible(true); // We can reload the original from disk anyway
-    neu->setPlaylist(&a_mediaPlaylist);
-    a_isUsingFavPlaylist = false;
+    m_shuffle.setVisible(true); // We can reload the original from disk anyway
+    neu->setPlaylist(&m_mediaPlaylist);
+    m_isUsingFavPlaylist = false;
 }
 
 //When added to queue
 void Player::addToQueue(int index, int currentlyPlaying)
 {
     //if you add one music, it'll place the next one next to it, ect...
-    int insertTo = currentlyPlaying + a_playlist->queuedIndex();
-    QMediaContent media(a_mediaPlaylist.media(index)); //We copy the media
+    int insertTo = currentlyPlaying + m_playlist->queuedIndex();
+    QMediaContent media(m_mediaPlaylist.media(index)); //We copy the media
     deleteMedia(index);
     if(index < currentlyPlaying)
         insertTo--;
-    a_mediaPlaylist.insertMedia(insertTo, media);
+    m_mediaPlaylist.insertMedia(insertTo, media);
     QList <QUrl> temp;
-    temp.append(a_mediaPlaylist.media(insertTo).canonicalUrl());
-    a_playlist->deleteItem(index);
+    temp.append(m_mediaPlaylist.media(insertTo).canonicalUrl());
+    m_playlist->deleteItem(index);
     //The quick update will place the media at insertTo index without reloading the whole playlist
-    a_playlist->quickUpdate(&temp, insertTo);
-    if(a_hasToSavePlaylistLater != true)
-        a_hasToSavePlaylistLater = true;
+    m_playlist->quickUpdate(&temp, insertTo);
+    if(m_hasToSavePlaylistLater != true)
+        m_hasToSavePlaylistLater = true;
 }
 
 //Called when setting a folder from playlist
 void Player::updatePlaylistOfThePlayer(const QList<QUrl> &medias, bool play)
 {
-    a_mediaPlaylist.clear();
+    m_mediaPlaylist.clear();
     setCursor(Qt::BusyCursor);
     unsigned int const mediaNumber = medias.size();
     for(unsigned int i (0); i < mediaNumber; i++ )
     {
-        a_mediaPlaylist.addMedia(medias.at(i));
+        m_mediaPlaylist.addMedia(medias.at(i));
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
     changeToDefaultPlaylist(); //Re-set to update...
-    if(a_isPlaylistOpen)
-        a_playlist->updateList(&a_mediaPlaylist);
-    if(a_hasToSavePlaylistLater != true)
-        a_hasToSavePlaylistLater = true;
+    if(m_isPlaylistOpen)
+        m_playlist->updateList(&m_mediaPlaylist);
+    if(m_hasToSavePlaylistLater != true)
+        m_hasToSavePlaylistLater = true;
     if(play)
         playMedia();
     else
     {
-        disconnect(ui->a_pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
-        ui->a_playbtn->setVisible(true);
-        ui->a_pausebtn->setVisible(false);
-        connect(ui->a_playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
+        disconnect(ui->pausebtn, SIGNAL(clicked()), this, SLOT(pauseMedia()));
+        ui->playbtn->setVisible(true);
+        ui->pausebtn->setVisible(false);
+        connect(ui->playbtn, SIGNAL(clicked()), this, SLOT(playMedia()));
     }
     setCursor(Qt::ArrowCursor);
 }

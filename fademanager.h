@@ -34,12 +34,12 @@ public:
 
     inline void setDefaultDuration(int msecs)
     {
-        a_duration = msecs;
+        m_duration = msecs;
     }
 
     inline const int getDefaultDuration()
     {
-        return a_duration;
+        return m_duration;
     }
 
     void addToParallel(QAbstractAnimation *animation);
@@ -47,7 +47,7 @@ public:
 
     void setSingleTarget(QWidget *target)
     {
-        a_target = target;
+        m_target = target;
     }
 
     void addTarget(QWidget *target);
@@ -89,20 +89,20 @@ public slots:
 
     inline void parallelFinished()
     {
-        if(a_deleteWhenFinished)
+        if(m_deleteWhenFinished)
         {
-            a_parallelAnimations.clear();
-            a_deleteWhenFinished = false;
+            m_parallelAnimations.clear();
+            m_deleteWhenFinished = false;
         }
         emit finished(FadeManager::Parallel);
     }
 
     inline void sequentialFinished()
     {
-        if(a_deleteWhenFinished)
+        if(m_deleteWhenFinished)
         {
-            a_sequentialAnimations.clear();
-            a_deleteWhenFinished = false;
+            m_sequentialAnimations.clear();
+            m_deleteWhenFinished = false;
         }
         emit finished(FadeManager::Sequential);
     }
@@ -114,14 +114,14 @@ private:
     QAbstractAnimation* searchTarget(QWidget *target, AnimationSequenceType inWhichGroup);
 
     //Attributes
-    int a_duration; //Duration in ms
-    QWidget *a_target = nullptr; //Used when starting only one animation
-    QGraphicsOpacityEffect *a_effectContainer = nullptr; //Used when starting only one animation
-    QSequentialAnimationGroup a_sequentialAnimations;
-    QParallelAnimationGroup a_parallelAnimations;
-    bool a_deleteWhenFinished;
-    FadeMode a_mode; //FadeIn or FadeOut
-    AnimationSequenceType a_sequenceType; //Parallel or Sequential
+    int m_duration; //Duration in ms
+    QWidget *m_target = nullptr; //Used when starting only one animation
+    QGraphicsOpacityEffect *m_effectContainer = nullptr; //Used when starting only one animation
+    QSequentialAnimationGroup m_sequentialAnimations;
+    QParallelAnimationGroup m_parallelAnimations;
+    bool m_deleteWhenFinished;
+    FadeMode m_mode; //FadeIn or FadeOut
+    AnimationSequenceType m_sequenceType; //Parallel or Sequential
 };
 
 #endif // FADEMANAGER

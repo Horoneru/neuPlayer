@@ -19,7 +19,7 @@ private:
     void setupInfos(QPixmap *cover);
     //Attributes
     Ui::TagViewer *ui = nullptr;
-    QList <QString> a_metas;
+    QList <QString> m_metas;
 };
 
 #endif // TAGVIEWER_H
