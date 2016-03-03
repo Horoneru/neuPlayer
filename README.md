@@ -10,8 +10,7 @@ There will be more links available for other OS soon.
 
 ##Presentation 
 
-![Screenshot] (http://puu.sh/guRg6/04a820b7ef.jpg)
-
+![Screenshot] (http://puu.sh/ntHdY/6dd8a5f0d2.png) 
 
 neuPlayer is a project I started as a challenge to further enhance my skills in C++ and Qt.
 It is a fully portable lightweight music player (it runs on a USB drive smoothly !) which can be used as a quick replacement to players like Windows Media Player, iTunes or VLC.
@@ -48,12 +47,12 @@ With those in mind, I'm trying to do a player which can possibly be the daily-dr
  
  - Low memory footprint
  
- - Updater build-in to keep the player updated
+ - Updater built-in to keep the player updated
 
 
 ## How to compile
 
-If you want to compile neuPlayer manually you just need [Qt](https://www.qt.io/) (version 5.2.0 or above is required)
+If you want to compile neuPlayer manually you just need [Qt](https://www.qt.io/) (version 5.2.0 or above is required, 5.3.2 is the one used for release builds).
 
 To compile it, run `qmake`and build
  
