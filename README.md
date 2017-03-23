@@ -1,16 +1,16 @@
 # neuPlayer
 <i>This software is available in French and english. It'll automatically adjust for you when executing it </i>
  
-##Downloads
+## Downloads
 
 A pre-compiled binary for <b>Windows</b> is available <b>[here](http://goo.gl/QiW88m) </b>(build 290515)
 
 There will be more links available for other OS soon.
 
 
-##Presentation 
+## Presentation 
 
-![Screenshot] (http://puu.sh/ntHdY/6dd8a5f0d2.png) 
+![Screenshot](http://puu.sh/ntHdY/6dd8a5f0d2.png) 
 
 neuPlayer is a project I started as a challenge to further enhance my skills in C++ and Qt.
 It is a fully portable lightweight music player (it runs on a USB drive smoothly !) which can be used as a quick replacement to players like Windows Media Player, iTunes or VLC.
@@ -25,7 +25,7 @@ Its main goals are :
 
 With those in mind, I'm trying to do a player which can possibly be the daily-driver of most people who just start the player and let the music play while they work.
 
-##Features
+## Features
  As of 10/03/15, I decided to make this project public on GitHub. Right now it features : 
  - <b>Fast-loading from a base music folder</b>
  
