@@ -3,9 +3,9 @@
 
 #include <QDialog>
 #include "player.h"
-#include "skin.h"
-#include "updaterhandler.h"
-#include "moveanimation.h"
+#include "../../util/skin.h"
+#include "../../util/updaterhandler.h"
+#include "../../lib/moveanimation.h"
 namespace Ui {
 class Settings;
 }

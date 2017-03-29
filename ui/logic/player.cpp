@@ -6,22 +6,22 @@ Player::Player(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Player),
     /* Background ressources */
-    m_neuDarkBg(":/Ressources/neudarkbg.png"),
-    m_neuLightBg(":/Ressources/neubackgroundwhite.jpg"),
-    m_neuLightCustombg(":/Ressources/neucustombackgroundwhite.jpg"),
-    m_neuDarkCustombg(":/Ressources/neucustombackgroundblack.jpg"),
+    m_neuDarkBg(":/neudarkbg.png"),
+    m_neuLightBg(":/neubackgroundwhite.jpg"),
+    m_neuLightCustombg(":/neucustombackgroundwhite.jpg"),
+    m_neuDarkCustombg(":/neucustombackgroundblack.jpg"),
     /* Volume icons ressources */
-    m_volumeIcon(":/Ressources/volumebtn.png"),
-    m_volumeDarkIcon(":/Ressources/volumedarkbtn.png"),
-    m_volumeMutedIcon(":/Ressources/volumebtn_onPressed.png"),
-    m_volumeMutedDarkIcon(":/Ressources/volumedarkbtn_onPressed.png"),
-    m_volumeLowIcon(":/Ressources/volumebtn2.png"),
-    m_volumeLowDarkIcon(":/Ressources/volumedarkbtn2.png"),
+    m_volumeIcon(":/volumebtn.png"),
+    m_volumeDarkIcon(":/volumedarkbtn.png"),
+    m_volumeMutedIcon(":/volumebtn_onPressed.png"),
+    m_volumeMutedDarkIcon(":/volumedarkbtn_onPressed.png"),
+    m_volumeLowIcon(":/volumebtn2.png"),
+    m_volumeLowDarkIcon(":/volumedarkbtn2.png"),
     /* No CSS controls ressources */
-    m_previousIcon(":/Ressources/previousbtn.png"),
-    m_previousDarkIcon(":/Ressources/previousdarkbtn.png"),
-    m_forwardIcon(":/Ressources/forwardbtn.png"),
-    m_forwardDarkIcon(":/Ressources/forwarddarkbtn.png"),
+    m_previousIcon(":/previousbtn.png"),
+    m_previousDarkIcon(":/previousdarkbtn.png"),
+    m_forwardIcon(":/forwardbtn.png"),
+    m_forwardDarkIcon(":/forwarddarkbtn.png"),
     /* Actions */
     m_accessSettings(tr("Paramètres"), this),
     m_alwaysOnTopHandler(tr("Toujours visible"), this), m_advance(this), m_back(this),
@@ -447,23 +447,23 @@ void Player::loadSkin()
 
 void Player::setLightCSS()
 {
-    ui->playbtn->setStyleSheet("QPushButton#m_playbtn{background-image: url(:/Ressources/Playdarkbtn.png);}"
-                                 "QPushButton#m_playbtn:hover{background-image: url(:/Ressources/Playdarkbtn_onHover.png);}");
+    ui->playbtn->setStyleSheet("QPushButton#playbtn{background-image: url(:/Playdarkbtn.png);}"
+                                 "QPushButton#playbtn:hover{background-image: url(:/Playdarkbtn_onHover.png);}");
 
-    ui->pausebtn->setStyleSheet("QPushButton#m_pausebtn{background-image: url(:/Ressources/Pausedarkbtn.png);}"
-                                  "QPushButton#m_pausebtn:hover{background-image: url(:/Ressources/Pausedarkbtn_onHover.png);}");
+    ui->pausebtn->setStyleSheet("QPushButton#pausebtn{background-image: url(:/Pausedarkbtn.png);}"
+                                  "QPushButton#pausebtn:hover{background-image: url(:/Pausedarkbtn_onHover.png);}");
 
-    ui->menubtn->setStyleSheet("QPushButton#m_menubtn{background-image: url(:/Ressources/roundedmenudarkbtn.png);}"
-                                 "QPushButton#m_menubtn:hover{background-image: url(:/Ressources/roundedmenudarkbtn_onHover.png);}");
+    ui->menubtn->setStyleSheet("QPushButton#menubtn{background-image: url(:/roundedmenudarkbtn.png);}"
+                                 "QPushButton#menubtn:hover{background-image: url(:/roundedmenudarkbtn_onHover.png);}");
 
-    m_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
-    m_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handledark.png);}");
+    m_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/handledark.png);}");
+    m_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/handledark.png);}");
     if(m_isFrameless)
     {
-        ui->closeButton->setStyleSheet("QPushButton#m_closeButton{background-image: url(:/Ressources/closeButtonDark.png);}"
-                                         "QPushButton#m_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
-        ui->hideButton->setStyleSheet("QPushButton#m_hideButton{background-image: url(:/Ressources/hideButtonDark.png);}"
-                                        "QPushButton#m_hideButton:hover{background-image: url(:/Ressources/hideButtonDark_onHover.png);}");
+        ui->closeButton->setStyleSheet("QPushButton#closeButton{background-image: url(:/closeButtonDark.png);}"
+                                         "QPushButton#closeButton:hover{background-image: url(:/closeButton_onHover.png);}");
+        ui->hideButton->setStyleSheet("QPushButton#hideButton{background-image: url(:/hideButtonDark.png);}"
+                                        "QPushButton#hideButton:hover{background-image: url(:/hideButtonDark_onHover.png);}");
     }
 
     //Stylize the rest by putting icons...
@@ -476,24 +476,24 @@ void Player::setLightCSS()
 
 void Player::setDarkCSS()
 {
-    ui->playbtn->setStyleSheet("QPushButton#m_playbtn{background-image: url(:/Ressources/Playbtn.png);}"
-                                 "QPushButton#m_playbtn:hover{background-image: url(:/Ressources/Playbtn_onHover.png);}");
+    ui->playbtn->setStyleSheet("QPushButton#playbtn{background-image: url(:/Playbtn.png);}"
+                                 "QPushButton#playbtn:hover{background-image: url(:/Playbtn_onHover.png);}");
 
-    ui->pausebtn->setStyleSheet("QPushButton#m_pausebtn{background-image: url(:/Ressources/Pausebtn.png);}"
-                                  "QPushButton#m_pausebtn:hover{background-image: url(:/Ressources/Pausebtn_onHover.png);}");
+    ui->pausebtn->setStyleSheet("QPushButton#pausebtn{background-image: url(:/Pausebtn.png);}"
+                                  "QPushButton#pausebtn:hover{background-image: url(:/Pausebtn_onHover.png);}");
 
-    ui->menubtn->setStyleSheet("QPushButton#m_menubtn{background-image: url(:/Ressources/roundedmenubtn.png);}"
-                                 "QPushButton#m_menubtn:hover{background-image: url(:/Ressources/roundedmenubtn_onHover.png);}");
+    ui->menubtn->setStyleSheet("QPushButton#menubtn{background-image: url(:/roundedmenubtn.png);}"
+                                 "QPushButton#menubtn:hover{background-image: url(:/roundedmenubtn_onHover.png);}");
 
-    m_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
-    m_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/Ressources/handle.png);}");
+    m_progressSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/handle.png);}");
+    m_volumeSlider->setStyleSheet("Slider::handle:horizontal {image: url(:/handle.png);}");
 
     if(m_isFrameless)
     {
-        ui->closeButton->setStyleSheet("QPushButton#m_closeButton{background-image: url(:/Ressources/closeButton.png);}"
-                                         "QPushButton#m_closeButton:hover{background-image: url(:/Ressources/closeButton_onHover.png);}");
-        ui->hideButton->setStyleSheet("QPushButton#m_hideButton{background-image: url(:/Ressources/hideButton.png);}"
-                                        "QPushButton#m_hideButton:hover{background-image: url(:/Ressources/hideButton_onHover.png);}");
+        ui->closeButton->setStyleSheet("QPushButton#closeButton{background-image: url(:/closeButton.png);}"
+                                         "QPushButton#closeButton:hover{background-image: url(:/closeButton_onHover.png);}");
+        ui->hideButton->setStyleSheet("QPushButton#hideButton{background-image: url(:/hideButton.png);}"
+                                        "QPushButton#hideButton:hover{background-image: url(:/hideButton_onHover.png);}");
     }
     //Stylize the rest by putting icons...
     ui->forward->setIcon(m_forwardIcon);
@@ -543,9 +543,9 @@ void Player::finishingUp()
         showPlaylist();
     }
 #ifdef Q_OS_WIN
-    m_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
-    m_thumbForwardButton.setIcon(QIcon(":/Ressources/forward_thumbnailButton.png"));
-    m_thumbPreviousButton.setIcon(QIcon(":/Ressources/previous_thumbnailButton.png"));
+    m_thumbActionButton.setIcon(QIcon(":/play_thumbnailButton.png"));
+    m_thumbForwardButton.setIcon(QIcon(":/forward_thumbnailButton.png"));
+    m_thumbPreviousButton.setIcon(QIcon(":/previous_thumbnailButton.png"));
 
     //Prepare and set buttons on thumbnailtoolbar
     m_thumbnailToolbar.addButton(&m_thumbPreviousButton);
@@ -601,7 +601,7 @@ void Player::playMedia()
         ui->pausebtn->setVisible(true);
 
 #ifdef Q_OS_WIN
-        m_thumbActionButton.setIcon(QIcon(":/Ressources/pause_thumbnailButton.png"));
+        m_thumbActionButton.setIcon(QIcon(":/pause_thumbnailButton.png"));
         connect(&m_thumbActionButton, SIGNAL(clicked()), this, SLOT(pauseMedia()));
 #endif
 
@@ -623,7 +623,7 @@ void Player::pauseMedia()
     ui->pausebtn->setVisible(false);
 
 #ifdef Q_OS_WIN
-    m_thumbActionButton.setIcon(QIcon(":/Ressources/play_thumbnailButton.png"));
+    m_thumbActionButton.setIcon(QIcon(":/play_thumbnailButton.png"));
     connect(&m_thumbActionButton, SIGNAL(clicked()), this, SLOT(playMedia()));
 #endif
 

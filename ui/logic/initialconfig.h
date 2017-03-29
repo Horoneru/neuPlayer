@@ -9,11 +9,11 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-#include "moveanimation.h"
-#include "framelesshelper.h"
+#include "../../lib/moveanimation.h"
+#include "../../lib/framelesshelper.h"
 #include "player.h"
-#include "fadewindow.h"
-#include "fademanager.h"
+#include "../../lib/fadewindow.h"
+#include "../../lib/fademanager.h"
 namespace Ui {
 class InitialConfig;
 }
@@ -33,8 +33,8 @@ private slots:
     void delayedClose();
 public:
     explicit InitialConfig(QWidget *parent = 0);
-private:
     ~InitialConfig();
+private:
     void setupWidgetsInitialVisibility();
     void setupConnections();
 

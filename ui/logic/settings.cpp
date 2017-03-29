@@ -258,9 +258,9 @@ void Settings::setSkin(int index)
 {
     if (index == 0) //Clean Fusion
     {
-        ui->skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewlight.png"));
+        ui->skinImage->setPixmap(QPixmap(":/skinpreviewlight.png"));
         if(m_bgPath.isEmpty())
-            ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewwhite.jpg"));
+            ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewwhite.jpg"));
         else
             ui->skinImage_2->setPixmap(QPixmap(m_bgPath));
 
@@ -269,9 +269,9 @@ void Settings::setSkin(int index)
 
     if (index == 1) // Holo Fusion
     {
-        ui->skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewdark.png"));
+        ui->skinImage->setPixmap(QPixmap(":/skinpreviewdark.png"));
         if(m_bgPath.isEmpty())
-            ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewdark.png"));
+            ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewdark.png"));
         else
             ui->skinImage_2->setPixmap(QPixmap(m_bgPath));
 
@@ -279,9 +279,9 @@ void Settings::setSkin(int index)
     }
     if(index == 2) //Sky Fusion
     {
-        ui->skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewcustomlight.jpg"));
+        ui->skinImage->setPixmap(QPixmap(":/skinpreviewcustomlight.jpg"));
         if(m_bgPath.isEmpty())
-            ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomwhite.jpg"));
+            ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewcustomwhite.jpg"));
         else
             ui->skinImage_2->setPixmap(QPixmap(m_bgPath));
 
@@ -290,9 +290,9 @@ void Settings::setSkin(int index)
 
     if(index == 3) //Night Fusion
     {
-        ui->skinImage->setPixmap(QPixmap(":/Ressources/skinpreviewcustomdark.png"));
+        ui->skinImage->setPixmap(QPixmap(":/skinpreviewcustomdark.png"));
         if(m_bgPath.isEmpty())
-            ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomdark.jpg"));
+            ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewcustomdark.jpg"));
         else
             ui->skinImage_2->setPixmap(QPixmap(m_bgPath));
 
@@ -319,16 +319,16 @@ void Settings::reloadDefaultBg()
 {
     m_bgPath = "";
     if (ui->skinPick->currentIndex() == 0) //Clean Fusion
-        ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewwhite.jpg"));
+        ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewwhite.jpg"));
 
     if (ui->skinPick->currentIndex() == 1) // Holo Fusion
-        ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewdark.png"));
+        ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewdark.png"));
 
     if(ui->skinPick->currentIndex() == 2) //Sky Fusion
-        ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomwhite.jpg"));
+        ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewcustomwhite.jpg"));
 
     if(ui->skinPick->currentIndex() == 3) //Night Fusion
-        ui->skinImage_2->setPixmap(QPixmap(":/Ressources/backgroundpreviewcustomdark.jpg"));
+        ui->skinImage_2->setPixmap(QPixmap(":/backgroundpreviewcustomdark.jpg"));
 }
 
 void Settings::updateOpacity(int value)

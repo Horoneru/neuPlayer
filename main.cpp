@@ -1,7 +1,7 @@
-#include "player.h"
-#include "skin.h"
-#include "initialconfig.h"
-#include "framelesshelper.h"
+#include "ui/logic/player.h"
+#include "util/skin.h"
+#include "ui/logic/initialconfig.h"
+#include "lib/framelesshelper.h"
 #include <QApplication>
 #include <QStyleFactory>
 #include <QTranslator>

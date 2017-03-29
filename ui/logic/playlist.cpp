@@ -17,7 +17,7 @@ Playlist::Playlist(neuPlaylist &liste, neuPlaylist &favs, Player *player,
     resize(m_settings.value("Playlist/size", QSize(265, 300)).toSize());
     ui->playlistWidget->setDragEnabled(false); //I can't handle it well as of now :/
     ui->playlistFavWidget->setDragEnabled(false);
-    m_defaultCover.load(":/Ressources/noCoverHeader.png");
+    m_defaultCover.load("noCoverHeader.png");
     //On reçoit le player, il faut maintenant le mettre en tant qu'attribut pour l'utiliser partout
     m_player = player;
     //De même, on met la playlist en tant qu'attribut pour l'utiliser plus tard.
@@ -236,10 +236,10 @@ void::Playlist::setToPlaying(int index)
 {
     if(!m_player->isUsingFav())
         ui->playlistWidget->item(index)->setIcon(
-                    QIcon(":/Ressources/playingState_icon.png"));
+                    QIcon(":/playingState_icon.png"));
     else
         ui->playlistFavWidget->item(index)->setIcon(
-                    QIcon(":/Ressources/playingState_icon.png"));
+                    QIcon(":/playingState_icon.png"));
     m_isPlaying = true;
 }
 
@@ -248,10 +248,10 @@ void Playlist::setToPaused(int index)
 {
     if(!m_player->isUsingFav())
         ui->playlistWidget->item(index)->setIcon(
-                    QIcon(":/Ressources/pausedState-icon2.png"));
+                    QIcon(":/pausedState-icon2.png"));
     else
         ui->playlistFavWidget->item(index)->setIcon(
-                    QIcon(":/Ressources/pausedState-icon2.png"));
+                    QIcon(":/pausedState-icon2.png"));
     m_isPlaying = false;
 }
 
@@ -561,13 +561,13 @@ void Playlist::deleteFav(int index)
 
 void Playlist::makeStarFull()
 {
-    ui->addFavStar->setIcon(QIcon(":/Ressources/star_full.png"));
+    ui->addFavStar->setIcon(QIcon(":/star_full.png"));
     ui->addFavStar->setToolTip(tr("Cliquez pour enlever des favoris"));
 }
 
 void Playlist::makeStarEmpty()
 {
-    ui->addFavStar->setIcon(QIcon(":/Ressources/star.png"));
+    ui->addFavStar->setIcon(QIcon(":/star.png"));
     ui->addFavStar->setToolTip(tr("Cliquez pour ajouter aux favoris"));
 }
 

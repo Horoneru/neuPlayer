@@ -31,12 +31,12 @@
 
 #include "tagviewer.h"
 #include "playlist.h"
-#include "slider.h"
+#include "../components/slider.h"
 #include "settings.h"
-#include "neuplaylist.h"
-#include "fademanager.h"
-#include "fadewindow.h"
-#include "scrollinglabel.h"
+#include "../../util/neuplaylist.h"
+#include "../../lib/fademanager.h"
+#include "../../lib/fadewindow.h"
+#include "../components/scrollinglabel.h"
 namespace Ui {
 class Player;
 }

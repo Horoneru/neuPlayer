@@ -8,9 +8,9 @@
 #include <QPointer>
 #include <QToolTip>
 
-#include "neuplaylist.h"
-#include "fademanager.h"
-#include "moveanimation.h"
+#include "../../util/neuplaylist.h"
+#include "../../lib/fademanager.h"
+#include "../../lib/moveanimation.h"
 #include "player.h"
 namespace Ui {
 class Playlist;
